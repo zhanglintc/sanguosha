@@ -23,6 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2E2E16AE17B379B400B05F2F /* cards.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cards.h; sourceTree = "<group>"; };
 		2E75B60217AFE3F4000CC7DF /* sanguosha */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sanguosha; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EC3664317AFE42600D97B98 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -41,6 +42,7 @@
 		2E75B5F917AFE3F4000CC7DF = {
 			isa = PBXGroup;
 			children = (
+				2E2E16AE17B379B400B05F2F /* cards.h */,
 				2EC3664317AFE42600D97B98 /* main.c */,
 				2E75B60417AFE3F4000CC7DF /* sanguosha */,
 				2E75B60317AFE3F4000CC7DF /* Products */,
