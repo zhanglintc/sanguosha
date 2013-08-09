@@ -38,6 +38,8 @@
 #define CARD_GET_ATTRIBUTE(x)   ((x)>>28 & 0x3)
 #define CARD_GET_ID(x)          ((x)>>8 & 0x0FFFFF)
 
+#define CARD_IS_WEAPON(x)       ((x)
+
 #define CATEGORY_BASIC          0
 #define CATEGORY_SPECIAL        1
 #define CATEGORY_EQUIPMENT      2
@@ -64,7 +66,41 @@
 #define CARD_ID_FABRICATE       5
 #define CARD_ID_ORCHARD         6
 #define CARD_ID_INVASION        7
-#define CARD_ID_
+#define CARD_ID_SALVO           8
+#define CARD_ID_STEAL           9
+#define CARD_ID_DISMANTAL       10
+#define CARD_ID_DUEL            11
+
+#define CARD_ID_YELLOW_CLAW     12
+#define CARD_ID_WHITE_SPOT      13
+#define CARD_ID_SHADOWLESS      14
+
+#define CARD_ID_RED_TIGER       15
+#define CARD_ID_PURPLE_HORSE    16
+#define CARD_ID_AKHAL_TEKE      17
+
+#define CARD_ID_NI_OH_SHIELD    18
+#define CARD_ID_EIGHT_TRIGRAMS  19
+#define CARD_ID_FROST_SWORD     20
+#define CARD_ID_KIRIN_BOW       21
+#define CARD_ID_HALBERD         22
+#define CARD_ID_SNAKE_SPEAR     23
+#define CARD_ID_DRAGON_SWORD    24
+#define CARD_ID_POLEAXE         25
+#define CARD_ID_DUAL_SWORD      26
+#define CARD_ID_QING_GANG_SWORD 27
+#define CARD_ID_CROSSBOW        28
+
+#define CARD_ID_ARSON           29
+#define CARD_ID_IRON_CHAIN      30
+#define CARD_ID_FAMINE          31
+
+#define CARD_ID_RED_HORSE       32
+#define CARD_ID_SILVER_LION     33
+#define CARD_ID_VINE_ARMOR      34
+
+#define CARD_ID_FEATHER_FAN     35
+#define CARD_ID_RAW_SABER       36
 
 
 #endif  /* CARDS_H_ */
