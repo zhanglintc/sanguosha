@@ -33,6 +33,10 @@ void convert_chinese2unicode(char* str)
 
 int main(int argc, const char * argv[])
 {
+    int32_t card = 0;
+
+    card = Card_Make(SUIT_CLUB, RANK_ACE, CATEGORY_BASIC, ATTRIBUTE_FIRE, CARD_ID_SLASH);
+    Card_Print(card);
     
     return 0;
 }

@@ -7,6 +7,9 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
 #include "card.h"
 
 char szDIAMOND[]    = { 0xE2, 0x99, 0xA6, 0};
@@ -72,6 +75,11 @@ char szEquipment[][16]  =
     {0xE5, 0x8F, 0xA4, 0xE9, 0x94, 0xAD, 0xE5, 0x88, 0x80, 0}
 };
 
+char szRank[][3]    =
+{
+    "X", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"
+};
+
 int32_t Card_Make(int32_t suit, int32_t rank, int32_t category, int32_t attribute, int32_t cid)
 {
     int32_t card = 0;
@@ -87,14 +95,47 @@ int32_t Card_Make(int32_t suit, int32_t rank, int32_t category, int32_t attribut
 
 void Card_Print(int32_t card)
 {
+    char buffer[256];
+    memset(buffer, 0, 256);
     
+    Card_ToString(card, buffer);
+    
+    printf("%s", buffer);
+}
+
+int Card_ToString(int32_t card, char str[])
+{
+    int length = 0;
+    char *ptr = str;
+    
+    const char *name = Card_GetNameString(card);
+    const char *suit = Card_GetSuitString(card);
+    const char *rank = szRank[CARD_RANK(card)];
+    
+    length = (int)strlen(name);
+    length += (int)strlen(suit);
+    length += (int)strlen(rank);
+    length++;
+    
+    memset(str, 0, length);
+    
+    if (ptr != NULL)
+    {
+        memcpy(ptr, name, strlen(name));
+        ptr += strlen(name);
+        memcpy(ptr, suit, strlen(suit));
+        ptr += strlen(suit);
+        memcpy(ptr, rank, strlen(rank));
+    }
+    
+    return length;
 }
 
 const char* Card_GetNameString(int32_t card)
 {
     int category = 0;
     int attribute = 0;
-    const char* ret = NULL;
+    const char *ret = NULL;
     
     category = CARD_GET_CATEGORY(card);
     attribute = CARD_GET_ATTRIBUTE(card);
@@ -125,5 +166,30 @@ const char* Card_GetNameString(int32_t card)
 
 const char* Card_GetSuitString(int32_t card)
 {
-    return NULL;
+    const char *ret = NULL;
+    int suit = CARD_SUIT(card);
+    
+    switch (suit)
+    {
+        case SUIT_CLUB:
+            ret = szCLUB;
+            break;
+        
+        case SUIT_DIAMOND:
+            ret = szDIAMOND;
+            break;
+            
+        case SUIT_HEART:
+            ret = szHEART;
+            break;
+            
+        case SUIT_SPADE:
+            ret = szSPADE;
+            break;
+            
+        default:
+            break;
+    }
+    
+    return ret;
 }

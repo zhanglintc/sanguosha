@@ -53,7 +53,7 @@
 /* category and sub-category */
 #define CARD_GET_CATEGORY(x)    ((x)>>30 & 0xF)
 #define CARD_GET_ATTRIBUTE(x)   ((x)>>27 & 0x7)
-#define CARD_GET_ID(x)          ((x)>>8 & 0x00FFFFFF)
+#define CARD_GET_ID(x)          ((x)>>8 & 0x0007FFFF)
 
 #define CARD_IS_BASIC(x)        (((x)>>30 & 0x3) == 0)
 #define CARD_IS_SPECIAL(x)      (((x)>>30 & 0x3) == 1)
@@ -153,6 +153,8 @@
 int32_t Card_Make(int32_t suit, int32_t rank, int32_t category, int32_t attribute, int32_t cid);
 
 void Card_Print(int32_t card);
+
+int Card_ToString(int32_t card, char str[]);
 
 const char* Card_GetNameString(int32_t card);
 const char* Card_GetSuitString(int32_t card);
