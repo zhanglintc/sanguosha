@@ -7,12 +7,20 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 
 int main(int argc, const char * argv[])
 {
-
+    char *c = "闪电";
+    int i = 0;
+    
+    for (i = 0; i < strlen(c); i++)
+    {
+        printf("0x%02X, ", (unsigned char)c[i]);
+    }
+    
     /* insert code here... */
-    printf("Hello, World!\n");
+    printf("%s\n", c);
     return 0;
 }
 

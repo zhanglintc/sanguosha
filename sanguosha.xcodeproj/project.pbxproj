@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2E0D03B217B885AE00A09676 /* cards.c in Sources */ = {isa = PBXBuildFile; fileRef = 2E0D03B117B885AE00A09676 /* cards.c */; };
 		2EC3664417AFE42600D97B98 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 2EC3664317AFE42600D97B98 /* main.c */; };
+		2ED4833A17B8D29A0033E4BD /* deck.c in Sources */ = {isa = PBXBuildFile; fileRef = 2ED4833917B8D29A0033E4BD /* deck.c */; };
+		2ED4833C17B8D9390033E4BD /* card.c in Sources */ = {isa = PBXBuildFile; fileRef = 2ED4833B17B8D9390033E4BD /* card.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,10 +25,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2E0D03B117B885AE00A09676 /* cards.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cards.c; sourceTree = "<group>"; };
-		2E2E16AE17B379B400B05F2F /* cards.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cards.h; sourceTree = "<group>"; };
+		2E2E16AE17B379B400B05F2F /* card.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = card.h; sourceTree = "<group>"; };
 		2E75B60217AFE3F4000CC7DF /* sanguosha */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sanguosha; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EC3664317AFE42600D97B98 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		2ED4833817B8D1740033E4BD /* deck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = deck.h; sourceTree = "<group>"; };
+		2ED4833917B8D29A0033E4BD /* deck.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = deck.c; sourceTree = "<group>"; };
+		2ED4833B17B8D9390033E4BD /* card.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = card.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,8 +55,10 @@
 			isa = PBXGroup;
 			children = (
 				2E0D03B317B887DB00A09676 /* common */,
-				2E2E16AE17B379B400B05F2F /* cards.h */,
-				2E0D03B117B885AE00A09676 /* cards.c */,
+				2ED4833817B8D1740033E4BD /* deck.h */,
+				2ED4833917B8D29A0033E4BD /* deck.c */,
+				2E2E16AE17B379B400B05F2F /* card.h */,
+				2ED4833B17B8D9390033E4BD /* card.c */,
 				2EC3664317AFE42600D97B98 /* main.c */,
 				2E75B60417AFE3F4000CC7DF /* sanguosha */,
 				2E75B60317AFE3F4000CC7DF /* Products */,
@@ -127,7 +132,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2EC3664417AFE42600D97B98 /* main.c in Sources */,
-				2E0D03B217B885AE00A09676 /* cards.c in Sources */,
+				2ED4833A17B8D29A0033E4BD /* deck.c in Sources */,
+				2ED4833C17B8D9390033E4BD /* card.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
