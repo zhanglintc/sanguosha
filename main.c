@@ -9,18 +9,31 @@
 #include <stdio.h>
 #include <string.h>
 
-int main(int argc, const char * argv[])
+#include "card.h"
+
+void convert_chinese2unicode(char* str)
 {
-    char *c = "闪电";
+    char *c = str;
     int i = 0;
     
     for (i = 0; i < strlen(c); i++)
     {
-        printf("0x%02X, ", (unsigned char)c[i]);
+        if (c[i] == 0x20)
+        {
+            printf("0 \n");
+        }
+        else
+        {
+            printf("0x%02X, ", (unsigned char)c[i]);
+        }
     }
     
-    /* insert code here... */
     printf("%s\n", c);
+}
+
+int main(int argc, const char * argv[])
+{
+    
     return 0;
 }
 
