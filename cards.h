@@ -31,29 +31,37 @@
 #define SUIT_CLUB               0x80
 #define SUIT_DIAMOND            0x40
 #define SUIT_HEART              0x20
-#deifne SUIT_SPADE              0x10
+#define SUIT_SPADE              0x10
 
 /* category and sub-category */
 #define CARD_GET_CATEGORY(x)    ((x)>>30 & 0xF)
 #define CARD_GET_ATTRIBUTE(x)   ((x)>>28 & 0x3)
 #define CARD_GET_ID(x)          ((x)>>8 & 0x0FFFFF)
 
-#define CARD_IS_WEAPON(x)       ((x)
+#define CARD_IS_BASIC(x)        ((x)&0xC0000000 == 0x00000000)
+#define CARD_IS_SPECIAL(x)      ((x)&0xC0000000 == 0x40000000)
+#define CARD_IS_EQUIPMENT(x)    ((x)&0xC0000000 == 0x80000000)
 
+/* categories */
 #define CATEGORY_BASIC          0
 #define CATEGORY_SPECIAL        1
 #define CATEGORY_EQUIPMENT      2
 
+/* attribute for slash!, arson and lightning */
 #define ATTRIBUTE_NONE          0
 #define ATTRIBUTE_FIRE          1
 #define ATTRIBUTE_LIGHTNING     2
 
+/* attribute for equipment */
 #define ATTRIBUTE_WEAPON        0
 #define ATTRIBUTE_SHIELD        1
 #define ATTRIBUTE_DEFENSIVE     2
 #define ATTRIBUTE_AGGRESSIVE    3
 
-#define CARD_ID_BANG            0
+/* extra attribute for special card */
+#define ATTRIBUTE_INSTANT       4
+
+#define CARD_ID_SLASH           0
 #define CARD_ID_MISSED          1
 #define CARD_ID_SPIRIT          2
 #define CARD_ID_PEACH           3
@@ -91,6 +99,8 @@
 #define CARD_ID_QING_GANG_SWORD 27
 #define CARD_ID_CROSSBOW        28
 
+/* military extension */
+
 #define CARD_ID_ARSON           29
 #define CARD_ID_IRON_CHAIN      30
 #define CARD_ID_FAMINE          31
@@ -101,6 +111,5 @@
 
 #define CARD_ID_FEATHER_FAN     35
 #define CARD_ID_RAW_SABER       36
-
 
 #endif  /* CARDS_H_ */
