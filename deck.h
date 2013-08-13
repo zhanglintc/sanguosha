@@ -25,6 +25,6 @@ typedef struct deck_t
     
 } deck_t;
 
-deck_t* Deck_Create(void);
+deck_t* Deck_Create(int extension);
 
 #endif /* DECK_H_ */

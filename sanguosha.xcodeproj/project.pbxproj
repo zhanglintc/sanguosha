@@ -10,6 +10,7 @@
 		2EC3664417AFE42600D97B98 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 2EC3664317AFE42600D97B98 /* main.c */; };
 		2ED4833A17B8D29A0033E4BD /* deck.c in Sources */ = {isa = PBXBuildFile; fileRef = 2ED4833917B8D29A0033E4BD /* deck.c */; };
 		2ED4833C17B8D9390033E4BD /* card.c in Sources */ = {isa = PBXBuildFile; fileRef = 2ED4833B17B8D9390033E4BD /* card.c */; };
+		2EFED93E17BA345C00BDA5B8 /* memtracker.c in Sources */ = {isa = PBXBuildFile; fileRef = 2EFED93C17BA345C00BDA5B8 /* memtracker.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,9 @@
 		2ED4833817B8D1740033E4BD /* deck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = deck.h; sourceTree = "<group>"; };
 		2ED4833917B8D29A0033E4BD /* deck.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = deck.c; sourceTree = "<group>"; };
 		2ED4833B17B8D9390033E4BD /* card.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = card.c; sourceTree = "<group>"; };
+		2EFED93B17BA345C00BDA5B8 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		2EFED93C17BA345C00BDA5B8 /* memtracker.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = memtracker.c; sourceTree = "<group>"; };
+		2EFED93D17BA345C00BDA5B8 /* memtracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memtracker.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,17 +48,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2E0D03B317B887DB00A09676 /* common */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = common;
-			sourceTree = "<group>";
-		};
 		2E75B5F917AFE3F4000CC7DF = {
 			isa = PBXGroup;
 			children = (
-				2E0D03B317B887DB00A09676 /* common */,
+				2EFED93A17BA345C00BDA5B8 /* common */,
 				2ED4833817B8D1740033E4BD /* deck.h */,
 				2ED4833917B8D29A0033E4BD /* deck.c */,
 				2E2E16AE17B379B400B05F2F /* card.h */,
@@ -78,6 +75,16 @@
 			children = (
 			);
 			path = sanguosha;
+			sourceTree = "<group>";
+		};
+		2EFED93A17BA345C00BDA5B8 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				2EFED93B17BA345C00BDA5B8 /* common.h */,
+				2EFED93C17BA345C00BDA5B8 /* memtracker.c */,
+				2EFED93D17BA345C00BDA5B8 /* memtracker.h */,
+			);
+			path = common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,6 +141,7 @@
 				2EC3664417AFE42600D97B98 /* main.c in Sources */,
 				2ED4833A17B8D29A0033E4BD /* deck.c in Sources */,
 				2ED4833C17B8D9390033E4BD /* card.c in Sources */,
+				2EFED93E17BA345C00BDA5B8 /* memtracker.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

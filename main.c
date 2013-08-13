@@ -6,8 +6,7 @@
  *  Copyright (c) 2013 Master.G. All rights reserved.
  */
 
-#include <stdio.h>
-#include <string.h>
+#include "common.h"
 
 #include "card.h"
 
@@ -47,6 +46,8 @@ int main(int argc, const char * argv[])
     }
     
     printf("Total cards:%d\n", i);
+    
+    memtrack_list_allocations();
     
     return 0;
 }
