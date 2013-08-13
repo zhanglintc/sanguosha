@@ -21,10 +21,28 @@
 
 typedef struct deck_t
 {
+    int     extension;
     int32_t cards[CONSTANT_CARDS_COUNT_TOTAL];
     
 } deck_t;
 
+/**
+ *	@brief	create a deck
+ *
+ *	@param 	extension 	0 : no extension
+ *                      1 : use extension
+ *
+ *	@return	deck
+ */
 deck_t* Deck_Create(int extension);
+
+
+/**
+ *	@brief	free a deck
+ *
+ *	@param 	deck 	
+ */
+void Deck_Destroy(deck_t *deck);
+
 
 #endif /* DECK_H_ */
