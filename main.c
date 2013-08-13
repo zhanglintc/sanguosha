@@ -33,10 +33,20 @@ void convert_chinese2unicode(char* str)
 
 int main(int argc, const char * argv[])
 {
-    int32_t card = 0;
-
-    card = Card_Make(SUIT_CLUB, RANK_ACE, CATEGORY_BASIC, ATTRIBUTE_FIRE, CARD_ID_SLASH);
-    Card_Print(card);
+    int i = 0;
+    int32_t cards[CONSTANT_CARDS_COUNT_TOTAL];
+    
+    memset(cards, 0, sizeof(int) * CONSTANT_CARDS_COUNT_TOTAL);
+    
+    Card_InitSet(cards, 1);
+    
+    for (i = 0; i < 200; i++)
+    {
+        if (cards[i] == 0)
+            break;
+    }
+    
+    printf("Total cards:%d\n", i);
     
     return 0;
 }

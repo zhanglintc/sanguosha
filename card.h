@@ -51,7 +51,7 @@
 #define RANK_KING               13
 
 /* category and sub-category */
-#define CARD_GET_CATEGORY(x)    ((x)>>30 & 0xF)
+#define CARD_GET_CATEGORY(x)    ((x)>>30 & 0x3)
 #define CARD_GET_ATTRIBUTE(x)   ((x)>>27 & 0x7)
 #define CARD_GET_ID(x)          ((x)>>8 & 0x0007FFFF)
 
@@ -63,7 +63,7 @@
 #define ATTRIBUTE_IS_FIRE(x)    (((x)>>27 & 0x7) == 1)
 #define ATTRIBUTE_IS_LIGHTNING(x) (((x)>>27 & 0x7) == 2)
 
-#define SPECIAL_IS_INSTANT(x)   (CARD_IS_SPECIAL(x) && (((x)>>27 & 0x4) != 0))
+#define SPECIAL_IS_DELAY(x)     (CARD_IS_SPECIAL(x) && (((x)>>27 & 0x4) != 0))
 
 #define EQUIP_IS_WEAPON(x)      (CARD_IS_EQUIPMENT(x) && (((x)>>27 & 0x7) == ATTRIBUTE_WEAPON))
 #define EQUIP_IS_SHIELD(x)      (CARD_IS_EQUIPMENT(x) && (((x)>>27 & 0x7) == ATTRIBUTE_SHIELD))
@@ -87,7 +87,7 @@
 #define ATTRIBUTE_AGGRESSIVE    3
 
 /* extra attribute for special card */
-#define ATTRIBUTE_INSTANT       4
+#define ATTRIBUTE_DELAY         4
 
 /* basic cards */
 #define CARD_ID_SLASH           1
@@ -117,17 +117,17 @@
 #define CARD_ID_PURPLE_HORSE    5
 #define CARD_ID_AKHAL_TEKE      6
 
-#define CARD_ID_NI_OH_SHIELD    1
-#define CARD_ID_EIGHT_TRIGRAMS  2
-#define CARD_ID_FROST_SWORD     3
-#define CARD_ID_KIRIN_BOW       4
-#define CARD_ID_HALBERD         5
-#define CARD_ID_SNAKE_SPEAR     6
-#define CARD_ID_DRAGON_SWORD    7
-#define CARD_ID_POLEAXE         8
-#define CARD_ID_DUAL_SWORD      9
-#define CARD_ID_QING_GANG_SWORD 10
-#define CARD_ID_CROSSBOW        11
+#define CARD_ID_NI_OH_SHIELD    7
+#define CARD_ID_EIGHT_TRIGRAMS  8
+#define CARD_ID_FROST_SWORD     9
+#define CARD_ID_KIRIN_BOW       10
+#define CARD_ID_HALBERD         11
+#define CARD_ID_SNAKE_SPEAR     12
+#define CARD_ID_DRAGON_SWORD    13
+#define CARD_ID_POLEAXE         14
+#define CARD_ID_DUAL_SWORD      15
+#define CARD_ID_QING_GANG_SWORD 16
+#define CARD_ID_CROSSBOW        17
 
 /* military extension */
 
@@ -137,20 +137,24 @@
 #define CARD_ID_IRON_CHAIN      14
 #define CARD_ID_FAMINE          15
 
-#define CARD_ID_RED_HORSE       12
-#define CARD_ID_SILVER_LION     13
-#define CARD_ID_VINE_ARMOR      14
+#define CARD_ID_RED_HORSE       18
+#define CARD_ID_SILVER_LION     19
+#define CARD_ID_VINE_ARMOR      20
 
-#define CARD_ID_FEATHER_FAN     15
-#define CARD_ID_RAW_SABER       16
+#define CARD_ID_FEATHER_FAN     21
+#define CARD_ID_RAW_SABER       22
 
 
 /* constant definitions */
 
 #define CONSTANT_CARDS_COUNT_BASIC      108
 #define CONSTANT_CARDS_COUNT_EXTENSION  52
+#define CONSTANT_CARDS_COUNT_TOTAL      CONSTANT_CARDS_COUNT_BASIC + \
+                                        CONSTANT_CARDS_COUNT_EXTENSION
 
 int32_t Card_Make(int32_t suit, int32_t rank, int32_t category, int32_t attribute, int32_t cid);
+
+int Card_InitSet(int32_t cards[], int extension);
 
 void Card_Print(int32_t card);
 

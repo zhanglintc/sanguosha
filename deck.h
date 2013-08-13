@@ -11,6 +11,8 @@
 
 #include <stdint.h>
 
+#include "card.h"
+
 /*
  * ************************************************************
  * deck
@@ -19,8 +21,10 @@
 
 typedef struct deck_t
 {
-    
+    int32_t cards[CONSTANT_CARDS_COUNT_TOTAL];
     
 } deck_t;
+
+deck_t* Deck_Create(void);
 
 #endif /* DECK_H_ */
