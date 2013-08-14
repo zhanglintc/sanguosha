@@ -10,12 +10,12 @@
 
 #include "card.h"
 
-char szDIAMOND[]    = { 0xE2, 0x99, 0xA6, 0};
-char szCLUB[]       = { 0xE2, 0x99, 0xA3, 0};
-char szHEART[]      = { 0xE2, 0x99, 0xA5, 0};
-char szSPADE[]      = { 0xE2, 0x99, 0xA0, 0};
+unsigned char szDIAMOND[]    = { 0xE2, 0x99, 0xA6, 0};
+unsigned char szCLUB[]       = { 0xE2, 0x99, 0xA3, 0};
+unsigned char szHEART[]      = { 0xE2, 0x99, 0xA5, 0};
+unsigned char szSPADE[]      = { 0xE2, 0x99, 0xA0, 0};
 
-char szBasic[][16]    =
+unsigned char szBasic[][16]    =
 {
     {0xE6, 0x97, 0xA0, 0xE6, 0x95, 0x88, 0xE5, 0x8D, 0xA1, 0xE7, 0x89, 0x8C, 0},
     {0xE6, 0x9D, 0x80, 0},
@@ -26,7 +26,7 @@ char szBasic[][16]    =
     {0xE9, 0x9B, 0xB7, 0xE6, 0x9D, 0x80, 0}
 };
 
-char szSpecial[][16]    =
+unsigned char szSpecial[][16]    =
 {
     {0xE6, 0x97, 0xA0, 0xE6, 0x95, 0x88, 0xE5, 0x8D, 0xA1, 0xE7, 0x89, 0x8C, 0},
     {0xE6, 0x97, 0xA0, 0xE6, 0x87, 0x88, 0xE5, 0x8F, 0xAF, 0xE5, 0x87, 0xBB, 0},
@@ -46,7 +46,7 @@ char szSpecial[][16]    =
     {0xE5, 0x85, 0xB5, 0xE7, 0xB2, 0xAE, 0xE5, 0xAF, 0xB8, 0xE6, 0x96, 0xAD, 0}
 };
 
-char szEquipment[][16]  =
+unsigned char szEquipment[][16]  =
 {
     {0xE6, 0x97, 0xA0, 0xE6, 0x95, 0x88, 0xE5, 0x8D, 0xA1, 0xE7, 0x89, 0x8C, 0},
     {0xE7, 0x88, 0xAA, 0xE9, 0xBB, 0x84, 0xE9, 0xA3, 0x9E, 0xE7, 0x94, 0xB5, 0},
@@ -73,7 +73,7 @@ char szEquipment[][16]  =
     {0xE5, 0x8F, 0xA4, 0xE9, 0x94, 0xAD, 0xE5, 0x88, 0x80, 0}
 };
 
-char szRank[][3]    =
+unsigned char szRank[][3]    =
 {
     "X", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"
 };
@@ -294,12 +294,8 @@ int Card_InitSet(int32_t cards[], int extension)
     
     if (cards != NULL)
     {
-        /* do init here */
         for (i = 0; i < ret; i++)
-        {
             cards[i] = Card_Make(TotalCardSet[i][0], TotalCardSet[i][1], TotalCardSet[i][2], TotalCardSet[i][3], TotalCardSet[i][4]);
-            Card_Print(cards[i]); printf("\n");
-        }
     }
     
     return ret;
@@ -322,7 +318,7 @@ int Card_ToString(int32_t card, char str[])
     
     const char *name = Card_GetNameString(card);
     const char *suit = Card_GetSuitString(card);
-    const char *rank = szRank[CARD_RANK(card)];
+    const char *rank = (char *)szRank[CARD_RANK(card)];
     
     length = (int)strlen(name);
     length += (int)strlen(suit);
@@ -356,17 +352,17 @@ const char* Card_GetNameString(int32_t card)
     {
         case CATEGORY_BASIC:
             if (attribute != 0)
-                ret = szBasic[CARD_GET_ID(card) + attribute + 3];
+                ret = (char *)szBasic[CARD_GET_ID(card) + attribute + 3];
             else
-                ret = szBasic[CARD_GET_ID(card)];
+                ret = (char *)szBasic[CARD_GET_ID(card)];
             break;
             
         case CATEGORY_EQUIPMENT:
-            ret = szEquipment[CARD_GET_ID(card)];
+            ret = (char *)szEquipment[CARD_GET_ID(card)];
             break;
             
         case CATEGORY_SPECIAL:
-            ret = szSpecial[CARD_GET_ID(card)];
+            ret = (char *)szSpecial[CARD_GET_ID(card)];
             break;
             
         default:
@@ -384,19 +380,19 @@ const char* Card_GetSuitString(int32_t card)
     switch (suit)
     {
         case SUIT_CLUB:
-            ret = szCLUB;
+            ret = (char *)szCLUB;
             break;
         
         case SUIT_DIAMOND:
-            ret = szDIAMOND;
+            ret = (char *)szDIAMOND;
             break;
             
         case SUIT_HEART:
-            ret = szHEART;
+            ret = (char *)szHEART;
             break;
             
         case SUIT_SPADE:
-            ret = szSPADE;
+            ret = (char *)szSPADE;
             break;
             
         default:
@@ -412,10 +408,18 @@ const char* Card_GetSuitString(int32_t card)
  * ************************************************************
  */
 
-card_array_t* CardArray_Create(void)
+card_array_t* CardArray_CreateEmpty(void)
 {
     card_array_t *ret = NULL;
     ret = (card_array_t *)malloc(sizeof(card_array_t));
+    
+    return ret;
+}
+
+card_array_t* CardArray_CreateSet(int extension)
+{
+    card_array_t *ret = CardArray_CreateEmpty();
+    ret->length = Card_InitSet(ret->cards, extension);
     
     return ret;
 }
@@ -463,6 +467,7 @@ int32_t CardArray_PopFront(card_array_t *arr)
     card = arr->cards[0];
     memmove(arr->cards, &arr->cards[1], sizeof(int32_t) * arr->length);
     arr->length--;
+    arr->cards[arr->length] = 0;
     
     return card;
 }
@@ -474,9 +479,51 @@ int32_t CardArray_PopBack(card_array_t *arr)
         return -1;
     
     card = arr->cards[arr->length-1];
+    arr->cards[arr->length-1] = 0;
     arr->length--;
     
     return card;
+}
+
+int32_t CardArray_Insert(card_array_t *arr, int index, int32_t card)
+{
+    if (arr->length >= CARDS_COUNT_TOTAL || index > arr->length)
+        return -1;
+    
+    memmove(&arr->cards[index+1], &arr->cards[index], sizeof(int32_t) * (arr->length - index));
+    arr->cards[index] = card;
+    arr->length++;
+    
+    return card;
+}
+
+int32_t CardArray_Remove(card_array_t *arr, int index)
+{
+    int32_t card = 0;
+    
+    if (arr->length <= 0 || index >= arr->length)
+        return -1;
+    
+    card = arr->cards[index];
+    memmove(&arr->cards[index], &arr->cards[index+1], sizeof(int32_t) * (arr->length-1));
+    arr->length--;
+    
+    return card;
+}
+
+void CardArray_Copy(card_array_t *dst, card_array_t *src)
+{
+    memcpy(dst, src, sizeof(card_array_t));
+}
+
+void CardArray_InitFromArray(card_array_t *arr, int32_t cards[], int length)
+{
+    CardArray_Clear(arr);
+    if (length > CARDS_COUNT_TOTAL)
+        length = CARDS_COUNT_TOTAL;
+    
+    memcpy(arr->cards, cards, length);
+    arr->length = length;
 }
 
 int CardArray_Dump(card_array_t *arr, int32_t *buf)
@@ -487,4 +534,28 @@ int CardArray_Dump(card_array_t *arr, int32_t *buf)
         memcpy(buf, arr->cards, sizeof(int32_t) * arr->length);
     
     return length;
+}
+
+static int rand_set = 0;
+
+void shuffle(int32_t arr[], int len)
+{
+	int i = len, j;
+    uint16_t tmp = 0;
+    
+    if (rand_set == 0)
+        srand((int)time(NULL));
+	
+	while (--i > 0)
+	{
+		j = rand() % (i+1);
+        tmp = arr[j];
+        arr[j] = arr[i];
+        arr[i] = tmp;
+	}
+}
+
+void CardArray_Shuffle(card_array_t *arr)
+{
+    shuffle(arr->cards, arr->length);
 }

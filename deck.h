@@ -21,8 +21,8 @@
 
 typedef struct deck_t
 {
-    int     extension;
-    int32_t cards[CARDS_COUNT_TOTAL];
+    int             extension;
+    card_array_t    *cardStack;
     
 } deck_t;
 

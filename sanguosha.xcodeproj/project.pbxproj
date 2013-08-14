@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2EB8E8C217BBC2EE008D7765 /* memtracker.c in Sources */ = {isa = PBXBuildFile; fileRef = 2EB8E8C017BBC2EE008D7765 /* memtracker.c */; };
 		2EC3664417AFE42600D97B98 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 2EC3664317AFE42600D97B98 /* main.c */; };
 		2ED4833A17B8D29A0033E4BD /* deck.c in Sources */ = {isa = PBXBuildFile; fileRef = 2ED4833917B8D29A0033E4BD /* deck.c */; };
 		2ED4833C17B8D9390033E4BD /* card.c in Sources */ = {isa = PBXBuildFile; fileRef = 2ED4833B17B8D9390033E4BD /* card.c */; };
-		2EFED93E17BA345C00BDA5B8 /* memtracker.c in Sources */ = {isa = PBXBuildFile; fileRef = 2EFED93C17BA345C00BDA5B8 /* memtracker.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,13 +28,13 @@
 /* Begin PBXFileReference section */
 		2E2E16AE17B379B400B05F2F /* card.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = card.h; sourceTree = "<group>"; };
 		2E75B60217AFE3F4000CC7DF /* sanguosha */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sanguosha; sourceTree = BUILT_PRODUCTS_DIR; };
+		2EB8E8BF17BBC2EE008D7765 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = SOURCE_ROOT; };
+		2EB8E8C017BBC2EE008D7765 /* memtracker.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = memtracker.c; sourceTree = SOURCE_ROOT; };
+		2EB8E8C117BBC2EE008D7765 /* memtracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memtracker.h; sourceTree = SOURCE_ROOT; };
 		2EC3664317AFE42600D97B98 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		2ED4833817B8D1740033E4BD /* deck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = deck.h; sourceTree = "<group>"; };
 		2ED4833917B8D29A0033E4BD /* deck.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = deck.c; sourceTree = "<group>"; };
 		2ED4833B17B8D9390033E4BD /* card.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = card.c; sourceTree = "<group>"; };
-		2EFED93B17BA345C00BDA5B8 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
-		2EFED93C17BA345C00BDA5B8 /* memtracker.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = memtracker.c; sourceTree = "<group>"; };
-		2EFED93D17BA345C00BDA5B8 /* memtracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memtracker.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,9 +80,9 @@
 		2EFED93A17BA345C00BDA5B8 /* common */ = {
 			isa = PBXGroup;
 			children = (
-				2EFED93B17BA345C00BDA5B8 /* common.h */,
-				2EFED93D17BA345C00BDA5B8 /* memtracker.h */,
-				2EFED93C17BA345C00BDA5B8 /* memtracker.c */,
+				2EB8E8BF17BBC2EE008D7765 /* common.h */,
+				2EB8E8C117BBC2EE008D7765 /* memtracker.h */,
+				2EB8E8C017BBC2EE008D7765 /* memtracker.c */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -141,7 +141,7 @@
 				2EC3664417AFE42600D97B98 /* main.c in Sources */,
 				2ED4833A17B8D29A0033E4BD /* deck.c in Sources */,
 				2ED4833C17B8D9390033E4BD /* card.c in Sources */,
-				2EFED93E17BA345C00BDA5B8 /* memtracker.c in Sources */,
+				2EB8E8C217BBC2EE008D7765 /* memtracker.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

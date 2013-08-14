@@ -11,6 +11,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <time.h>
 
 #define KITSUNE_DEBUG
 #include "memtracker.h"

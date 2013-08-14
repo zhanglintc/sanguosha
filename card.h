@@ -163,16 +163,110 @@ typedef struct card_array_t
     
 } card_array_t;
 
-card_array_t* CardArray_Create(void);
+/**
+ *	@brief	Create a empty card array
+ *
+ *	@return	card_array_t
+ */
+card_array_t* CardArray_CreateEmpty(void);
+
+/**
+ *	@brief	Create a card array
+ *
+ *	@param 	extension 	0 : basic card set
+ *                      1 : extension card set
+ *
+ *	@return	card_array_t
+ */
+card_array_t* CardArray_CreateSet(int extension);
+
+/**
+ *	@brief	Clean a card array
+ *
+ *	@param 	arr 	the array to clean
+ */
 void CardArray_Clear(card_array_t *arr);
+
+/**
+ *	@brief	Free a card array
+ *
+ *	@param 	arr 	the array to free
+ */
 void CardArray_Destroy(card_array_t *arr);
 
+
+/**
+ *	@brief	Push a card into the front of the array
+ *
+ *	@param 	arr 	the array to push into
+ *	@param 	card 	the card to push
+ *
+ *	@return         -1 : the array is full
+ *                  card : push success
+ */
 int32_t CardArray_PushFront(card_array_t *arr, int32_t card);
+
+/**
+ *	@brief	Push a card into the rear of the array
+ *
+ *	@param 	arr 	the array to push into
+ *	@param 	card 	the card to push
+ *
+ *	@return         -1 : the array is full
+ *                  card : push success
+ */
 int32_t CardArray_PushBack(card_array_t *arr, int32_t card);
+
+/**
+ *	@brief	Pop a card from the front of the array
+ *
+ *	@param 	arr 	the array to pop
+ *
+ *	@return         -1 : the array is empty
+ *                  card : pop success
+ */
 int32_t CardArray_PopFront(card_array_t *arr);
+
+/**
+ *	@brief	Pop a card from the rear of the array
+ *
+ *	@param 	arr 	the array to pop
+ *
+ *	@return         -1 : the array is empty
+ *                  card : pop success
+ */
 int32_t CardArray_PopBack(card_array_t *arr);
 
+
+/**
+ *	@brief	Insert a card into the array
+ *
+ *	@param 	arr 	the array to insert to
+ *	@param 	index 	insert position
+ *	@param 	card 	the card to insert
+ *
+ *	@return         -1 : the index is invalid
+ *                  card : insert success
+ */
+int32_t CardArray_Insert(card_array_t *arr, int index, int32_t card);
+
+/**
+ *	@brief	Remove a card from the array
+ *
+ *	@param 	arr 	the array to remove the card from
+ *	@param 	index 	remove position
+ *
+ *	@return         -1 : the index is invalid
+ *                  card : remove success
+ */
+int32_t CardArray_Remove(card_array_t *arr, int index);
+
+
+void CardArray_Copy(card_array_t *dst, card_array_t *src);
+void CardArray_InitFromArray(card_array_t *arr, int32_t cards[], int length);
 int CardArray_Dump(card_array_t *arr, int32_t *buf);
+
+void CardArray_Shuffle(card_array_t *arr);
 
 /*
  * ************************************************************
@@ -180,15 +274,67 @@ int CardArray_Dump(card_array_t *arr, int32_t *buf);
  * ************************************************************
  */
 
+/**
+ *	@brief	Make a card
+ *
+ *	@param 	suit        the suit of the card
+ *	@param 	rank        the rank of the card
+ *	@param 	category 	the category of the card
+ *	@param 	attribute 	the attribute of the card
+ *	@param 	cid         the identity of the card
+ *
+ *	@return             card
+ */
 int32_t Card_Make(int32_t suit, int32_t rank, int32_t category, int32_t attribute, int32_t cid);
 
+
+/**
+ *	@brief	Initialize a card set
+ *
+ *	@param 	cards       the array to init with
+ *	@param 	extension   1 : use extension version
+ *                      0 : use standard version
+ *
+ *	@return             the number of cards initialized
+ */
 int Card_InitSet(int32_t cards[], int extension);
 
+
+/**
+ *	@brief	Print a card's name, suit and rank
+ *
+ *	@param 	card 	the card to print
+ */
 void Card_Print(int32_t card);
 
+
+/**
+ *	@brief	Convert a card to its description string
+ *
+ *	@param 	card 	the card to convert
+ *	@param 	str 	the buffer to save the string
+ *
+ *	@return         the size of the string, including '\0'
+ */
 int Card_ToString(int32_t card, char str[]);
 
+
+/**
+ *	@brief	Query a card's name
+ *
+ *	@param 	card 	the card to query
+ *
+ *	@return         the name string of the card
+ */
 const char* Card_GetNameString(int32_t card);
+
+/**
+ *	@brief	Query a card's suit
+ *
+ *	@param 	card 	the card to query
+ *
+ *	@return         the suit string of the card
+ */
 const char* Card_GetSuitString(int32_t card);
 
 #endif  /* CARD_H_ */

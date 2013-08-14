@@ -16,9 +16,15 @@ deck_t* Deck_Create(int extension)
     
     ret = (deck_t *)malloc(sizeof(deck_t));
     
-    memset(ret, 0, sizeof(deck_t));
-    
-    Card_InitSet(ret->cards, extension);
+    ret->cardStack = CardArray_CreateSet(extension);
     
     return ret;
+}
+
+void Deck_Destroy(deck_t *deck)
+{
+    CardArray_Destroy(deck->cardStack);
+    
+    free(deck);
+    deck = NULL;
 }

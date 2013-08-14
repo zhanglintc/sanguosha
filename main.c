@@ -33,19 +33,15 @@ void convert_chinese2unicode(char* str)
 int main(int argc, const char * argv[])
 {
     int i = 0;
-    int32_t cards[CARDS_COUNT_TOTAL];
+    card_array_t *arr = CardArray_CreateSet(1);
+    CardArray_Shuffle(arr);
     
-    memset(cards, 0, sizeof(int) * CARDS_COUNT_TOTAL);
-    
-    Card_InitSet(cards, 1);
-    
-    for (i = 0; i < 200; i++)
+    for (i = 0; i < arr->length; i++)
     {
-        if (cards[i] == 0)
-            break;
+        Card_Print(arr->cards[i]); printf("\n");
     }
     
-    printf("Total cards:%d\n", i);
+    CardArray_Destroy(arr);
     
     memtrack_list_allocations();
     
