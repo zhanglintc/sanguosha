@@ -6,9 +6,7 @@
  *  Copyright (c) 2013 Master.G. All rights reserved.
  */
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include "common.h"
 
 #include "card.h"
 
@@ -292,7 +290,7 @@ int Card_InitSet(int32_t cards[], int extension)
     int ret = 0;
     int i = 0;
     
-    ret = extension ? CONSTANT_CARDS_COUNT_TOTAL : CONSTANT_CARDS_COUNT_BASIC;
+    ret = extension ? CARDS_COUNT_TOTAL : CARDS_COUNT_BASIC;
     
     if (cards != NULL)
     {
@@ -406,4 +404,87 @@ const char* Card_GetSuitString(int32_t card)
     }
     
     return ret;
+}
+
+/*
+ * ************************************************************
+ * card_array_t
+ * ************************************************************
+ */
+
+card_array_t* CardArray_Create(void)
+{
+    card_array_t *ret = NULL;
+    ret = (card_array_t *)malloc(sizeof(card_array_t));
+    
+    return ret;
+}
+
+void CardArray_Clear(card_array_t *arr)
+{
+    memset(arr, 0, sizeof(card_array_t));
+}
+
+void CardArray_Destroy(card_array_t *arr)
+{
+    free(arr);
+}
+
+int32_t CardArray_PushFront(card_array_t *arr, int32_t card)
+{
+    if (arr->length >= CARDS_COUNT_TOTAL)
+        return -1;
+    
+    memmove(&arr->cards[1], arr->cards, sizeof(int32_t) * arr->length);
+    
+    arr->cards[0] = card;
+    arr->length++;
+    
+    return card;
+}
+
+int32_t CardArray_PushBack(card_array_t *arr, int32_t card)
+{
+    if (arr->length >= CARDS_COUNT_TOTAL)
+        return -1;
+    
+    arr->cards[arr->length] = card;
+    arr->length++;
+    
+    return card;
+}
+
+int32_t CardArray_PopFront(card_array_t *arr)
+{
+    int32_t card = 0;
+    if (arr->length <= 0)
+        return -1;
+
+    card = arr->cards[0];
+    memmove(arr->cards, &arr->cards[1], sizeof(int32_t) * arr->length);
+    arr->length--;
+    
+    return card;
+}
+
+int32_t CardArray_PopBack(card_array_t *arr)
+{
+    int32_t card = 0;
+    if (arr->length <= 0)
+        return -1;
+    
+    card = arr->cards[arr->length-1];
+    arr->length--;
+    
+    return card;
+}
+
+int CardArray_Dump(card_array_t *arr, int32_t *buf)
+{
+    int length = arr->length;
+    
+    if (buf != NULL)
+        memcpy(buf, arr->cards, sizeof(int32_t) * arr->length);
+    
+    return length;
 }

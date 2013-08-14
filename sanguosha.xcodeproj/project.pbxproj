@@ -81,8 +81,8 @@
 			isa = PBXGroup;
 			children = (
 				2EFED93B17BA345C00BDA5B8 /* common.h */,
-				2EFED93C17BA345C00BDA5B8 /* memtracker.c */,
 				2EFED93D17BA345C00BDA5B8 /* memtracker.h */,
+				2EFED93C17BA345C00BDA5B8 /* memtracker.c */,
 			);
 			path = common;
 			sourceTree = "<group>";

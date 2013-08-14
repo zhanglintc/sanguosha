@@ -33,9 +33,9 @@ void convert_chinese2unicode(char* str)
 int main(int argc, const char * argv[])
 {
     int i = 0;
-    int32_t cards[CONSTANT_CARDS_COUNT_TOTAL];
+    int32_t cards[CARDS_COUNT_TOTAL];
     
-    memset(cards, 0, sizeof(int) * CONSTANT_CARDS_COUNT_TOTAL);
+    memset(cards, 0, sizeof(int) * CARDS_COUNT_TOTAL);
     
     Card_InitSet(cards, 1);
     

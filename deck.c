@@ -18,5 +18,7 @@ deck_t* Deck_Create(int extension)
     
     memset(ret, 0, sizeof(deck_t));
     
+    Card_InitSet(ret->cards, extension);
+    
     return ret;
 }

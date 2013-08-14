@@ -147,10 +147,38 @@
 
 /* constant definitions */
 
-#define CONSTANT_CARDS_COUNT_BASIC      108
-#define CONSTANT_CARDS_COUNT_EXTENSION  52
-#define CONSTANT_CARDS_COUNT_TOTAL      CONSTANT_CARDS_COUNT_BASIC + \
-                                        CONSTANT_CARDS_COUNT_EXTENSION
+#define CARDS_COUNT_BASIC      108
+#define CARDS_COUNT_EXTENSION  52
+#define CARDS_COUNT_TOTAL      CARDS_COUNT_BASIC + CARDS_COUNT_EXTENSION
+
+/*
+ * ************************************************************
+ * card_array_t
+ * ************************************************************
+ */
+typedef struct card_array_t
+{
+    int32_t cards[CARDS_COUNT_TOTAL];
+    int     length;
+    
+} card_array_t;
+
+card_array_t* CardArray_Create(void);
+void CardArray_Clear(card_array_t *arr);
+void CardArray_Destroy(card_array_t *arr);
+
+int32_t CardArray_PushFront(card_array_t *arr, int32_t card);
+int32_t CardArray_PushBack(card_array_t *arr, int32_t card);
+int32_t CardArray_PopFront(card_array_t *arr);
+int32_t CardArray_PopBack(card_array_t *arr);
+
+int CardArray_Dump(card_array_t *arr, int32_t *buf);
+
+/*
+ * ************************************************************
+ * Card Set
+ * ************************************************************
+ */
 
 int32_t Card_Make(int32_t suit, int32_t rank, int32_t category, int32_t attribute, int32_t cid);
 

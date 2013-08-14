@@ -22,7 +22,7 @@
 typedef struct deck_t
 {
     int     extension;
-    int32_t cards[CONSTANT_CARDS_COUNT_TOTAL];
+    int32_t cards[CARDS_COUNT_TOTAL];
     
 } deck_t;
 
