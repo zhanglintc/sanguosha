@@ -23,6 +23,7 @@ typedef struct deck_t
 {
     int             extension;
     card_array_t    *cardStack;
+    card_array_t    *usedCards;
     
 } deck_t;
 
@@ -43,6 +44,27 @@ deck_t* Deck_Create(int extension);
  *	@param 	deck 	
  */
 void Deck_Destroy(deck_t *deck);
+
+/**
+ *	@brief	deal a card from card stack
+ *
+ *	@param 	deck 	the deck
+ *
+ *	@return -1 : the stack is empty
+ *          card : the card that is dealed
+ */
+int32_t Deck_DealCard(deck_t *deck);
+
+/**
+ *	@brief	recycle a card
+ *
+ *	@param 	deck 	the deck
+ *
+ *	@return	-1 : the recycle stack is full
+ *          card : the card that is recycled
+ */
+int32_t Deck_RecycleCard(deck_t *deck, int32_t card);
+
 
 
 #endif /* DECK_H_ */
