@@ -6,9 +6,10 @@
  *  Copyright (c) 2013 Master.G. All rights reserved.
  */
 
-#include "common.h"
+#include <unistd.h>
 
-#include "card.h"
+#include "common.h"
+#include "deck.h"
 
 void convert_chinese2unicode(char* str)
 {
@@ -30,7 +31,7 @@ void convert_chinese2unicode(char* str)
     printf("%s\n", c);
 }
 
-int main(int argc, const char * argv[])
+void test_CardArray()
 {
     int i = 0;
     card_array_t *arr = CardArray_CreateSet(1);
@@ -42,6 +43,38 @@ int main(int argc, const char * argv[])
     }
     
     CardArray_Destroy(arr);
+}
+
+void test_Deck()
+{
+    int i = 0;
+    int32_t card = 0;
+    char buffer[256];
+    deck_t *deck = Deck_Create(1);
+    
+    while ( i < 65535 )
+    {
+        i++;
+        
+        card = Deck_DealCard(deck);
+        if (card == -1)
+        {
+            Deck_NewRound(deck);
+        }
+        else
+        {
+            Card_ToString(card, buffer);
+            Deck_RecycleCard(deck, card);
+            printf("%s\n", buffer);
+        }
+    }
+    
+    Deck_Destroy(deck);
+}
+
+int main(int argc, const char * argv[])
+{
+    test_Deck();
     
     memtrack_list_allocations();
     

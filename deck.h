@@ -46,6 +46,14 @@ deck_t* Deck_Create(int extension);
 void Deck_Destroy(deck_t *deck);
 
 /**
+ *	@brief	reset a deck to init state
+ *
+ *	@param 	deck
+ */
+void Deck_ResetAll(deck_t *deck);
+
+
+/**
  *	@brief	deal a card from card stack
  *
  *	@param 	deck 	the deck
@@ -54,6 +62,17 @@ void Deck_Destroy(deck_t *deck);
  *          card : the card that is dealed
  */
 int32_t Deck_DealCard(deck_t *deck);
+
+/**
+ *	@brief	peek the top of the card array
+ *
+ *	@param 	deck
+ *
+ *	@return	-1 : the stack is empty
+ *          card : the card that is peeked
+ */
+int32_t Deck_PeekCard(deck_t *deck);
+
 
 /**
  *	@brief	recycle a card
@@ -65,6 +84,12 @@ int32_t Deck_DealCard(deck_t *deck);
  */
 int32_t Deck_RecycleCard(deck_t *deck, int32_t card);
 
+/**
+ *	@brief	recycle used card and shuffle
+ *
+ *	@param 	deck
+ */
+void Deck_NewRound(deck_t *deck);
 
 
 #endif /* DECK_H_ */

@@ -16,6 +16,7 @@ deck_t* Deck_Create(int extension)
     
     ret = (deck_t *)malloc(sizeof(deck_t));
     
+    ret->extension = extension;
     ret->cardStack = CardArray_CreateSet(extension);
     ret->usedCards = CardArray_CreateEmpty();
     
@@ -33,12 +34,32 @@ void Deck_Destroy(deck_t *deck)
     deck = NULL;
 }
 
+void Deck_ResetAll(deck_t *deck)
+{
+    deck->cardStack->length = Card_InitSet(deck->cardStack->cards, deck->extension);
+    CardArray_Clear(deck->usedCards);
+}
+
 int32_t Deck_DealCard(deck_t *deck)
 {
     return CardArray_PopBack(deck->cardStack);
 }
 
+int32_t Deck_PeekCard(deck_t *deck)
+{
+    if (deck->cardStack->length <= 0)
+        return -1;
+    
+    return deck->cardStack->cards[0];
+}
+
 int32_t Deck_RecycleCard(deck_t *deck, int32_t card)
 {
     return CardArray_PushBack(deck->usedCards, card);
+}
+
+void Deck_NewRound(deck_t *deck)
+{
+    CardArray_Copy(deck->cardStack, deck->usedCards);
+    CardArray_Clear(deck->usedCards);
 }

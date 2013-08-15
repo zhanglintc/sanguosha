@@ -541,7 +541,7 @@ static int rand_set = 0;
 void shuffle(int32_t arr[], int len)
 {
 	int i = len, j;
-    uint16_t tmp = 0;
+    uint32_t tmp = 0;
     
     if (rand_set == 0)
         srand((int)time(NULL));
