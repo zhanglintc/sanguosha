@@ -11,7 +11,7 @@
 		2EC3664417AFE42600D97B98 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 2EC3664317AFE42600D97B98 /* main.c */; };
 		2ED4833A17B8D29A0033E4BD /* deck.c in Sources */ = {isa = PBXBuildFile; fileRef = 2ED4833917B8D29A0033E4BD /* deck.c */; };
 		2ED4833C17B8D9390033E4BD /* card.c in Sources */ = {isa = PBXBuildFile; fileRef = 2ED4833B17B8D9390033E4BD /* card.c */; };
-		2EE99D8E17BDD1B5007CB940 /* hero.c in Sources */ = {isa = PBXBuildFile; fileRef = 2EE99D8D17BDD1B5007CB940 /* hero.c */; };
+		2EE99D8E17BDD1B5007CB940 /* seat.c in Sources */ = {isa = PBXBuildFile; fileRef = 2EE99D8D17BDD1B5007CB940 /* seat.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,8 +36,8 @@
 		2ED4833817B8D1740033E4BD /* deck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = deck.h; sourceTree = "<group>"; };
 		2ED4833917B8D29A0033E4BD /* deck.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = deck.c; sourceTree = "<group>"; };
 		2ED4833B17B8D9390033E4BD /* card.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = card.c; sourceTree = "<group>"; };
-		2EE99D8C17BDCD4D007CB940 /* hero.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hero.h; sourceTree = "<group>"; };
-		2EE99D8D17BDD1B5007CB940 /* hero.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hero.c; sourceTree = "<group>"; };
+		2EE99D8C17BDCD4D007CB940 /* seat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = seat.h; sourceTree = "<group>"; };
+		2EE99D8D17BDD1B5007CB940 /* seat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = seat.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,8 +59,8 @@
 				2ED4833917B8D29A0033E4BD /* deck.c */,
 				2E2E16AE17B379B400B05F2F /* card.h */,
 				2ED4833B17B8D9390033E4BD /* card.c */,
-				2EE99D8C17BDCD4D007CB940 /* hero.h */,
-				2EE99D8D17BDD1B5007CB940 /* hero.c */,
+				2EE99D8C17BDCD4D007CB940 /* seat.h */,
+				2EE99D8D17BDD1B5007CB940 /* seat.c */,
 				2EC3664317AFE42600D97B98 /* main.c */,
 				2E75B60417AFE3F4000CC7DF /* sanguosha */,
 				2E75B60317AFE3F4000CC7DF /* Products */,
@@ -147,7 +147,7 @@
 				2ED4833A17B8D29A0033E4BD /* deck.c in Sources */,
 				2ED4833C17B8D9390033E4BD /* card.c in Sources */,
 				2EB8E8C217BBC2EE008D7765 /* memtracker.c in Sources */,
-				2EE99D8E17BDD1B5007CB940 /* hero.c in Sources */,
+				2EE99D8E17BDD1B5007CB940 /* seat.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

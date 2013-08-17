@@ -9,7 +9,7 @@
 #ifndef CARD_H_
 #define CARD_H_
 
-#include <stdint.h>
+#include "common.h"
 
 /*
  *  +--------+--------+--------+--------+
