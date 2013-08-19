@@ -6,8 +6,6 @@
  *  Copyright (c) 2013 Master.G. All rights reserved.
  */
 
-#include <unistd.h>
-
 #include "common.h"
 #include "deck.h"
 
@@ -35,7 +33,7 @@ void test_CardArray()
 {
     int i = 0;
     card_array_t *arr = CardArray_CreateSet(1);
-    CardArray_Shuffle(arr);
+    CardArray_Shuffle(arr, NULL);
     
     for (i = 0; i < arr->length; i++)
     {

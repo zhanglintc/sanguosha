@@ -14,6 +14,7 @@
 #include <stdint.h>
 #include <time.h>
 
+#include "mt19937.h"
 #define KITSUNE_DEBUG
 #include "memtracker.h"
 

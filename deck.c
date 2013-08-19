@@ -20,7 +20,7 @@ deck_t* Deck_Create(int extension)
     ret->cardStack = CardArray_CreateSet(extension);
     ret->usedCards = CardArray_CreateEmpty();
     
-    CardArray_Shuffle(ret->cardStack);
+    CardArray_Shuffle(ret->cardStack, NULL);
     
     return ret;
 }
