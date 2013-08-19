@@ -11,23 +11,35 @@
 
 #include "common.h"
 #include "seat.h"
+#include "deck.h"
 
 #define MAXIMUM_SEAT_COUNT 8
 
+typedef enum
+{
+    GameMode_Normal5 = 0,
+    GameMode_Normal8,
+    GameMode_Military5,
+    GameMode_Military8
+    
+} GameMode;
+
 typedef struct game_t
 {
-    int         extension;
+    int         mode;
     
     int         seatCapacity;
     int         seatCount;
     
     mt19937_t   mtRandom;
     
+    deck_t      *deck;
+    
     seat_t      *seats[MAXIMUM_SEAT_COUNT];
     
 } game_t;
 
-game_t *Game_Create(int playernum, int extension);
+game_t *Game_Create(int mode);
 
 void Game_Destroy(game_t *game);
 

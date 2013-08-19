@@ -50,7 +50,7 @@ typedef struct seat_t
     
 }seat_t;
 
-seat_t *Seat_Ceate(void);
+seat_t *Seat_Create(void);
 
 void Seat_Destroy(seat_t *seat);
 

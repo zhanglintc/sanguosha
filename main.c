@@ -8,6 +8,7 @@
 
 #include "common.h"
 #include "deck.h"
+#include "game.h"
 
 void convert_chinese2unicode(char* str)
 {
@@ -48,9 +49,12 @@ void test_Deck()
     int i = 0;
     int32_t card = 0;
     char buffer[256];
+    mt19937_t mt;
+    Random_Init(&mt, 0);
     deck_t *deck = Deck_Create(1);
+    Deck_Shuffle(deck, &mt);
     
-    while ( i < 65535 )
+    while ( i < 1024 )
     {
         i++;
         
@@ -70,9 +74,16 @@ void test_Deck()
     Deck_Destroy(deck);
 }
 
+void test_Game()
+{
+    game_t *game = Game_Create(GameMode_Military8);
+    
+    Game_Destroy(game);
+}
+
 int main(int argc, const char * argv[])
 {
-    test_Deck();
+    test_Game();
     
     memtrack_list_allocations();
     

@@ -536,15 +536,15 @@ int CardArray_Dump(card_array_t *arr, int32_t *buf)
     return length;
 }
 
-void shuffle(int32_t arr[], int len, randfunc rf)
+void shuffle(int32_t arr[], int len, mt19937_t *mt)
 {
 	int i = len, j;
     uint32_t tmp = 0;
 	
 	while (--i > 0)
 	{
-        if (rf != NULL)
-            j = rf() % (i+1);
+        if (mt != NULL)
+            j = Random_int32(mt) % (i+1);
         else
             j = rand() % (i+1);
 		
@@ -554,7 +554,7 @@ void shuffle(int32_t arr[], int len, randfunc rf)
 	}
 }
 
-void CardArray_Shuffle(card_array_t *arr, randfunc rf)
+void CardArray_Shuffle(card_array_t *arr, mt19937_t *mt)
 {
-    shuffle(arr->cards, arr->length, rf);
+    shuffle(arr->cards, arr->length, mt);
 }

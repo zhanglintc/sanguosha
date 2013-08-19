@@ -20,8 +20,6 @@ typedef struct mt19937_t
     
 } mt19937_t;
 
-typedef uint32_t (*randfunc)();
-
 void Random_Init(mt19937_t *context, uint32_t seed);
 void Random_InitWithArray(mt19937_t *context, uint32_t array[], int length);
 uint32_t Random_uint32(mt19937_t *context);

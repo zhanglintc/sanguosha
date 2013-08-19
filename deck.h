@@ -52,6 +52,14 @@ void Deck_Destroy(deck_t *deck);
  */
 void Deck_ResetAll(deck_t *deck);
 
+/**
+ *	@brief	shuffle cards in the stack
+ *
+ *	@param 	deck 	deck
+ *	@param 	mt      mt19937 context
+ */
+void Deck_Shuffle(deck_t *deck, mt19937_t *mt);
+
 
 /**
  *	@brief	deal a card from card stack

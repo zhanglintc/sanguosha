@@ -266,7 +266,7 @@ void CardArray_Copy(card_array_t *dst, card_array_t *src);
 void CardArray_InitFromArray(card_array_t *arr, int32_t cards[], int length);
 int CardArray_Dump(card_array_t *arr, int32_t *buf);
 
-void CardArray_Shuffle(card_array_t *arr, randfunc rf);
+void CardArray_Shuffle(card_array_t *arr, mt19937_t *mt);
 
 /*
  * ************************************************************

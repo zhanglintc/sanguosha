@@ -20,8 +20,6 @@ deck_t* Deck_Create(int extension)
     ret->cardStack = CardArray_CreateSet(extension);
     ret->usedCards = CardArray_CreateEmpty();
     
-    CardArray_Shuffle(ret->cardStack, NULL);
-    
     return ret;
 }
 
@@ -38,6 +36,11 @@ void Deck_ResetAll(deck_t *deck)
 {
     deck->cardStack->length = Card_InitSet(deck->cardStack->cards, deck->extension);
     CardArray_Clear(deck->usedCards);
+}
+
+void Deck_Shuffle(deck_t *deck, mt19937_t *mt)
+{
+    CardArray_Shuffle(deck->cardStack, mt);
 }
 
 int32_t Deck_DealCard(deck_t *deck)
