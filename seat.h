@@ -10,6 +10,7 @@
 #define SEAT_H_
 
 #include "card.h"
+#include "event.h"
 
 #define IDENTITY_LORD       1
 #define IDENTITY_GUARD      2
@@ -49,6 +50,8 @@ typedef enum
     
 } PlayerStatus;
 
+typedef void (*event_handler)(void *game, void* seat, situation_t *situation);
+
 typedef struct seat_t
 {
     int             identity;
@@ -67,6 +70,8 @@ typedef struct seat_t
     uint32_t        delaySpecialCards[3];
     uint32_t        delaySpecialTypes[3];
     card_array_t    *hands;
+    
+    event_handler   eventHandlers[EVENT_COUNT];
     
 }seat_t;
 

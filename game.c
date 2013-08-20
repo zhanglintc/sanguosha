@@ -56,6 +56,8 @@ game_t *Game_Create(int mode, int seed)
             break;
     }
     
+    game->stage = GameStage_Begin;
+    
     /* init deck */
     game->deck = Deck_Create(extension);
     CardArray_Shuffle(game->deck->cardStack, &game->mtRandom);
@@ -96,4 +98,44 @@ void Game_Destroy(game_t *game)
     Deck_Destroy(game->deck);
     
     free(game);
+}
+
+void Game_Start(game_t *game)
+{
+    int i = 0;
+    seat_t *seat = NULL;
+    
+    for (i = 0; i < game->seatCapacity; i++)
+    {
+        seat = game->seats[i];
+        if (seat != NULL)
+        {
+            if (seat->eventHandlers[EVENT_GAME_START] != NULL)
+            {
+                seat->eventHandlers[EVENT_GAME_START](game, seat, NULL);
+            }
+        }
+    }
+}
+
+void Game_Running(game_t *game)
+{
+    
+}
+
+void Game_Execute(game_t *game)
+{
+    switch (game->stage)
+    {
+        case GameStage_Begin:
+            Game_Start(game);
+            break;
+            
+        case GameStage_Running:
+            Game_Running(game);
+            break;
+            
+        default:
+            break;
+    }
 }

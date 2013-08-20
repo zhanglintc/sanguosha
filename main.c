@@ -78,6 +78,8 @@ void test_Game()
 {
     game_t *game = Game_Create(GameMode_Military8, 1);
     
+    Game_Execute(game);
+    
     Game_Destroy(game);
 }
 

@@ -24,9 +24,19 @@ typedef enum
     
 } GameMode;
 
-typedef struct game_t
+typedef enum
+{
+    GameStage_Begin     = 0,
+    GameStage_Running,
+    GameStage_End
+    
+} GameStage;
+
+typedef struct game_s
 {
     int         mode;
+    
+    int         stage;
     
     int         seatCapacity;
     int         seatCount;
@@ -42,5 +52,7 @@ typedef struct game_t
 game_t *Game_Create(int mode, int seed);
 
 void Game_Destroy(game_t *game);
+
+void Game_Execute(game_t *game);
 
 #endif /* GAME_H_ */

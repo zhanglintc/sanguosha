@@ -38,6 +38,14 @@ seat_t *Seat_Create(void)
     
     ret->hands = CardArray_CreateEmpty();
     
+    ret->eventHandlers[EVENT_GAME_START] = StandardAI_Handler_GameStart;
+    ret->eventHandlers[EVENT_TURN_BEGIN] = StandardAI_Handler_TurnBegin;
+    ret->eventHandlers[EVENT_TURN_DETERMINE] = StandardAI_Handler_TurnDetermine;
+    ret->eventHandlers[EVENT_TURN_DEAL] = StandardAI_Handler_TurnDeal;
+    ret->eventHandlers[EVENT_TURN_PLAY] = StandardAI_Handler_TurnPlay;
+    ret->eventHandlers[EVENT_TURN_DROP] = StandardAI_Handler_TurnDrop;
+    ret->eventHandlers[EVENT_TURN_END] = StandardAI_Handler_TurnEnd;
+    
     return ret;
 }
 
