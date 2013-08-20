@@ -262,12 +262,37 @@ int32_t CardArray_Insert(card_array_t *arr, int index, int32_t card);
 int32_t CardArray_Remove(card_array_t *arr, int index);
 
 
+/**
+ *	@brief	Copy a card set
+ *
+ *	@param 	dst 	destination card set
+ *	@param 	src 	source card set
+ */
 void CardArray_Copy(card_array_t *dst, card_array_t *src);
+
+/**
+ *	@brief	initialize a card set from raw array
+ *
+ *	@param 	arr 	the card set to initialize
+ *	@param 	cards 	the card array
+ *	@param 	length 	the length of the array
+ */
 void CardArray_InitFromArray(card_array_t *arr, int32_t cards[], int length);
+
+/**
+ *	@brief	dump a card set to array
+ *
+ *	@param 	arr 	the card set to dump
+ *	@param 	buf 	the array to dump into
+ *
+ *	@return         the length of the card set
+ */
 int CardArray_Dump(card_array_t *arr, int32_t *buf);
 
-void CardArray_Shuffle(card_array_t *arr, mt19937_t *mt);
 
+void shuffle(int32_t arr[], int len, mt19937_t *mt);
+
+void CardArray_Shuffle(card_array_t *arr, mt19937_t *mt);
 /*
  * ************************************************************
  * Card Set

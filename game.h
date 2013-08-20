@@ -39,7 +39,7 @@ typedef struct game_t
     
 } game_t;
 
-game_t *Game_Create(int mode);
+game_t *Game_Create(int mode, int seed);
 
 void Game_Destroy(game_t *game);
 

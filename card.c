@@ -412,6 +412,7 @@ card_array_t* CardArray_CreateEmpty(void)
 {
     card_array_t *ret = NULL;
     ret = (card_array_t *)malloc(sizeof(card_array_t));
+    memset(ret, 0, sizeof(card_array_t));
     
     return ret;
 }
