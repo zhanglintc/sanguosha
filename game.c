@@ -100,6 +100,50 @@ void Game_Destroy(game_t *game)
     free(game);
 }
 
+/*
+ * ************************************************************
+ * game play
+ * ************************************************************
+ */
+
+int Game_DealCard(game_t *game, int count, card_array_t *array)
+{
+    int i = 0;
+    
+    if (game->deck->cardStack->length < count)
+    {
+        Deck_NewRound(game->deck);
+        CardArray_Shuffle(game->deck->cardStack, &game->mtRandom);
+        
+        if (game->deck->cardStack->length < count)
+        {
+            /* no enough card, game tied */
+            game->stage = GameStage_End;
+            return -1;
+        }
+        else
+        {
+            for (i = 0; i < count; i++)
+                CardArray_PushBack(array, CardArray_PopFront(game->deck->cardStack));
+        }
+    }
+    
+    return count;
+}
+
+int Game_QueryImpeccable(game_t *game, seat_t *seat)
+{
+    int i = 0;
+    
+    for (i = 0; i < game->seatCapacity; i++)
+    {
+        if (game->seats[i] == seat)
+            break;
+    }
+    
+    return 0;
+}
+
 void Game_Start(game_t *game)
 {
     int i = 0;
@@ -120,7 +164,39 @@ void Game_Start(game_t *game)
 
 void Game_Running(game_t *game)
 {
+    int i = 0;
+    int j = 0;
+    seat_t *seat = NULL;
     
+    while (game->stage != GameStage_End)
+    {
+        for (i = 0; i < game->seatCapacity; i++)
+        {
+            seat = game->seats[i];
+            if (seat != NULL && !seat->dead)
+            {
+                /* process flip */
+                if (seat->status & PlayerStatus_Flipped)
+                {
+                    seat->status &= ~PlayerStatus_Flipped;
+                    continue;
+                }
+                
+                /* turn begin */
+                if (seat->eventHandlers[EVENT_TURN_BEGIN] != NULL)
+                    seat->eventHandlers[EVENT_TURN_BEGIN](game, seat, NULL);
+                
+                /* turn determine */
+                for (j = 2; j >= 0; j--)
+                {
+                    if (seat->delaySpecialTypes[j] != 0)
+                    {
+                        
+                    }
+                }
+            }
+        }
+    }
 }
 
 void Game_Execute(game_t *game)

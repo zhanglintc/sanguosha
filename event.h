@@ -20,6 +20,8 @@
 #define EVENT_TURN_DROP         6
 #define EVENT_TURN_END          7
 
+#define EVENT_QUERY_IMPECCABLE  8
+
 #define EVENT_COUNT             256
 
 typedef struct situation_t

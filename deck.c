@@ -63,6 +63,10 @@ int32_t Deck_RecycleCard(deck_t *deck, int32_t card)
 
 void Deck_NewRound(deck_t *deck)
 {
-    CardArray_Copy(deck->cardStack, deck->usedCards);
+    while (deck->usedCards->length > 0)
+    {
+        CardArray_PushBack(deck->cardStack, CardArray_PopBack(deck->usedCards));
+    }
+    
     CardArray_Clear(deck->usedCards);
 }

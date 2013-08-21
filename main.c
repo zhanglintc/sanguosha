@@ -76,7 +76,7 @@ void test_Deck()
 
 void test_Game()
 {
-    game_t *game = Game_Create(GameMode_Military8, 1);
+    game_t *game = Game_Create(GameMode_Military5, 1);
     
     Game_Execute(game);
     

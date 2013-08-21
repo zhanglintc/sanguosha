@@ -55,4 +55,14 @@ void Game_Destroy(game_t *game);
 
 void Game_Execute(game_t *game);
 
+/*
+ * ************************************************************
+ * game play
+ * ************************************************************
+ */
+
+int Game_DealCard(game_t *game, int count, card_array_t *array);
+
+int Game_QueryImpeccable(game_t *game, seat_t *seat);
+
 #endif /* GAME_H_ */
