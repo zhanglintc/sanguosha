@@ -37,6 +37,7 @@ void StandardAI_Handler_TurnDeal(void *game, void *seat, situation_t *situation)
 void StandardAI_Handler_TurnPlay(void *game, void *seat, situation_t *situation);
 void StandardAI_Handler_TurnDrop(void *game, void *seat, situation_t *situation);
 void StandardAI_Handler_TurnEnd(void *game, void *seat, situation_t *situation);
+void StandardAI_Handler_QueryImpeccable(void *game, void *seat, situation_t *situation);
 
 void GodZhugeAI_Handler_GameStart(void *game, void *seat, situation_t *situation);
 

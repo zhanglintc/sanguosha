@@ -45,6 +45,11 @@ void StandardAI_Handler_TurnEnd(void *game, void *seat, situation_t *situation)
     
 }
 
+void StandardAI_Handler_QueryImpeccable(void *game, void *seat, situation_t *situation)
+{
+    
+}
+
 void GodZhugeAI_Handler_GameStart(void *game, void *seat, situation_t *situation)
 {
     printf("祈星辰之力,佑我蜀汉!\n");

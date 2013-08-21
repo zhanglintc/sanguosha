@@ -85,6 +85,16 @@ void test_Game()
 
 int main(int argc, const char * argv[])
 {
+    int i = 3;
+    int j = 0;
+    int total = 8;
+    
+    for (j = 0; j < total; j++)
+    {
+        printf("%d\n", (i+j)%total);
+    }
+    
+    
     test_Game();
     
     memtrack_list_allocations();

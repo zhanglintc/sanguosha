@@ -131,9 +131,10 @@ int Game_DealCard(game_t *game, int count, card_array_t *array)
     return count;
 }
 
-int Game_QueryImpeccable(game_t *game, seat_t *seat)
+void Game_QueryImpeccable(game_t *game, seat_t *seat)
 {
     int i = 0;
+    int j = 0;
     
     for (i = 0; i < game->seatCapacity; i++)
     {
@@ -141,8 +142,23 @@ int Game_QueryImpeccable(game_t *game, seat_t *seat)
             break;
     }
     
-    return 0;
+    for (j = 0; j < game->seatCapacity; j++)
+    {
+        seat = game->seats[(i+j) % game->seatCapacity];
+        seat->eventHandlers[EVENT_QUERY_IMPECCABLE](game, seat, NULL);
+    }
 }
+
+void Game_SeatTryPlay(game_t *game, seat_t *seat, card_array_t *cards, int asCard)
+{
+    
+}
+
+/*
+ * ************************************************************
+ * game loop
+ * ************************************************************
+ */
 
 void Game_Start(game_t *game)
 {
@@ -153,12 +169,7 @@ void Game_Start(game_t *game)
     {
         seat = game->seats[i];
         if (seat != NULL)
-        {
-            if (seat->eventHandlers[EVENT_GAME_START] != NULL)
-            {
-                seat->eventHandlers[EVENT_GAME_START](game, seat, NULL);
-            }
-        }
+            seat->eventHandlers[EVENT_GAME_START](game, seat, NULL);
     }
 }
 

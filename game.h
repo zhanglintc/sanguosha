@@ -63,6 +63,14 @@ void Game_Execute(game_t *game);
 
 int Game_DealCard(game_t *game, int count, card_array_t *array);
 
-int Game_QueryImpeccable(game_t *game, seat_t *seat);
+void Game_QueryImpeccable(game_t *game, seat_t *seat);
+
+/*
+ * ************************************************************
+ * seat handler callback
+ * ************************************************************
+ */
+
+void Game_SeatTryPlay(game_t *game, seat_t *seat, card_array_t *cards, int asCard);
 
 #endif /* GAME_H_ */
