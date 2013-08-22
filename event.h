@@ -20,25 +20,41 @@
 #define EVENT_TURN_DROP         6
 #define EVENT_TURN_END          7
 
-#define EVENT_QUERY_IMPECCABLE  8
+#define EVENT_QUERY_CARD        8
 
 #define EVENT_COUNT             256
 
-typedef struct situation_t
+
+#define EXTRA_NONE              0
+#define EXTRA_REQUEST           1
+
+typedef struct event_context_t
 {
-    int event;
+    int     event;
+    void    *game;
+    void    *seat;
     
-} situation_t;
+    void    *extra;
+    
+} event_context_t;
 
-void StandardAI_Handler_GameStart(void *game, void *seat, situation_t *situation);
-void StandardAI_Handler_TurnBegin(void *game, void *seat, situation_t *situation);
-void StandardAI_Handler_TurnDetermine(void *game, void *seat, situation_t *situation);
-void StandardAI_Handler_TurnDeal(void *game, void *seat, situation_t *situation);
-void StandardAI_Handler_TurnPlay(void *game, void *seat, situation_t *situation);
-void StandardAI_Handler_TurnDrop(void *game, void *seat, situation_t *situation);
-void StandardAI_Handler_TurnEnd(void *game, void *seat, situation_t *situation);
-void StandardAI_Handler_QueryImpeccable(void *game, void *seat, situation_t *situation);
+typedef struct extra_request_t
+{
+    int         type;
+    int         count;
+    uint32_t    card;
+    
+} extra_request_t;
 
-void GodZhugeAI_Handler_GameStart(void *game, void *seat, situation_t *situation);
+void StandardAI_Handler_GameStart(event_context_t *context);
+void StandardAI_Handler_TurnBegin(event_context_t *context);
+void StandardAI_Handler_TurnDetermine(event_context_t *context);
+void StandardAI_Handler_TurnDeal(event_context_t *context);
+void StandardAI_Handler_TurnPlay(event_context_t *context);
+void StandardAI_Handler_TurnDrop(event_context_t *context);
+void StandardAI_Handler_TurnEnd(event_context_t *context);
+void StandardAI_Handler_QueryCard(event_context_t *context);
+
+void GodZhugeAI_Handler_GameStart(event_context_t *context);
 
 #endif /* EVENT_H_ */

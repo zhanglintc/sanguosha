@@ -63,7 +63,11 @@ void Game_Execute(game_t *game);
 
 int Game_DealCard(game_t *game, int count, card_array_t *array);
 
-void Game_QueryImpeccable(game_t *game, seat_t *seat);
+void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context);
+
+void Game_PostEventToAllNextSeat(game_t *game, event_context_t *context);
+
+void Game_PostEventToSeat(game_t *game, event_context_t *context);
 
 /*
  * ************************************************************
@@ -71,6 +75,6 @@ void Game_QueryImpeccable(game_t *game, seat_t *seat);
  * ************************************************************
  */
 
-void Game_SeatTryPlay(game_t *game, seat_t *seat, card_array_t *cards, int asCard);
+void Game_SeatTryPlay(game_t *game, seat_t *seat, card_array_t *cards, uint32_t asCard);
 
 #endif /* GAME_H_ */

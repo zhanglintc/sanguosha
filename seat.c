@@ -104,6 +104,12 @@ void Seat_Print(seat_t *seat, int mode)
     }
 }
 
+void Seat_HandleEvent(seat_t *seat, event_context_t *context)
+{
+    if (seat->eventHandlers[context->event] != NULL)
+        seat->eventHandlers[context->event](context);
+}
+
 void Identity_Print(int identity)
 {
     printf("%s", szIdentities[identity]);

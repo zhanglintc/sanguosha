@@ -10,47 +10,47 @@
 #include "seat.h"
 #include "game.h"
 
-void StandardAI_Handler_GameStart(void *game, void *seat, situation_t *situation)
+void StandardAI_Handler_GameStart(event_context_t *context)
 {
     
 }
 
-void StandardAI_Handler_TurnBegin(void *game, void *seat, situation_t *situation)
+void StandardAI_Handler_TurnBegin(event_context_t *context)
 {
     
 }
 
-void StandardAI_Handler_TurnDetermine(void *game, void *seat, situation_t *situation)
+void StandardAI_Handler_TurnDetermine(event_context_t *context)
 {
     
 }
 
-void StandardAI_Handler_TurnDeal(void *game, void *seat, situation_t *situation)
+void StandardAI_Handler_TurnDeal(event_context_t *context)
 {
     
 }
 
-void StandardAI_Handler_TurnPlay(void *game, void *seat, situation_t *situation)
+void StandardAI_Handler_TurnPlay(event_context_t *context)
 {
     
 }
 
-void StandardAI_Handler_TurnDrop(void *game, void *seat, situation_t *situation)
+void StandardAI_Handler_TurnDrop(event_context_t *context)
 {
     
 }
 
-void StandardAI_Handler_TurnEnd(void *game, void *seat, situation_t *situation)
+void StandardAI_Handler_TurnEnd(event_context_t *context)
 {
     
 }
 
-void StandardAI_Handler_QueryImpeccable(void *game, void *seat, situation_t *situation)
+void StandardAI_Handler_QueryCard(event_context_t *context)
 {
     
 }
 
-void GodZhugeAI_Handler_GameStart(void *game, void *seat, situation_t *situation)
+void GodZhugeAI_Handler_GameStart(event_context_t *context)
 {
     printf("祈星辰之力,佑我蜀汉!\n");
 }

@@ -50,7 +50,7 @@ typedef enum
     
 } PlayerStatus;
 
-typedef void (*event_handler)(void *game, void* seat, situation_t *situation);
+typedef void (*event_handler)(event_context_t *context);
 
 typedef struct seat_t
 {
@@ -80,6 +80,8 @@ seat_t *Seat_Create(void);
 void Seat_Destroy(seat_t *seat);
 
 void Seat_Print(seat_t *seat, int mode);
+
+void Seat_HandleEvent(seat_t *seat, event_context_t *context);
 
 /*
  * ************************************************************

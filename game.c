@@ -131,10 +131,12 @@ int Game_DealCard(game_t *game, int count, card_array_t *array)
     return count;
 }
 
-void Game_QueryImpeccable(game_t *game, seat_t *seat)
+void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context)
 {
     int i = 0;
     int j = 0;
+    
+    seat_t *seat = context->seat;
     
     for (i = 0; i < game->seatCapacity; i++)
     {
@@ -145,11 +147,36 @@ void Game_QueryImpeccable(game_t *game, seat_t *seat)
     for (j = 0; j < game->seatCapacity; j++)
     {
         seat = game->seats[(i+j) % game->seatCapacity];
-        seat->eventHandlers[EVENT_QUERY_IMPECCABLE](game, seat, NULL);
+        Seat_HandleEvent(seat, context);
     }
 }
 
-void Game_SeatTryPlay(game_t *game, seat_t *seat, card_array_t *cards, int asCard)
+void Game_PostEventToAllNextSeat(game_t *game, event_context_t *context)
+{
+    int i = 0;
+    int j = 0;
+    
+    seat_t *seat = context->seat;
+    
+    for (i = 0; i < game->seatCapacity; i++)
+    {
+        if (game->seats[i] == seat)
+            break;
+    }
+    
+    for (j = 0; j < game->seatCapacity; j++)
+    {
+        seat = game->seats[(i+j+1) % game->seatCapacity];
+        Seat_HandleEvent(seat, context);
+    }
+}
+
+void Game_PostEventToSeat(game_t *game, event_context_t *context)
+{
+    Seat_HandleEvent(context->seat, context);
+}
+
+void Game_SeatTryPlay(game_t *game, seat_t *seat, card_array_t *cards, uint32_t asCard)
 {
     
 }
@@ -165,11 +192,19 @@ void Game_Start(game_t *game)
     int i = 0;
     seat_t *seat = NULL;
     
+    event_context_t context;
+    memset(&context, 0, sizeof(event_context_t));
+    context.game = game;
+    context.event = EVENT_GAME_START;
+    
     for (i = 0; i < game->seatCapacity; i++)
     {
         seat = game->seats[i];
         if (seat != NULL)
-            seat->eventHandlers[EVENT_GAME_START](game, seat, NULL);
+        {
+            context.seat = seat;
+            Seat_HandleEvent(seat, &context);
+        }
     }
 }
 
@@ -179,10 +214,23 @@ void Game_Running(game_t *game)
     int j = 0;
     seat_t *seat = NULL;
     
+    /* event context */
+    event_context_t context;
+    memset(&context, 0, sizeof(event_context_t));
+    context.game = game;
+    
+    /* event extra information */
+    extra_request_t request;
+    memset(&request, 0, sizeof(extra_request_t));
+    request.type = EXTRA_REQUEST;
+    
+    /* loop */
     while (game->stage != GameStage_End)
     {
+        /* seat iteration */
         for (i = 0; i < game->seatCapacity; i++)
         {
+            context.seat = seat;
             seat = game->seats[i];
             if (seat != NULL && !seat->dead)
             {
@@ -194,15 +242,23 @@ void Game_Running(game_t *game)
                 }
                 
                 /* turn begin */
-                if (seat->eventHandlers[EVENT_TURN_BEGIN] != NULL)
-                    seat->eventHandlers[EVENT_TURN_BEGIN](game, seat, NULL);
+                context.event = EVENT_TURN_BEGIN;
+                Seat_HandleEvent(seat, &context);
                 
                 /* turn determine */
                 for (j = 2; j >= 0; j--)
                 {
                     if (seat->delaySpecialTypes[j] != 0)
                     {
+                        context.event = EVENT_QUERY_CARD;
+                        request.card = Card_Make(0, 0, CATEGORY_SPECIAL, ATTRIBUTE_NONE, CARD_ID_IMPECCABLE);
+                        /* this process will be very complicated */
+                        Game_PostEventToAllFromSeat(game, &context);
                         
+                        if (((extra_request_t *)context.extra)->count % 2)
+                        {
+                            /* TODO, remove delay special here */
+                        }
                     }
                 }
             }
