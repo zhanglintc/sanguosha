@@ -210,8 +210,9 @@ void Game_Start(game_t *game)
 
 void Game_Running(game_t *game)
 {
-    int i = 0;
-    int j = 0;
+    int seatIndex = 0;
+    int delayIndex = 0;
+    int k = 0;
     seat_t *seat = NULL;
     
     /* event context */
@@ -228,10 +229,10 @@ void Game_Running(game_t *game)
     while (game->stage != GameStage_End)
     {
         /* seat iteration */
-        for (i = 0; i < game->seatCapacity; i++)
+        for (seatIndex = 0; seatIndex < game->seatCapacity; seatIndex++)
         {
             context.seat = seat;
-            seat = game->seats[i];
+            seat = game->seats[seatIndex];
             if (seat != NULL && !seat->dead)
             {
                 /* process flip */
@@ -246,9 +247,9 @@ void Game_Running(game_t *game)
                 Seat_HandleEvent(seat, &context);
                 
                 /* turn determine */
-                for (j = 2; j >= 0; j--)
+                for (delayIndex = 2; delayIndex >= 0; delayIndex--)
                 {
-                    if (seat->delaySpecialTypes[j] != 0)
+                    if (seat->delaySpecialTypes[delayIndex] != 0)
                     {
                         context.event = EVENT_QUERY_CARD;
                         request.card = Card_Make(0, 0, CATEGORY_SPECIAL, ATTRIBUTE_NONE, CARD_ID_IMPECCABLE);
@@ -257,7 +258,26 @@ void Game_Running(game_t *game)
                         
                         if (((extra_request_t *)context.extra)->count % 2)
                         {
-                            /* TODO, remove delay special here */
+                            /* process delay special here */
+                            if (seat->delaySpecialCards[delayIndex] != SEAT_DELAY_LIGHTNING)
+                            {
+                                /* not lightning, recyle card */
+                                seat->delaySpecialCards[delayIndex] = SEAT_DELAY_NONE;
+                                Deck_RecycleCard(game->deck, seat->delaySpecialCards[delayIndex]);
+                                seat->delaySpecialCards[delayIndex] = 0;
+                            }
+                            else
+                            {
+                                /* lightning, move to next seat */
+                                /* find next available seat */
+                                k = 0;
+                                while (game->seats[(seatIndex+k) % game->seatCapacity]->dead)
+                                {
+                                    k++;
+                                }
+                            
+                            }
+                            
                         }
                     }
                 }

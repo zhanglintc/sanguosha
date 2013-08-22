@@ -110,6 +110,11 @@ void Seat_HandleEvent(seat_t *seat, event_context_t *context)
         seat->eventHandlers[context->event](context);
 }
 
+int Seat_CanAffectByCard(seat_t *seat, uint32_t card)
+{
+    return 1;
+}
+
 void Identity_Print(int identity)
 {
     printf("%s", szIdentities[identity]);
