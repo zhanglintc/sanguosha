@@ -21,12 +21,10 @@
 #define EVENT_TURN_END          7
 
 #define EVENT_QUERY_CARD        8
+#define EVENT_PRE_DETERMINE     9
+#define EVENT_POST_DETERMINE    10
 
 #define EVENT_COUNT             256
-
-
-#define EXTRA_NONE              0
-#define EXTRA_REQUEST           1
 
 typedef struct event_context_t
 {
@@ -40,11 +38,17 @@ typedef struct event_context_t
 
 typedef struct extra_request_t
 {
-    int         type;
     int         count;
     uint32_t    card;
     
 } extra_request_t;
+
+typedef struct extra_determine_t
+{
+    uint32_t    origin;
+    uint32_t    change;
+    
+} extra_determine_t;
 
 void StandardAI_Handler_GameStart(event_context_t *context);
 void StandardAI_Handler_TurnBegin(event_context_t *context);
@@ -54,6 +58,8 @@ void StandardAI_Handler_TurnPlay(event_context_t *context);
 void StandardAI_Handler_TurnDrop(event_context_t *context);
 void StandardAI_Handler_TurnEnd(event_context_t *context);
 void StandardAI_Handler_QueryCard(event_context_t *context);
+void StandardAI_Handler_PreDetermine(event_context_t *context);
+void StandardAI_Handler_PostDetermine(event_context_t *context);
 
 void GodZhugeAI_Handler_GameStart(event_context_t *context);
 

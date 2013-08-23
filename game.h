@@ -63,11 +63,11 @@ void Game_Execute(game_t *game);
 
 int Game_DealCard(game_t *game, int count, card_array_t *array);
 
-void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context);
+void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t *seat);
 
-void Game_PostEventToAllNextSeat(game_t *game, event_context_t *context);
+void Game_PostEventToAllNextSeat(game_t *game, event_context_t *context, seat_t *seat);
 
-void Game_PostEventToSeat(game_t *game, event_context_t *context);
+void Game_PostEventToSeat(game_t *game, event_context_t *context, seat_t *seat);
 
 /*
  * ************************************************************

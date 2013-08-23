@@ -45,6 +45,9 @@ seat_t *Seat_Create(void)
     ret->eventHandlers[EVENT_TURN_PLAY] = StandardAI_Handler_TurnPlay;
     ret->eventHandlers[EVENT_TURN_DROP] = StandardAI_Handler_TurnDrop;
     ret->eventHandlers[EVENT_TURN_END] = StandardAI_Handler_TurnEnd;
+    ret->eventHandlers[EVENT_QUERY_CARD] = StandardAI_Handler_QueryCard;
+    ret->eventHandlers[EVENT_PRE_DETERMINE] = StandardAI_Handler_PreDetermine;
+    ret->eventHandlers[EVENT_POST_DETERMINE] = StandardAI_Handler_PostDetermine;
     
     return ret;
 }
@@ -54,6 +57,58 @@ void Seat_Destroy(seat_t *seat)
     CardArray_Destroy(seat->hands);
     
     free(seat);
+}
+
+void Seat_HandleEvent(seat_t *seat, event_context_t *context)
+{
+    if (seat->eventHandlers[context->event] != NULL)
+        seat->eventHandlers[context->event](context);
+}
+
+int Seat_CanAffectByCard(seat_t *seat, uint32_t card)
+{
+    return 1;
+}
+
+void Seat_SortDelaySpecials(seat_t *seat)
+{
+    int i = 0;
+    int j = 0;
+    
+    for (i = 0; i < SEAT_DELAY_CAPACITY; i++)
+    {
+        if (seat->delaySpecialTypes[i] == 0)
+        {
+            for (j = i; j < SEAT_DELAY_CAPACITY; j++)
+            {
+                if (seat->delaySpecialTypes[j] != 0)
+                {
+                    seat->delaySpecialTypes[i] = seat->delaySpecialTypes[j];
+                    seat->delaySpecialCards[i] = seat->delaySpecialCards[j];
+                    seat->delaySpecialTypes[j] = 0;
+                    seat->delaySpecialCards[j] = 0;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+int Seat_HasDelaySpecial(seat_t *seat, int delayType)
+{
+    int i = 0;
+    int haveDelay = 0;
+    
+    for (i = 0; i < SEAT_DELAY_CAPACITY; i++)
+    {
+        if (seat->delaySpecialTypes[i] == delayType)
+        {
+            haveDelay = 1;
+            break;
+        }
+    }
+    
+    return haveDelay;
 }
 
 void Seat_Print(seat_t *seat, int mode)
@@ -70,7 +125,7 @@ void Seat_Print(seat_t *seat, int mode)
         {
             if (seat->equipments[i] == 0)
                 continue;
-
+            
             Card_Print(seat->equipments[i]);
             printf("\n");
         }
@@ -102,17 +157,6 @@ void Seat_Print(seat_t *seat, int mode)
         
         printf("\n");
     }
-}
-
-void Seat_HandleEvent(seat_t *seat, event_context_t *context)
-{
-    if (seat->eventHandlers[context->event] != NULL)
-        seat->eventHandlers[context->event](context);
-}
-
-int Seat_CanAffectByCard(seat_t *seat, uint32_t card)
-{
-    return 1;
 }
 
 void Identity_Print(int identity)

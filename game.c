@@ -131,12 +131,10 @@ int Game_DealCard(game_t *game, int count, card_array_t *array)
     return count;
 }
 
-void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context)
+void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t *seat)
 {
     int i = 0;
     int j = 0;
-    
-    seat_t *seat = context->seat;
     
     for (i = 0; i < game->seatCapacity; i++)
     {
@@ -151,12 +149,10 @@ void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context)
     }
 }
 
-void Game_PostEventToAllNextSeat(game_t *game, event_context_t *context)
+void Game_PostEventToAllNextSeat(game_t *game, event_context_t *context, seat_t *seat)
 {
     int i = 0;
     int j = 0;
-    
-    seat_t *seat = context->seat;
     
     for (i = 0; i < game->seatCapacity; i++)
     {
@@ -171,9 +167,9 @@ void Game_PostEventToAllNextSeat(game_t *game, event_context_t *context)
     }
 }
 
-void Game_PostEventToSeat(game_t *game, event_context_t *context)
+void Game_PostEventToSeat(game_t *game, event_context_t *context, seat_t *seat)
 {
-    Seat_HandleEvent(context->seat, context);
+    Seat_HandleEvent(seat, context);
 }
 
 void Game_SeatTryPlay(game_t *game, seat_t *seat, card_array_t *cards, uint32_t asCard)
@@ -208,22 +204,155 @@ void Game_Start(game_t *game)
     }
 }
 
-void Game_Running(game_t *game)
+int Game_PhaseTurnBegin(game_t *game, seat_t *seat)
 {
-    int seatIndex = 0;
-    int delayIndex = 0;
-    int k = 0;
-    seat_t *seat = NULL;
+    int proceedNextPhase = 0;
     
-    /* event context */
     event_context_t context;
     memset(&context, 0, sizeof(event_context_t));
     context.game = game;
+    context.event = EVENT_TURN_BEGIN;
+    context.seat = seat;
+    
+    if (seat != NULL && !seat->dead)
+    {
+        if (seat->status & PlayerStatus_Flipped)
+        {
+            seat->status &= ~PlayerStatus_Flipped;
+            proceedNextPhase = 0;
+        }
+        else
+        {
+            Seat_HandleEvent(seat, &context);
+            proceedNextPhase = 1;
+        }
+    }
+    
+    return proceedNextPhase;
+}
+
+int Game_PhaseTurnDetermine(game_t *game, seat_t *seat)
+{
+    int proceedNextPhase = 1;
+    
+    int seatIndex = 0;
+    int nextSeatOffset = 0;
+    int nextSeatIndex = 0;
+    int delayIndex = 0;
+    int i = 0;
+    int nextSeatFound = 0;
+    uint32_t determineCard = 0;
+    
+    seat_t *nextSeat = NULL;
+    
+    /* determine card array */
+    card_array_t determineCardArray;
+    CardArray_Clear(&determineCardArray);
+    
+    /* event context */
+    event_context_t context;
+    extra_request_t request;
+    extra_determine_t determineExtra;
+    
+    memset(&context, 0, sizeof(event_context_t));
+    context.game = game;
+    context.seat = seat;
     
     /* event extra information */
-    extra_request_t request;
     memset(&request, 0, sizeof(extra_request_t));
-    request.type = EXTRA_REQUEST;
+
+    /* event extra information */
+    memset(&determineExtra, 0, sizeof(extra_determine_t));
+    
+    /* find seat index */
+    for (seatIndex = 0; seatIndex < game->seatCapacity; seatIndex++)
+    {
+        if (game->seats[seatIndex] == seat)
+            break;
+    }
+    
+    /* turn determine */
+    for (delayIndex = SEAT_DELAY_CAPACITY - 1; delayIndex >= 0; delayIndex--)
+    {
+        if (seat->delaySpecialTypes[delayIndex] != 0)
+        {
+            /* ask for impeccable */
+            context.event = EVENT_QUERY_CARD;
+            request.card = Card_Make(0, 0, CATEGORY_SPECIAL, ATTRIBUTE_NONE, CARD_ID_IMPECCABLE);
+            /* this process will be very complicated */
+            Game_PostEventToAllFromSeat(game, &context, seat);
+            
+            /* impeccable! */
+            if (((extra_request_t *)context.extra)->count % 2)
+            {
+                /* process delay special here */
+                if (seat->delaySpecialCards[delayIndex] != SEAT_DELAY_LIGHTNING)
+                {
+                    /* not lightning, recyle card */
+                    seat->delaySpecialCards[delayIndex] = SEAT_DELAY_NONE;
+                    Deck_RecycleCard(game->deck, seat->delaySpecialCards[delayIndex]);
+                    seat->delaySpecialCards[delayIndex] = 0;
+                }
+                else
+                {
+                    /* lightning, move to next seat */
+                    for (nextSeatOffset = 0; nextSeatOffset < game->seatCapacity; nextSeatOffset++)
+                    {
+                        /* find next seat which has no lightning */
+                        nextSeatIndex = (seatIndex + nextSeatOffset) % game->seatCapacity;
+                        nextSeat = game->seats[nextSeatIndex];
+                        if (!nextSeat->dead && !Seat_HasDelaySpecial(nextSeat, SEAT_DELAY_LIGHTNING))
+                        {
+                            /* can this player be affected by lightning */
+                            if (Seat_CanAffectByCard(nextSeat, Card_Make(SUIT_CLUB, RANK_ACE, CATEGORY_SPECIAL, ATTRIBUTE_LIGHTNING, CARD_ID_LIGHTING)))
+                            {
+                                nextSeatFound = 1;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    /* lightning */
+                    if (nextSeatFound)
+                    {
+                        for (i = 0; i < SEAT_DELAY_CAPACITY; i++)
+                        {
+                            if (nextSeat->delaySpecialTypes[i] == 0)
+                            {
+                                nextSeat->delaySpecialTypes[i] = seat->delaySpecialTypes[delayIndex];
+                                nextSeat->delaySpecialCards[i] = seat->delaySpecialCards[delayIndex];
+                                seat->delaySpecialTypes[delayIndex] = 0;
+                                seat->delaySpecialCards[delayIndex] = 0;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            /* no impeccable, roll the dice */
+            else
+            {
+                Game_DealCard(game, 1, &determineCardArray);
+                determineCard = determineCardArray.cards[0];
+                
+                /* ask for change */
+                context.event = EVENT_PRE_DETERMINE;
+                determineExtra.origin = determineCard;
+                Game_PostEventToAllFromSeat(game, &context, seat);
+                
+                determineCard = ((extra_determine_t *)context.extra)->origin;
+                
+            }
+        }
+    }
+    
+    return proceedNextPhase;
+}
+
+void Game_Running(game_t *game)
+{
+    int seatIndex = 0;
+    seat_t *seat = NULL;
     
     /* loop */
     while (game->stage != GameStage_End)
@@ -231,57 +360,11 @@ void Game_Running(game_t *game)
         /* seat iteration */
         for (seatIndex = 0; seatIndex < game->seatCapacity; seatIndex++)
         {
-            context.seat = seat;
-            seat = game->seats[seatIndex];
-            if (seat != NULL && !seat->dead)
-            {
-                /* process flip */
-                if (seat->status & PlayerStatus_Flipped)
-                {
-                    seat->status &= ~PlayerStatus_Flipped;
-                    continue;
-                }
+            if (!Game_PhaseTurnBegin(game, seat))
+                continue;
                 
-                /* turn begin */
-                context.event = EVENT_TURN_BEGIN;
-                Seat_HandleEvent(seat, &context);
-                
-                /* turn determine */
-                for (delayIndex = 2; delayIndex >= 0; delayIndex--)
-                {
-                    if (seat->delaySpecialTypes[delayIndex] != 0)
-                    {
-                        context.event = EVENT_QUERY_CARD;
-                        request.card = Card_Make(0, 0, CATEGORY_SPECIAL, ATTRIBUTE_NONE, CARD_ID_IMPECCABLE);
-                        /* this process will be very complicated */
-                        Game_PostEventToAllFromSeat(game, &context);
-                        
-                        if (((extra_request_t *)context.extra)->count % 2)
-                        {
-                            /* process delay special here */
-                            if (seat->delaySpecialCards[delayIndex] != SEAT_DELAY_LIGHTNING)
-                            {
-                                /* not lightning, recyle card */
-                                seat->delaySpecialCards[delayIndex] = SEAT_DELAY_NONE;
-                                Deck_RecycleCard(game->deck, seat->delaySpecialCards[delayIndex]);
-                                seat->delaySpecialCards[delayIndex] = 0;
-                            }
-                            else
-                            {
-                                /* lightning, move to next seat */
-                                /* find next available seat */
-                                k = 0;
-                                while (game->seats[(seatIndex+k) % game->seatCapacity]->dead)
-                                {
-                                    k++;
-                                }
-                            
-                            }
-                            
-                        }
-                    }
-                }
-            }
+            if (!Game_PhaseTurnDetermine(game, seat))
+                continue;
         }
     }
 }

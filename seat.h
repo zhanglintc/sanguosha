@@ -79,12 +79,16 @@ seat_t *Seat_Create(void);
 
 void Seat_Destroy(seat_t *seat);
 
-void Seat_Print(seat_t *seat, int mode);
-
 void Seat_HandleEvent(seat_t *seat, event_context_t *context);
 
 /* TODO: refactor this function later */
 int Seat_CanAffectByCard(seat_t *seat, uint32_t card);
+
+void Seat_SortDelaySpecials(seat_t *seat);
+
+int Seat_HasDelaySpecial(seat_t *seat, int delayType);
+
+void Seat_Print(seat_t *seat, int mode);
 
 /*
  * ************************************************************

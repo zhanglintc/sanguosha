@@ -49,9 +49,10 @@ void test_Deck()
     int i = 0;
     int32_t card = 0;
     char buffer[256];
+    deck_t *deck = NULL;
     mt19937_t mt;
     Random_Init(&mt, 0);
-    deck_t *deck = Deck_Create(1);
+    deck = Deck_Create(1);
     Deck_Shuffle(deck, &mt);
     
     while ( i < 1024 )

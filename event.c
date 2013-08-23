@@ -50,6 +50,16 @@ void StandardAI_Handler_QueryCard(event_context_t *context)
     
 }
 
+void StandardAI_Handler_PreDetermine(event_context_t *context)
+{
+    
+}
+
+void StandardAI_Handler_PostDetermine(event_context_t *context)
+{
+    
+}
+
 void GodZhugeAI_Handler_GameStart(event_context_t *context)
 {
     printf("祈星辰之力,佑我蜀汉!\n");
