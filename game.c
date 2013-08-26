@@ -131,6 +131,29 @@ int Game_DealCard(game_t *game, int count, card_array_t *array)
     return count;
 }
 
+seat_t *Game_FindNextSeat(game_t *game, seat_t *seat, int alive)
+{
+    int i = 0;
+    int j = 0;
+    
+    seat_t *nextSeat = NULL;
+    
+    for (i = 0; i < game->seatCapacity; i++)
+    {
+        if (game->seats[i] == seat)
+            break;
+    }
+    
+    for (j = 1; j < game->seatCapacity; j++)
+    {
+        nextSeat = game->seats[(i + j) % game->seatCapacity];
+        if (!nextSeat->dead)
+            break;
+    }
+    
+    return nextSeat;
+}
+
 void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t *seat)
 {
     int i = 0;
@@ -304,7 +327,7 @@ int Game_PhaseTurnDetermine(game_t *game, seat_t *seat)
                         if (!nextSeat->dead && !Seat_HasDelaySpecial(nextSeat, SEAT_DELAY_LIGHTNING))
                         {
                             /* can this player be affected by lightning */
-                            if (Seat_CanAffectByCard(nextSeat, Card_Make(SUIT_CLUB, RANK_ACE, CATEGORY_SPECIAL, ATTRIBUTE_LIGHTNING, CARD_ID_LIGHTING)))
+                            if (Seat_CanAffectByCard(nextSeat, seat->delaySpecialCards[delayIndex]))
                             {
                                 nextSeatFound = 1;
                                 break;
