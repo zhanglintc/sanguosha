@@ -47,6 +47,7 @@ typedef struct extra_determine_t
 {
     uint32_t    origin;
     uint32_t    change;
+    int         type;
     
 } extra_determine_t;
 

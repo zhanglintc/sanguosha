@@ -338,6 +338,7 @@ int Game_PhaseTurnDetermine(game_t *game, seat_t *seat)
                 /* ask for change */
                 context.event = EVENT_PRE_DETERMINE;
                 determineExtra.origin = determineCard;
+                determineExtra.type = seat->delaySpecialTypes[delayIndex];
                 Game_PostEventToAllFromSeat(game, &context, seat);
                 
                 determineCard = ((extra_determine_t *)context.extra)->origin;
