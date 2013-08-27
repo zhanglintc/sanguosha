@@ -319,36 +319,16 @@ int Game_PhaseTurnDetermine(game_t *game, seat_t *seat)
                 else
                 {
                     /* lightning, move to next seat */
-                    for (nextSeatOffset = 0; nextSeatOffset < game->seatCapacity; nextSeatOffset++)
+                    nextSeat = Game_FindNextSeat(game, seat, 1);
+                    while (Seat_HasDelaySpecial(nextSeat, SEAT_DELAY_LIGHTNING) || !Seat_CanAffectByCard(nextSeat, seat->delaySpecialCards[delayIndex]))
                     {
-                        /* find next seat which has no lightning */
-                        nextSeatIndex = (seatIndex + nextSeatOffset) % game->seatCapacity;
-                        nextSeat = game->seats[nextSeatIndex];
-                        if (!nextSeat->dead && !Seat_HasDelaySpecial(nextSeat, SEAT_DELAY_LIGHTNING))
-                        {
-                            /* can this player be affected by lightning */
-                            if (Seat_CanAffectByCard(nextSeat, seat->delaySpecialCards[delayIndex]))
-                            {
-                                nextSeatFound = 1;
-                                break;
-                            }
-                        }
+                        nextSeat = Game_FindNextSeat(game, nextSeat, 1);
                     }
                     
-                    /* lightning */
-                    if (nextSeatFound)
+                    if (Seat_AttachDelaySpecial(nextSeat, SEAT_DELAY_LIGHTNING, seat->delaySpecialCards[delayIndex]))
                     {
-                        for (i = 0; i < SEAT_DELAY_CAPACITY; i++)
-                        {
-                            if (nextSeat->delaySpecialTypes[i] == 0)
-                            {
-                                nextSeat->delaySpecialTypes[i] = seat->delaySpecialTypes[delayIndex];
-                                nextSeat->delaySpecialCards[i] = seat->delaySpecialCards[delayIndex];
-                                seat->delaySpecialTypes[delayIndex] = 0;
-                                seat->delaySpecialCards[delayIndex] = 0;
-                                break;
-                            }
-                        }
+                        seat->delaySpecialTypes[delayIndex] = 0;
+                        seat->delaySpecialCards[delayIndex] = 0;
                     }
                 }
             }

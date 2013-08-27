@@ -88,6 +88,8 @@ void Seat_SortDelaySpecials(seat_t *seat);
 
 int Seat_HasDelaySpecial(seat_t *seat, int delayType);
 
+int Seat_AttachDelaySpecial(seat_t *seat, int delayType, uint32_t card);
+
 void Seat_Print(seat_t *seat, int mode);
 
 /*
