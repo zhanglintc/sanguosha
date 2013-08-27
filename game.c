@@ -259,11 +259,7 @@ int Game_PhaseTurnDetermine(game_t *game, seat_t *seat)
     int proceedNextPhase = 1;
     
     int seatIndex = 0;
-    int nextSeatOffset = 0;
-    int nextSeatIndex = 0;
     int delayIndex = 0;
-    int i = 0;
-    int nextSeatFound = 0;
     uint32_t determineCard = 0;
     
     seat_t *nextSeat = NULL;
