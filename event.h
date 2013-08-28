@@ -51,6 +51,15 @@ typedef struct extra_determine_t
     
 } extra_determine_t;
 
+typedef struct extra_process_phase_t
+{
+    int shouldPassDetermine;
+    int shouldPassDeal;
+    int shouldPassPlay;
+    int shouldPassDrop;
+    
+} extra_process_phase_t;
+
 void StandardAI_Handler_GameStart(event_context_t *context);
 void StandardAI_Handler_TurnBegin(event_context_t *context);
 void StandardAI_Handler_TurnDetermine(event_context_t *context);
@@ -63,5 +72,6 @@ void StandardAI_Handler_PreDetermine(event_context_t *context);
 void StandardAI_Handler_PostDetermine(event_context_t *context);
 
 void GodZhugeAI_Handler_GameStart(event_context_t *context);
+void ZhangheAI_Handler_TurnDetermine(event_context_t *context);
 
 #endif /* EVENT_H_ */

@@ -202,7 +202,7 @@ void Game_SeatTryPlay(game_t *game, seat_t *seat, card_array_t *cards, uint32_t 
 
 /*
  * ************************************************************
- * game loop
+ * game Phase
  * ************************************************************
  */
 
@@ -227,37 +227,33 @@ void Game_Start(game_t *game)
     }
 }
 
-int Game_PhaseTurnBegin(game_t *game, seat_t *seat)
+void Game_PhaseTurnBegin(game_t *game, seat_t *seat, event_context_t *phaseContext)
 {
-    int proceedNextPhase = 0;
+    event_context_t turnBegin;
+    extra_process_phase_t *extra = (extra_process_phase_t *)phaseContext->extra;
     
-    event_context_t context;
-    memset(&context, 0, sizeof(event_context_t));
-    context.game = game;
-    context.event = EVENT_TURN_BEGIN;
-    context.seat = seat;
+    memset(&turnBegin, 0, sizeof(event_context_t));
+    turnBegin.event = EVENT_TURN_BEGIN;
     
     if (seat != NULL && !seat->dead)
     {
         if (seat->status & PlayerStatus_Flipped)
         {
             seat->status &= ~PlayerStatus_Flipped;
-            proceedNextPhase = 0;
+            extra->shouldPassDetermine = 1;
+            extra->shouldPassDeal = 1;
+            extra->shouldPassPlay = 1;
+            extra->shouldPassDrop = 1;
         }
         else
         {
-            Seat_HandleEvent(seat, &context);
-            proceedNextPhase = 1;
+            Seat_HandleEvent(seat, &turnBegin);
         }
     }
-    
-    return proceedNextPhase;
 }
 
-int Game_PhaseTurnDetermine(game_t *game, seat_t *seat)
+void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseContext)
 {
-    int proceedNextPhase = 1;
-    
     int seatIndex = 0;
     int delayIndex = 0;
     uint32_t determineCard = 0;
@@ -266,12 +262,16 @@ int Game_PhaseTurnDetermine(game_t *game, seat_t *seat)
     
     /* determine card array */
     card_array_t determineCardArray;
-    CardArray_Clear(&determineCardArray);
     
     /* event context */
     event_context_t context;
     extra_request_t request;
     extra_determine_t determineExtra;
+    extra_process_phase_t *procPhaseExtra;
+    
+    procPhaseExtra = (extra_process_phase_t *)phaseContext->extra;
+    
+    CardArray_Clear(&determineCardArray);
     
     memset(&context, 0, sizeof(event_context_t));
     context.game = game;
@@ -279,8 +279,6 @@ int Game_PhaseTurnDetermine(game_t *game, seat_t *seat)
     
     /* event extra information */
     memset(&request, 0, sizeof(extra_request_t));
-
-    /* event extra information */
     memset(&determineExtra, 0, sizeof(extra_determine_t));
     
     /* find seat index */
@@ -345,13 +343,39 @@ int Game_PhaseTurnDetermine(game_t *game, seat_t *seat)
             }
         }
     }
-    
-    return proceedNextPhase;
 }
+
+void Game_PhaseTurnDeal(game_t *game, seat_t *seat, event_context_t *context)
+{
+    
+}
+
+void Game_PhaseTurnPlay(game_t *game, seat_t *seat, event_context_t *context)
+{
+    
+}
+
+void Game_PhaseTurnDrop(game_t *game, seat_t *seat, event_context_t *context)
+{
+    
+}
+
+void Game_PhaseTurnEnd(game_t *game, seat_t *seat, event_context_t *context)
+{
+    
+}
+
+/*
+ * ************************************************************
+ * game loop
+ * ************************************************************
+ */
 
 void Game_Running(game_t *game)
 {
     int seatIndex = 0;
+    event_context_t phaseContext;
+    extra_process_phase_t extra;
     seat_t *seat = NULL;
     
     /* loop */
@@ -360,28 +384,39 @@ void Game_Running(game_t *game)
         /* seat iteration */
         for (seatIndex = 0; seatIndex < game->seatCapacity; seatIndex++)
         {
-            if (!Game_PhaseTurnBegin(game, seat))
-                continue;
-                
-            if (!Game_PhaseTurnDetermine(game, seat))
-                continue;
+            memset(&phaseContext, 0, sizeof(event_context_t));
+            memset(&extra, 0, sizeof(extra_process_phase_t));
+            
+            phaseContext.game = game;
+            phaseContext.seat = seat;
+            phaseContext.extra = &extra;
+            
+            seat = game->seats[seatIndex];
+            Game_PhaseTurnBegin(game, seat, &phaseContext);
+            
+            /* some hero can bypass phases */
+            phaseContext.event = EVENT_TURN_DETERMINE;
+            Game_PostEventToSeat(game, &phaseContext, seat);
+            
+            if (!extra.shouldPassDetermine)
+                Game_PhaseTurnDetermine(game, seat, &phaseContext);
+            
+            if (!extra.shouldPassDeal)
+                Game_PhaseTurnDeal(game, seat, &phaseContext);
+            
+            if (!extra.shouldPassPlay)
+                Game_PhaseTurnPlay(game, seat, &phaseContext);
+            
+            if (!extra.shouldPassDrop)
+                Game_PhaseTurnDrop(game, seat, &phaseContext);
         }
+        
+        game->stage = GameStage_End;
     }
 }
 
 void Game_Execute(game_t *game)
 {
-    switch (game->stage)
-    {
-        case GameStage_Begin:
-            Game_Start(game);
-            break;
-            
-        case GameStage_Running:
-            Game_Running(game);
-            break;
-            
-        default:
-            break;
-    }
+    Game_Start(game);
+    Game_Running(game);
 }

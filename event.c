@@ -64,3 +64,10 @@ void GodZhugeAI_Handler_GameStart(event_context_t *context)
 {
     printf("祈星辰之力,佑我蜀汉!\n");
 }
+
+void ZhangheAI_Handler_TurnDetermine(event_context_t *context)
+{
+    extra_process_phase_t *extra = (extra_process_phase_t *)context->extra;
+    extra->shouldPassDetermine = 1;
+    printf("用兵之道,变化万千!\n");
+}
