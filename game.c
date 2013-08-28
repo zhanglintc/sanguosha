@@ -391,22 +391,39 @@ void Game_Running(game_t *game)
             phaseContext.seat = seat;
             phaseContext.extra = &extra;
             
+            /* turn begin */
             seat = game->seats[seatIndex];
             Game_PhaseTurnBegin(game, seat, &phaseContext);
             
-            /* some hero can bypass phases */
+            /* some hero can bypass determine phases */
             phaseContext.event = EVENT_TURN_DETERMINE;
             Game_PostEventToSeat(game, &phaseContext, seat);
             
+            /* turn determine */
             if (!extra.shouldPassDetermine)
                 Game_PhaseTurnDetermine(game, seat, &phaseContext);
             
+            /* some hero can bypass deal phase */
+            phaseContext.event = EVENT_TURN_DEAL;
+            Game_PostEventToSeat(game, &phaseContext, seat);
+            
+            /* turn deal */
             if (!extra.shouldPassDeal)
                 Game_PhaseTurnDeal(game, seat, &phaseContext);
             
+            /* some hero can bypass play phase */
+            phaseContext.event = EVENT_TURN_PLAY;
+            Game_PostEventToSeat(game, &phaseContext, seat);
+            
+            /* turn play */
             if (!extra.shouldPassPlay)
                 Game_PhaseTurnPlay(game, seat, &phaseContext);
+
+            /* some hero can bypass drop phase */
+            phaseContext.event = EVENT_TURN_DROP;
+            Game_PostEventToSeat(game, &phaseContext, seat);
             
+            /* trun drop */
             if (!extra.shouldPassDrop)
                 Game_PhaseTurnDrop(game, seat, &phaseContext);
         }
