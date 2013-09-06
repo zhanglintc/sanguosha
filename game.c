@@ -83,6 +83,9 @@ game_t *Game_Create(int mode, int seed)
         CardArray_PushBack(seat->hands, Deck_DealCard(game->deck));
     }
     
+    game->seats[0]->delaySpecialCards[0] = Deck_DealCard(game->deck);
+    game->seats[0]->delaySpecialTypes[0] = DETERMINE_TYPE_LIGHTNING;
+    
     return game;
 }
 
@@ -121,14 +124,12 @@ int Game_DealCard(game_t *game, int count, card_array_t *array)
             game->stage = GameStage_End;
             return -1;
         }
-        else
-        {
-            for (i = 0; i < count; i++)
-                CardArray_PushBack(array, CardArray_PopFront(game->deck->cardStack));
-        }
     }
     
-    return count;
+    for (i = 0; i < count; i++)
+        CardArray_PushBack(array, CardArray_PopFront(game->deck->cardStack));
+    
+    return i;
 }
 
 seat_t *Game_FindNextSeat(game_t *game, seat_t *seat, int alive)
@@ -152,6 +153,31 @@ seat_t *Game_FindNextSeat(game_t *game, seat_t *seat, int alive)
     }
     
     return nextSeat;
+}
+
+void Game_MoveDelayToNextSeat(game_t *game, seat_t *seat, int delayIndex)
+{
+    seat_t *nextSeat = NULL;
+    int delayType = 0;
+    uint32_t delayCard = 0;
+
+    delayType = seat->delaySpecialTypes[delayIndex];
+    delayCard = seat->delaySpecialCards[delayIndex];
+    
+    nextSeat = Game_FindNextSeat(game, seat, 1);
+    while (Seat_HasDelaySpecial(nextSeat, DETERMINE_TYPE_LIGHTNING) || !Seat_CanAffectByCard(nextSeat, delayType))
+    {
+        nextSeat = Game_FindNextSeat(game, nextSeat, 1);
+    }
+    
+    if (nextSeat == NULL)
+        return;
+    
+    if (Seat_AttachDelaySpecial(nextSeat, DETERMINE_TYPE_LIGHTNING, seat->delaySpecialCards[delayIndex]))
+    {
+        seat->delaySpecialTypes[delayIndex] = 0;
+        seat->delaySpecialCards[delayIndex] = 0;
+    }
 }
 
 void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t *seat)
@@ -258,8 +284,6 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
     int delayIndex = 0;
     uint32_t determineCard = 0;
     
-    seat_t *nextSeat = NULL;
-    
     /* determine card array */
     card_array_t determineCardArray;
     
@@ -295,6 +319,7 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
         {
             /* ask for impeccable */
             context.event = EVENT_QUERY_CARD;
+            context.extra = &request;
             request.card = Card_Make(0, 0, CATEGORY_SPECIAL, ATTRIBUTE_NONE, CARD_ID_IMPECCABLE);
             /* this process will be very complicated */
             Game_PostEventToAllFromSeat(game, &context, seat);
@@ -313,17 +338,7 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
                 else
                 {
                     /* lightning, move to next seat */
-                    nextSeat = Game_FindNextSeat(game, seat, 1);
-                    while (Seat_HasDelaySpecial(nextSeat, DETERMINE_TYPE_LIGHTNING) || !Seat_CanAffectByCard(nextSeat, seat->delaySpecialCards[delayIndex]))
-                    {
-                        nextSeat = Game_FindNextSeat(game, nextSeat, 1);
-                    }
-                    
-                    if (Seat_AttachDelaySpecial(nextSeat, DETERMINE_TYPE_LIGHTNING, seat->delaySpecialCards[delayIndex]))
-                    {
-                        seat->delaySpecialTypes[delayIndex] = 0;
-                        seat->delaySpecialCards[delayIndex] = 0;
-                    }
+                    Game_MoveDelayToNextSeat(game, seat, delayIndex);
                 }
             }
             /* no impeccable, roll the dice */
@@ -334,6 +349,7 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
                 
                 /* ask for change */
                 context.event = EVENT_PRE_DETERMINE;
+                context.extra = &determineExtra;
                 determineExtra.origin = determineCard;
                 determineExtra.type = seat->delaySpecialTypes[delayIndex];
                 Game_PostEventToAllFromSeat(game, &context, seat);
@@ -356,10 +372,20 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
                         break;
                         
                     case DETERMINE_TYPE_LIGHTNING:
+                        Card_Print(determineCard);
+                        printf("\n");
                         if (CARD_SUIT(determineCard) == SUIT_SPADE && CARD_RANK(determineCard) > RANK_ACE && CARD_RANK(determineCard) < RANK_TEN)
                         {
-                            
+                            printf("恭喜这位玩家中电了");
+                            Seat_Print(seat, SeatPrintMode_All);
+                            exit(0);
                         }
+                        else
+                        {
+                            /* lightning, move to next seat */
+                            Game_MoveDelayToNextSeat(game, seat, delayIndex);
+                        }
+                        break;
                         
                     default:
                         break;
@@ -452,7 +478,7 @@ void Game_Running(game_t *game)
                 Game_PhaseTurnDrop(game, seat, &phaseContext);
         }
         
-        game->stage = GameStage_End;
+        /* game->stage = GameStage_End; */
     }
 }
 
