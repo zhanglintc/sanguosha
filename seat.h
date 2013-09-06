@@ -32,7 +32,7 @@ typedef enum
     SeatPrintMode_DelaySP   = 1 << 1,
     SeatPrintMode_Hands     = 1 << 2,
     
-    SeatPrintMode_All       = 1 << 3 - 1
+    SeatPrintMode_All       = (1 << 3) - 1
     
 } SeatPrintMode;
 

@@ -51,7 +51,7 @@ void test_Deck()
     char buffer[256];
     deck_t *deck = NULL;
     mt19937_t mt;
-    Random_Init(&mt, 0);
+    Random_Init(&mt, 1);
     deck = Deck_Create(1);
     Deck_Shuffle(deck, &mt);
     
@@ -77,10 +77,11 @@ void test_Deck()
 
 void test_Game()
 {
-    game_t *game = Game_Create(GameMode_Military5, 1);
+    int seed = 1;
+    game_t *game = NULL;
+    game = Game_Create(GameMode_Military5, seed);
     
     Game_Execute(game);
-    
     Game_Destroy(game);
 }
 

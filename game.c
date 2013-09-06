@@ -372,13 +372,16 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
                         break;
                         
                     case DETERMINE_TYPE_LIGHTNING:
+                        printf("闪电在");
+                        Seat_Print(seat, SeatPrintMode_Minimum);
+                        printf("判定出了 :");
                         Card_Print(determineCard);
                         printf("\n");
+
                         if (CARD_SUIT(determineCard) == SUIT_SPADE && CARD_RANK(determineCard) > RANK_ACE && CARD_RANK(determineCard) < RANK_TEN)
                         {
-                            printf("恭喜这位玩家中电了");
-                            Seat_Print(seat, SeatPrintMode_All);
-                            exit(0);
+                            printf("恭喜这位玩家中电了\n");
+                            Seat_Print(seat, SeatPrintMode_Minimum);
                         }
                         else
                         {
@@ -477,8 +480,7 @@ void Game_Running(game_t *game)
             if (!extra.shouldPassDrop)
                 Game_PhaseTurnDrop(game, seat, &phaseContext);
         }
-        
-        /* game->stage = GameStage_End; */
+        game->stage = GameStage_End;
     }
 }
 

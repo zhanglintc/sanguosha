@@ -135,21 +135,7 @@ void Seat_Print(seat_t *seat, int mode)
     int i = 0;
     
     /* basic information */
-    printf("[%s][%s][%d/%d][%d]\n", Identity_GetString(seat->identity), Force_GetString(seat->force), seat->curHealth, seat->maxHealth, seat->hands->length);
-    
-    /* equipments */
-    if ((mode & SeatPrintMode_Equipment) != 0)
-    {
-        for (i = 0; i < SEAT_EQUIP_CAPACITY; i++)
-        {
-            if (seat->equipments[i] == 0)
-                continue;
-            
-            Card_Print(seat->equipments[i]);
-            printf("\n");
-        }
-        printf("\n");
-    }
+    printf("[%s][%s][%d/%d][%d] ", Identity_GetString(seat->identity), Force_GetString(seat->force), seat->curHealth, seat->maxHealth, seat->hands->length);
     
     /* delay specials */
     if ((mode & SeatPrintMode_DelaySP) != 0)
@@ -165,6 +151,19 @@ void Seat_Print(seat_t *seat, int mode)
         printf("\n");
     }
     
+    /* equipments */
+    if ((mode & SeatPrintMode_Equipment) != 0)
+    {
+        for (i = 0; i < SEAT_EQUIP_CAPACITY; i++)
+        {
+            if (seat->equipments[i] == 0)
+                continue;
+            
+            Card_Print(seat->equipments[i]);
+            printf("\n");
+        }
+    }
+    
     /* hands */
     if ((mode & SeatPrintMode_Hands) != 0)
     {
@@ -174,7 +173,7 @@ void Seat_Print(seat_t *seat, int mode)
             printf(" ");
         }
         
-        printf("\n");
+        printf("\n\n");
     }
 }
 
