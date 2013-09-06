@@ -20,11 +20,19 @@
 #define EVENT_TURN_DROP         6
 #define EVENT_TURN_END          7
 
-#define EVENT_QUERY_CARD        8
-#define EVENT_PRE_DETERMINE     9
-#define EVENT_POST_DETERMINE    10
+#define EVENT_ON_DAMAGE         8
+
+#define EVENT_QUERY_CARD        9
+#define EVENT_PRE_DETERMINE     10
+#define EVENT_POST_DETERMINE    11
 
 #define EVENT_COUNT             256
+
+#define DETERMINE_TYPE_NONE         0
+#define DETERMINE_TYPE_SLEEP        1
+#define DETERMINE_TYPE_LIGHTNING    2
+#define DETERMINE_TYPE_FAMINE       3
+#define DETERMINE_TYPE_TRIGRAMS     4
 
 typedef struct event_context_t
 {
@@ -60,6 +68,13 @@ typedef struct extra_process_phase_t
     
 } extra_process_phase_t;
 
+typedef struct extra_damage_t
+{
+    int damage;
+    void *source;
+    
+} extra_damage_t;
+
 void StandardAI_Handler_GameStart(event_context_t *context);
 void StandardAI_Handler_TurnBegin(event_context_t *context);
 void StandardAI_Handler_TurnDetermine(event_context_t *context);
@@ -67,6 +82,7 @@ void StandardAI_Handler_TurnDeal(event_context_t *context);
 void StandardAI_Handler_TurnPlay(event_context_t *context);
 void StandardAI_Handler_TurnDrop(event_context_t *context);
 void StandardAI_Handler_TurnEnd(event_context_t *context);
+void StandardAI_Handler_OnDamage(event_context_t *context);
 void StandardAI_Handler_QueryCard(event_context_t *context);
 void StandardAI_Handler_PreDetermine(event_context_t *context);
 void StandardAI_Handler_PostDetermine(event_context_t *context);

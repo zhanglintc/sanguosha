@@ -118,7 +118,7 @@ int Seat_AttachDelaySpecial(seat_t *seat, int delayType, uint32_t card)
     
     for (i = SEAT_DELAY_CAPACITY - 1; i >= 0; i++)
     {
-        if (seat->delaySpecialTypes[i] == SEAT_DELAY_NONE)
+        if (seat->delaySpecialTypes[i] == DETERMINE_TYPE_NONE)
         {
             seat->delaySpecialTypes[i] = delayType;
             seat->delaySpecialCards[i] = card;

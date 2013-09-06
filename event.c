@@ -45,6 +45,11 @@ void StandardAI_Handler_TurnEnd(event_context_t *context)
     
 }
 
+void StandardAI_Handler_OnDamage(event_context_t *context)
+{
+    
+}
+
 void StandardAI_Handler_QueryCard(event_context_t *context)
 {
     

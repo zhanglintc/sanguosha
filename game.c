@@ -303,10 +303,10 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
             if (((extra_request_t *)context.extra)->count % 2)
             {
                 /* process delay special here */
-                if (seat->delaySpecialCards[delayIndex] != SEAT_DELAY_LIGHTNING)
+                if (seat->delaySpecialCards[delayIndex] != DETERMINE_TYPE_LIGHTNING)
                 {
                     /* not lightning, recyle card */
-                    seat->delaySpecialCards[delayIndex] = SEAT_DELAY_NONE;
+                    seat->delaySpecialCards[delayIndex] = DETERMINE_TYPE_NONE;
                     Deck_RecycleCard(game->deck, seat->delaySpecialCards[delayIndex]);
                     seat->delaySpecialCards[delayIndex] = 0;
                 }
@@ -314,12 +314,12 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
                 {
                     /* lightning, move to next seat */
                     nextSeat = Game_FindNextSeat(game, seat, 1);
-                    while (Seat_HasDelaySpecial(nextSeat, SEAT_DELAY_LIGHTNING) || !Seat_CanAffectByCard(nextSeat, seat->delaySpecialCards[delayIndex]))
+                    while (Seat_HasDelaySpecial(nextSeat, DETERMINE_TYPE_LIGHTNING) || !Seat_CanAffectByCard(nextSeat, seat->delaySpecialCards[delayIndex]))
                     {
                         nextSeat = Game_FindNextSeat(game, nextSeat, 1);
                     }
                     
-                    if (Seat_AttachDelaySpecial(nextSeat, SEAT_DELAY_LIGHTNING, seat->delaySpecialCards[delayIndex]))
+                    if (Seat_AttachDelaySpecial(nextSeat, DETERMINE_TYPE_LIGHTNING, seat->delaySpecialCards[delayIndex]))
                     {
                         seat->delaySpecialTypes[delayIndex] = 0;
                         seat->delaySpecialCards[delayIndex] = 0;
@@ -340,6 +340,30 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
                 
                 determineCard = ((extra_determine_t *)context.extra)->origin;
                 
+                /* apply delay result */
+                switch (determineExtra.type)
+                {
+                    case DETERMINE_TYPE_SLEEP:
+                        if (CARD_SUIT(determineCard) != SUIT_HEART)
+                            procPhaseExtra->shouldPassPlay = 1;
+                        
+                        break;
+                        
+                    case DETERMINE_TYPE_FAMINE:
+                        if (CARD_SUIT(determineCard) != SUIT_CLUB)
+                            procPhaseExtra->shouldPassDeal = 1;
+                        
+                        break;
+                        
+                    case DETERMINE_TYPE_LIGHTNING:
+                        if (CARD_SUIT(determineCard) == SUIT_SPADE && CARD_RANK(determineCard) > RANK_ACE && CARD_RANK(determineCard) < RANK_TEN)
+                        {
+                            
+                        }
+                        
+                    default:
+                        break;
+                }
             }
         }
     }

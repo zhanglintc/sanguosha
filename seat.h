@@ -25,11 +25,6 @@
 #define SEAT_EQUIP_CAPACITY 4
 #define SEAT_DELAY_CAPACITY 3
 
-#define SEAT_DELAY_NONE         0
-#define SEAT_DELAY_SLEEP        1
-#define SEAT_DELAY_LIGHTNING    2
-#define SEAT_DELAY_FAMINE       3
-
 typedef enum
 {
     SeatPrintMode_Minimum   = 0 << 0,
