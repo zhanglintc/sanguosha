@@ -26,13 +26,13 @@
 struct memblock
 {
     long            magic;
-    struct memblock *next;
-    struct memblock *prev;
     size_t          size;
     const char      *file;
     const char      *expr;
     int             line;
     int             padding;
+    struct memblock *next;
+    struct memblock *prev;
 };
 
 #define MAGIC1 0xDEADBEEF
@@ -95,6 +95,41 @@ void* memtrack_calloc(size_t count, size_t elem_size, const char* expr, const ch
     return (void *)&mb[1];
 }
 
+void* memtrack_realloc(void* ptr, const char* eptr, size_t size, const char* expr, const char* file, int line)
+{
+    if (!ptr)
+    {
+        return memtrack_malloc(size, expr, file, line);
+    }
+    else
+    {
+        void *newPtr = NULL;
+        size_t copysize = 0;
+        struct memblock *mb = &((struct memblock *)(ptr))[-1];
+        
+        if (mb->magic == MAGIC2)
+        {
+            printf("Memory has already been freed\n");
+            memblock_print_info(mb);
+            return NULL;
+        }
+        else if (mb->magic != MAGIC1)
+        {
+            printf("Memory is not allocated in memtracker : %p (expr = \"%s\" from %s:%d\n", ptr, eptr, file, line);
+            return NULL;
+        }
+
+        
+        copysize = size > mb->size ? mb->size : size;
+        
+        newPtr = memtrack_malloc(size, expr, file, line);
+        memcpy(newPtr, ptr, copysize);
+        memtrack_free(ptr, eptr, file, line);
+        
+        return newPtr;
+    }
+}
+
 void memtrack_free(void* ptr, const char* expr, const char* file, int line)
 {
     if (!ptr)
@@ -137,7 +172,7 @@ void memtrack_list_allocations(void)
     struct memblock *mb;
     size_t total = 0;
     
-    printf("\n*** Allocation list start ***\n");
+    printf("*** Allocation list start ***\n");
 	if (!memblockList)
 	{
 		printf(">>> EMPTY <<<\n");

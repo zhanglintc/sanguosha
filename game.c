@@ -380,6 +380,8 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
 
                         if (CARD_SUIT(determineCard) == SUIT_SPADE && CARD_RANK(determineCard) > RANK_ACE && CARD_RANK(determineCard) < RANK_TEN)
                         {
+                            /* fix me */
+                            /* caocao can absorb the card */
                             /* recycle determine card */
                             Deck_RecycleCard(game->deck, determineCard);
                             seat->delaySpecialCards[delayIndex] = 0;
