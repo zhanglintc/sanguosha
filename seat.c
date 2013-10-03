@@ -33,8 +33,7 @@ unsigned char szDelaySP[][4] = {
 
 seat_t *Seat_Create(void)
 {
-    seat_t *ret = (seat_t *)malloc(sizeof(seat_t));
-    memset(ret, 0, sizeof(seat_t));
+    seat_t *ret = (seat_t *)calloc(1, sizeof(seat_t));
     
     ret->hands = CardArray_CreateEmpty();
     

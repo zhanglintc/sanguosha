@@ -14,7 +14,7 @@ deck_t* Deck_Create(int extension)
 {
     deck_t *ret = NULL;
     
-    ret = (deck_t *)malloc(sizeof(deck_t));
+    ret = (deck_t *)calloc(1, sizeof(deck_t));
     
     ret->extension = extension;
     ret->cardStack = CardArray_CreateSet(extension);

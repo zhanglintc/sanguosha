@@ -34,6 +34,11 @@
 #define DETERMINE_TYPE_FAMINE       3
 #define DETERMINE_TYPE_TRIGRAMS     4
 
+#define EventContextSet(context, e, g, s, x)    ((context)->event = e,  \
+                                                (context)->game = g,    \
+                                                (context)->seat = s,    \
+                                                (context)->extra = x)
+
 typedef struct event_context_t
 {
     int     event;
@@ -72,6 +77,7 @@ typedef struct extra_damage_t
 {
     int damage;
     void *source;
+    void *cards;
     
 } extra_damage_t;
 

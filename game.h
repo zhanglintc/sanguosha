@@ -65,6 +65,8 @@ int Game_DealCard(game_t *game, int count, card_array_t *array);
 
 seat_t *Game_FindNextSeat(game_t *game, seat_t *seat, int alive);
 
+int Game_FindSeatIndex(game_t *game, seat_t *seat);
+
 void Game_MoveDelayToNextSeat(game_t *game, seat_t *seat, int delayIndex);
 
 void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t *seat);

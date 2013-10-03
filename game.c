@@ -19,8 +19,7 @@ game_t *Game_Create(int mode, int seed)
     
     seat_t *seat = NULL;
     
-    game_t *game = (game_t *)malloc(sizeof(game_t));
-    memset(game, 0, sizeof(game_t));
+    game_t *game = (game_t *)calloc(1, sizeof(game_t));
     
     Random_Init(&game->mtRandom, (uint32_t)seed);
     
@@ -82,9 +81,6 @@ game_t *Game_Create(int mode, int seed)
         CardArray_PushBack(seat->hands, Deck_DealCard(game->deck));
         CardArray_PushBack(seat->hands, Deck_DealCard(game->deck));
     }
-    
-    game->seats[0]->delaySpecialCards[0] = Deck_DealCard(game->deck);
-    game->seats[0]->delaySpecialTypes[0] = DETERMINE_TYPE_LIGHTNING;
     
     return game;
 }
@@ -153,6 +149,20 @@ seat_t *Game_FindNextSeat(game_t *game, seat_t *seat, int alive)
     }
     
     return nextSeat;
+}
+
+int Game_FindSeatIndex(game_t *game, seat_t *seat)
+{
+    int index = 0;
+    
+    /* find seat index */
+    for (index = 0; index < game->seatCapacity; index++)
+    {
+        if (game->seats[index] == seat)
+            break;
+    }
+    
+    return index;
 }
 
 void Game_MoveDelayToNextSeat(game_t *game, seat_t *seat, int delayIndex)
@@ -282,35 +292,9 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
 {
     int seatIndex = 0;
     int delayIndex = 0;
-    uint32_t determineCard = 0;
-    
-    /* determine card array */
-    card_array_t determineCardArray;
-    
-    /* event context */
-    event_context_t context;
-    extra_request_t request;
-    extra_determine_t determineExtra;
-    extra_process_phase_t *procPhaseExtra;
-    
-    procPhaseExtra = (extra_process_phase_t *)phaseContext->extra;
-    
-    CardArray_Clear(&determineCardArray);
-    
-    memset(&context, 0, sizeof(event_context_t));
-    context.game = game;
-    context.seat = seat;
-    
-    /* event extra information */
-    memset(&request, 0, sizeof(extra_request_t));
-    memset(&determineExtra, 0, sizeof(extra_determine_t));
     
     /* find seat index */
-    for (seatIndex = 0; seatIndex < game->seatCapacity; seatIndex++)
-    {
-        if (game->seats[seatIndex] == seat)
-            break;
-    }
+    seatIndex = Game_FindSeatIndex(game, seat);
     
     /* turn determine */
     for (delayIndex = SEAT_DELAY_CAPACITY - 1; delayIndex >= 0; delayIndex--)
@@ -318,20 +302,26 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
         if (seat->delaySpecialTypes[delayIndex] != 0)
         {
             /* ask for impeccable */
-            context.event = EVENT_QUERY_CARD;
-            context.extra = &request;
-            request.card = Card_Make(0, 0, CATEGORY_SPECIAL, ATTRIBUTE_NONE, CARD_ID_IMPECCABLE);
-            /* this process will be very complicated */
-            Game_PostEventToAllFromSeat(game, &context, seat);
+            event_context_t queryContext;
+            extra_request_t request;
+            memset(&queryContext, 0, sizeof(event_context_t));
+            memset(&request, 0, sizeof(extra_request_t));
             
-            /* impeccable! */
-            if (((extra_request_t *)context.extra)->count % 2)
+            EventContextSet(&queryContext, EVENT_QUERY_CARD, game, seat, &request);
+            
+            request.card = Card_Make(0, 0, CATEGORY_SPECIAL, ATTRIBUTE_NONE, CARD_ID_IMPECCABLE);
+            
+            /* this process will be very complicated */
+            Game_PostEventToAllFromSeat(game, &queryContext, seat);
+            
+            /* impeccable */
+            if (((extra_request_t *)queryContext.extra)->count % 2)
             {
                 /* process delay special here */
                 if (seat->delaySpecialCards[delayIndex] != DETERMINE_TYPE_LIGHTNING)
                 {
                     /* not lightning, recyle card */
-                    seat->delaySpecialCards[delayIndex] = DETERMINE_TYPE_NONE;
+                    seat->delaySpecialTypes[delayIndex] = DETERMINE_TYPE_NONE;
                     Deck_RecycleCard(game->deck, seat->delaySpecialCards[delayIndex]);
                     seat->delaySpecialCards[delayIndex] = 0;
                 }
@@ -341,20 +331,32 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
                     Game_MoveDelayToNextSeat(game, seat, delayIndex);
                 }
             }
-            /* no impeccable, roll the dice */
+            /* no impeccable, roll the dice! */
             else
             {
+                event_context_t determineContext;
+                card_array_t determineCardArray;
+                extra_determine_t determineExtra;
+                extra_process_phase_t *procPhaseExtra;
+                uint32_t determineCard = 0;
+                
+                memset(&determineContext, 0, sizeof(event_context_t));
+                procPhaseExtra = (extra_process_phase_t *)phaseContext->extra;
+                memset(&determineExtra, 0, sizeof(extra_determine_t));
+                CardArray_Clear(&determineCardArray);
+                
                 Game_DealCard(game, 1, &determineCardArray);
                 determineCard = determineCardArray.cards[0];
                 
-                /* ask for change */
-                context.event = EVENT_PRE_DETERMINE;
-                context.extra = &determineExtra;
+                /* ask for swap */
                 determineExtra.origin = determineCard;
                 determineExtra.type = seat->delaySpecialTypes[delayIndex];
-                Game_PostEventToAllFromSeat(game, &context, seat);
                 
-                determineCard = ((extra_determine_t *)context.extra)->origin;
+                EventContextSet(&determineContext, EVENT_PRE_DETERMINE, game, seat, &determineExtra);
+                
+                Game_PostEventToAllFromSeat(game, &determineContext, seat);
+                
+                determineCard = determineExtra.change;
                 
                 /* apply delay result */
                 switch (determineExtra.type)
@@ -362,33 +364,34 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
                     case DETERMINE_TYPE_SLEEP:
                         if (CARD_SUIT(determineCard) != SUIT_HEART)
                             procPhaseExtra->shouldPassPlay = 1;
-                        
                         break;
                         
                     case DETERMINE_TYPE_FAMINE:
                         if (CARD_SUIT(determineCard) != SUIT_CLUB)
                             procPhaseExtra->shouldPassDeal = 1;
-                        
                         break;
                         
                     case DETERMINE_TYPE_LIGHTNING:
-                        printf("闪电在");
-                        Seat_Print(seat, SeatPrintMode_Minimum);
-                        printf("身上判定出了 :");
-                        Card_Print(determineCard);
-                        printf("\n");
-
-                        if (CARD_SUIT(determineCard) == SUIT_SPADE && CARD_RANK(determineCard) > RANK_ACE && CARD_RANK(determineCard) < RANK_TEN)
+                        if (CARD_SUIT(determineCard) == SUIT_SPADE &&
+                            CARD_RANK(determineCard) > RANK_ACE &&
+                            CARD_RANK(determineCard) < RANK_TEN)
                         {
-                            /* fix me */
-                            /* caocao can absorb the card */
-                            /* recycle determine card */
-                            Deck_RecycleCard(game->deck, determineCard);
-                            seat->delaySpecialCards[delayIndex] = 0;
-                            seat->delaySpecialTypes[delayIndex] = 0;
+                            /* booom! */
+                            event_context_t damageContext;
+                            extra_damage_t damage;
+                            card_array_t cards;
                             
-                            printf("恭喜这位玩家中电了\n");
-                            Seat_Print(seat, SeatPrintMode_Minimum);
+                            memset(&damage, 0, sizeof(extra_damage_t));
+                            CardArray_Clear(&cards);
+                            CardArray_PushBack(&cards, seat->delaySpecialCards[delayIndex]);
+                            
+                            damage.damage = 3;
+                            damage.source = NULL;
+                            damage.cards = &cards;
+                            
+                            EventContextSet(&damageContext, EVENT_ON_DAMAGE, game, seat, &damage);
+                            
+                            /* game_t needs a function for dealing damage */
                         }
                         else
                         {

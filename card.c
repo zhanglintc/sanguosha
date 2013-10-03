@@ -411,8 +411,7 @@ const char* Card_GetSuitString(int32_t card)
 card_array_t* CardArray_CreateEmpty(void)
 {
     card_array_t *ret = NULL;
-    ret = (card_array_t *)malloc(sizeof(card_array_t));
-    memset(ret, 0, sizeof(card_array_t));
+    ret = (card_array_t *)calloc(1, sizeof(card_array_t));
     
     return ret;
 }
