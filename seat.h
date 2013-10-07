@@ -93,6 +93,20 @@ void Seat_Print(seat_t *seat, int mode);
  * ************************************************************
  */
 
+typedef struct seat_list_t
+{
+    seat_t *seat;
+    struct seat_list_t *next;
+    
+} seat_list_t;
+
+seat_list_t *SeatList_Create(void);
+void SeatList_Destroy(seat_list_t *list);
+int SeatList_Count(seat_list_t *list);
+seat_list_t *SeatList_PushBack(seat_list_t *list, seat_t *seat);
+seat_list_t *SeatList_PushFront(seat_list_t *list, seat_t *seat);
+seat_list_t *SeatList_Remove(seat_list_t *list, seat_t *seat);
+
 void Identity_Print(int identity);
 
 const char* Identity_GetString(int identity);

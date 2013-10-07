@@ -176,6 +176,117 @@ void Seat_Print(seat_t *seat, int mode)
     }
 }
 
+seat_list_t *SeatList_Create(void)
+{
+    seat_list_t *ret = calloc(1, sizeof(seat_list_t));
+    
+    return ret;
+}
+
+void SeatList_Destroy(seat_list_t *list)
+{
+    seat_list_t *prev = NULL;
+    seat_list_t *node = NULL;
+    
+    for (node = list; node != NULL;)
+    {
+        prev = node;
+        node = node->next;
+        free(prev);
+    }
+}
+
+int SeatList_Count(seat_list_t *list)
+{
+    int count = 0;
+    while (list != NULL)
+    {
+        list = list->next;
+        count++;
+    }
+    
+    return count;
+}
+
+seat_list_t *SeatList_PushBack(seat_list_t *list, seat_t *seat)
+{
+    seat_list_t *tail = list;
+    seat_list_t *node = NULL;
+    
+    if (list->seat == NULL)
+    {
+        list->seat = seat;
+        return list;
+    }
+    
+    while (tail->next != NULL)
+        tail = tail->next;
+    
+    node = SeatList_Create();
+    node->next = NULL;
+    node->seat = seat;
+    
+    tail->next = node;
+    
+    return list;
+}
+
+seat_list_t *SeatList_PushFront(seat_list_t *list, seat_t *seat)
+{
+    seat_list_t *node = NULL;
+    
+    if (list->seat == NULL)
+    {
+        list->seat = seat;
+        return list;
+    }
+    
+    node = SeatList_Create();
+    node->seat = seat;
+    node->next = list;
+    
+    return node;
+}
+
+seat_list_t *SeatList_Remove(seat_list_t *list, seat_t *seat)
+{
+    seat_list_t *node = list;
+    seat_list_t *prev = NULL;
+    
+    /* remove only node in the list */
+    if (node->seat == seat && node->next == NULL)
+    {
+        SeatList_Destroy(node);
+        return NULL;
+    }
+    /* remove head of the list */
+    else if (node->seat == seat)
+    {
+        node = list->next;
+        free(list);
+        return node;
+    }
+    
+    prev = list;
+    node = list->next;
+    
+    while (node->seat != seat && node != NULL)
+    {
+        prev = node;
+        node = node->next;
+    }
+    
+    /* not found */
+    if (node == NULL)
+        return list;
+    
+    /* remove node */
+    prev->next = node->next;
+    free(node);
+    
+    return list;
+}
+
 void Identity_Print(int identity)
 {
     printf("%s", szIdentities[identity]);

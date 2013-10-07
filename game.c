@@ -190,6 +190,20 @@ void Game_MoveDelayToNextSeat(game_t *game, seat_t *seat, int delayIndex)
     }
 }
 
+void Game_DealDamageToSeat(game_t *game, seat_t *seat, seat_t *source, card_array_t *cards, int damage, int attribute)
+{
+    /* TODO */
+    event_context_t damageContext;
+    extra_damage_t damageExtra;
+    
+    memset(&damageExtra, 0, sizeof(extra_damage_t));
+    damageExtra.damage = damage;
+    damageExtra.source = source;
+    damageExtra.cards = &cards;
+    
+    EventContextSet(&damageContext, EVENT_ON_DAMAGE, game, seat, &damageExtra);
+}
+
 void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t *seat)
 {
     int i = 0;
@@ -377,21 +391,11 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
                             CARD_RANK(determineCard) < RANK_TEN)
                         {
                             /* booom! */
-                            event_context_t damageContext;
-                            extra_damage_t damage;
                             card_array_t cards;
-                            
-                            memset(&damage, 0, sizeof(extra_damage_t));
                             CardArray_Clear(&cards);
                             CardArray_PushBack(&cards, seat->delaySpecialCards[delayIndex]);
                             
-                            damage.damage = 3;
-                            damage.source = NULL;
-                            damage.cards = &cards;
-                            
-                            EventContextSet(&damageContext, EVENT_ON_DAMAGE, game, seat, &damage);
-                            
-                            /* game_t needs a function for dealing damage */
+                            Game_DealDamageToSeat(game, seat, NULL, &cards, 3, ATTRIBUTE_LIGHTNING);
                         }
                         else
                         {
