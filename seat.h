@@ -41,7 +41,8 @@ typedef enum
     PlayerStatus_Normal     = 0 << 0,
     PlayerStatus_Flipped    = 1 << 0,
     PlayerStatus_Drunk      = 1 << 1,
-    PlayerStatus_Naked      = 1 << 2
+    PlayerStatus_Chained    = 1 << 2,
+    PlayerStatus_Naked      = 1 << 3
     
 } PlayerStatus;
 

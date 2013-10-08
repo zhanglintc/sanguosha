@@ -195,6 +195,7 @@ void Game_DealDamageToSeat(game_t *game, seat_t *seat, seat_t *source, card_arra
     /* TODO */
     event_context_t damageContext;
     extra_damage_t damageExtra;
+    /* seat_list_t *chainSeatList; */
     
     memset(&damageExtra, 0, sizeof(extra_damage_t));
     damageExtra.damage = damage;
@@ -202,6 +203,11 @@ void Game_DealDamageToSeat(game_t *game, seat_t *seat, seat_t *source, card_arra
     damageExtra.cards = &cards;
     
     EventContextSet(&damageContext, EVENT_ON_DAMAGE, game, seat, &damageExtra);
+    
+    if (attribute == ATTRIBUTE_FIRE || attribute == ATTRIBUTE_LIGHTNING)
+    {
+        
+    }
 }
 
 void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t *seat)
