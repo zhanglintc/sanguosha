@@ -24,6 +24,8 @@
  *
  */
 
+#define CHECK_FLAG(x, f)        (((x) & (f)) != 0)
+
 /* rank and suit */
 #define CARD_RANK(x)            ((x)&0xF)
 #define CARD_SUIT(x)            ((x)&0xF0)
@@ -58,6 +60,8 @@
 #define CARD_IS_BASIC(x)        (((x)>>30 & 0x3) == 0)
 #define CARD_IS_SPECIAL(x)      (((x)>>30 & 0x3) == 1)
 #define CARD_IS_EQUIPMENT(x)    (((x)>>30 & 0x3) == 2)
+
+#define CARD_ID_CATEGORY(x, i, c) (CARD_GET_CATEGORY(x) == (c) && CARD_GET_ID(x) == (i))
 
 #define ATTRIBUTE_IS_NONE(x)    (((x)>>27 & 0x7) == 0)
 #define ATTRIBUTE_IS_FIRE(x)    (((x)>>27 & 0x7) == 1)

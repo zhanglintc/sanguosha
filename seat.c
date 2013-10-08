@@ -148,6 +148,13 @@ void Seat_Print(seat_t *seat, int mode)
     /* basic information */
     printf("[%s][%s][%d/%d][%d] ", Identity_GetString(seat->identity), Force_GetString(seat->force), seat->curHealth, seat->maxHealth, seat->hands->length);
     
+    if ((seat->status & PlayerStatus_Flipped) != 0)
+        printf("%s ", szFlipped);
+    if ((seat->status & PlayerStatus_Drunk) != 0)
+        printf("%s ", szDrunk);
+    if ((seat->status & PlayerStatus_Chained) != 0)
+        printf("%s ", szChained);
+    
     /* delay specials */
     if ((mode & SeatPrintMode_DelaySP) != 0)
     {

@@ -90,6 +90,9 @@ void Game_Destroy(game_t *game)
     int i = 0;
     for (i = 0; i < game->seatCapacity; i++)
     {
+        game->seats[i]->status |= PlayerStatus_Flipped;
+        game->seats[i]->status |= PlayerStatus_Chained;
+        
         Seat_Print(game->seats[i], SeatPrintMode_All);
         Seat_Destroy(game->seats[i]);
     }
@@ -195,7 +198,10 @@ void Game_DealDamageToSeat(game_t *game, seat_t *seat, seat_t *source, card_arra
     /* TODO */
     event_context_t damageContext;
     extra_damage_t damageExtra;
-    /* seat_list_t *chainSeatList; */
+    seat_list_t *chainSeatList = NULL;
+    seat_list_t *seatListIter = NULL;
+    int seatIndex = 0;
+    int i = 0;
     
     memset(&damageExtra, 0, sizeof(extra_damage_t));
     damageExtra.damage = damage;
@@ -204,9 +210,37 @@ void Game_DealDamageToSeat(game_t *game, seat_t *seat, seat_t *source, card_arra
     
     EventContextSet(&damageContext, EVENT_ON_DAMAGE, game, seat, &damageExtra);
     
-    if (attribute == ATTRIBUTE_FIRE || attribute == ATTRIBUTE_LIGHTNING)
+    /* if player is chained, and damage is attribute, build a list of chained players */
+    if ((attribute == ATTRIBUTE_FIRE || attribute == ATTRIBUTE_LIGHTNING) &&
+        CHECK_FLAG(seat->status, PlayerStatus_Chained))
     {
+        chainSeatList = SeatList_Create();
         
+        seatIndex = Game_FindSeatIndex(game, seat);
+        for (i = 0; i < game->seatCount; i++)
+        {
+            seat_t *checkSeat = NULL;
+            int checkIndex = 0;
+            checkIndex = (seatIndex + i) % game->seatCount;
+            checkSeat = game->seats[checkIndex];
+            if (!checkSeat->dead && CHECK_FLAG(seat->status, PlayerStatus_Chained))
+                SeatList_PushBack(chainSeatList, checkSeat);
+        }
+    }
+    
+    /* apply damage to seat */
+    if (chainSeatList != NULL)
+    {
+        seatListIter = chainSeatList;
+        while (seatListIter != NULL)
+        {
+            Game_PostEventToSeat(game, &damageContext, seatListIter->seat);
+            seatListIter = seatListIter->next;
+        }
+    }
+    else
+    {
+        Game_PostEventToSeat(game, &damageContext, seat);
     }
 }
 
@@ -293,6 +327,7 @@ void Game_PhaseTurnBegin(game_t *game, seat_t *seat, event_context_t *phaseConte
     
     if (seat != NULL && !seat->dead)
     {
+        /* if the seat is flipped, flip it back */
         if (seat->status & PlayerStatus_Flipped)
         {
             seat->status &= ~PlayerStatus_Flipped;
@@ -457,6 +492,7 @@ void Game_Running(game_t *game)
         /* seat iteration */
         for (seatIndex = 0; seatIndex < game->seatCapacity; seatIndex++)
         {
+            /* TODO Game_ExecuteSeatLogic for liushan */
             memset(&phaseContext, 0, sizeof(event_context_t));
             memset(&extra, 0, sizeof(extra_process_phase_t));
             

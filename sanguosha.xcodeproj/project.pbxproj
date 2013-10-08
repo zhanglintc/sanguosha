@@ -75,7 +75,6 @@
 				2EB42C8417C1C6F600D37653 /* game.h */,
 				2EB42C8517C1C72700D37653 /* game.c */,
 				2EC3664317AFE42600D97B98 /* main.c */,
-				2E75B60417AFE3F4000CC7DF /* sanguosha */,
 				2E75B60317AFE3F4000CC7DF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -86,13 +85,6 @@
 				2E75B60217AFE3F4000CC7DF /* sanguosha */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		2E75B60417AFE3F4000CC7DF /* sanguosha */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = sanguosha;
 			sourceTree = "<group>";
 		};
 		2EFED93A17BA345C00BDA5B8 /* common */ = {

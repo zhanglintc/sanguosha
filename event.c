@@ -47,7 +47,8 @@ void StandardAI_Handler_TurnEnd(event_context_t *context)
 
 void StandardAI_Handler_OnDamage(event_context_t *context)
 {
-    
+    /* some hero will have different skill on damage */
+    /* sunce, yujin, xiaoqiao etc */
 }
 
 void StandardAI_Handler_QueryCard(event_context_t *context)

@@ -91,8 +91,6 @@ int main(int argc, const char * argv[])
     
     memtrack_list_allocations();
     
-    convert_chinese2unicode("翻面 饮酒 铁索");
-    
     return 0;
 }
 
