@@ -45,6 +45,53 @@ void StandardAI_Handler_TurnEnd(event_context_t *context)
     
 }
 
+void StandardAI_Handler_OnDeal(event_context_t *context)
+{
+    int count = 0;
+    int i = 0;
+    card_array_t cards;
+    seat_t *seat = NULL;
+    
+    seat = context->seat;
+    CardArray_Clear(&cards);
+    
+    Seat_Print(seat, SeatPrintMode_Minimum);
+    
+    count = Game_DealCard(context->game, 2, &cards);
+    
+    printf("get ");
+    
+    for (i = 0; i < count; i++)
+    {
+        Card_Print(cards.cards[i]);
+        CardArray_PushBack(seat->hands, cards.cards[i]);
+        printf(" ");
+    }
+    
+    printf("from deck\n\n");
+}
+
+void StandardAI_Handler_OnPlay(event_context_t *context)
+{
+    
+}
+
+void StandardAI_Handler_OnDrop(event_context_t *context)
+{
+    /* TODO */
+    Game_DropCard(context->game, context->seat, NULL);
+}
+
+void StandardAI_Handler_OnOtherDrop(event_context_t *context)
+{
+    
+}
+
+void StandardAI_Handler_OnOtherRecyle(event_context_t *context)
+{
+    
+}
+
 void StandardAI_Handler_OnDamage(event_context_t *context)
 {
     /* some hero will have different skill on damage */

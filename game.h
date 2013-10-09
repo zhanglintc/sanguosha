@@ -55,6 +55,8 @@ void Game_Destroy(game_t *game);
 
 void Game_Execute(game_t *game);
 
+void Game_ExecuteSeatLogic(game_t *game, seat_t *seat);
+
 /*
  * ************************************************************
  * game play
@@ -62,6 +64,8 @@ void Game_Execute(game_t *game);
  */
 
 int Game_DealCard(game_t *game, int count, card_array_t *array);
+
+void Game_DropCard(game_t *game, seat_t *seat, card_array_t *array);
 
 seat_t *Game_FindNextSeat(game_t *game, seat_t *seat, int alive);
 
@@ -75,7 +79,7 @@ void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t 
 
 void Game_PostEventToAllNextSeat(game_t *game, event_context_t *context, seat_t *seat);
 
-void Game_PostEventToSeat(game_t *game, event_context_t *context, seat_t *seat);
+void Game_PostEventToSeat(game_t *game, seat_t *seat, event_context_t *context);
 
 /*
  * ************************************************************

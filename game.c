@@ -69,12 +69,17 @@ game_t *Game_Create(int mode, int seed)
     
     for (i = 0; i < playernum; i++)
     {
+        char name[20];
+        sprintf(name, "AI_%02d", i);
+        
         seat = Seat_Create();
         game->seats[i] = seat;
         seat->identity = identities[i];
         seat->force = Random_int32(&game->mtRandom) % 4 + 1;
         seat->maxHealth = (i == 0) ? 4 : 3;
         seat->curHealth = seat->maxHealth;
+        
+        Seat_SetName(seat, name);
         
         CardArray_PushBack(seat->hands, Deck_DealCard(game->deck));
         CardArray_PushBack(seat->hands, Deck_DealCard(game->deck));
@@ -90,9 +95,6 @@ void Game_Destroy(game_t *game)
     int i = 0;
     for (i = 0; i < game->seatCapacity; i++)
     {
-        game->seats[i]->status |= PlayerStatus_Flipped;
-        game->seats[i]->status |= PlayerStatus_Chained;
-        
         Seat_Print(game->seats[i], SeatPrintMode_All);
         Seat_Destroy(game->seats[i]);
     }
@@ -124,11 +126,35 @@ int Game_DealCard(game_t *game, int count, card_array_t *array)
             return -1;
         }
     }
-    
     for (i = 0; i < count; i++)
-        CardArray_PushBack(array, CardArray_PopFront(game->deck->cardStack));
+        CardArray_PushBack(array, Deck_DealCard(game->deck));
     
     return i;
+}
+
+void Game_DropCard(game_t *game, seat_t *seat, card_array_t *array)
+{
+    event_context_t dropEvent;
+    extra_drop_t dropExtra;
+    
+    event_context_t recyleEvent;
+    
+    memset(&dropEvent, 0, sizeof(event_context_t));
+    memset(&recyleEvent, 0, sizeof(event_context_t));
+    memset(&dropExtra, 0, sizeof(extra_drop_t));
+    
+    dropExtra.source = seat;
+    dropExtra.cards = array;
+    
+    dropEvent.event = EVENT_OTHER_DROP;
+    dropEvent.extra = &dropExtra;
+    
+    recyleEvent.event = EVENT_OTHER_RECYLE;
+    recyleEvent.extra = &dropExtra;
+    
+    Game_PostEventToAllNextSeat(game, &dropEvent, seat);
+    
+    Game_PostEventToAllNextSeat(game, &recyleEvent, seat);
 }
 
 seat_t *Game_FindNextSeat(game_t *game, seat_t *seat, int alive)
@@ -195,7 +221,6 @@ void Game_MoveDelayToNextSeat(game_t *game, seat_t *seat, int delayIndex)
 
 void Game_DealDamageToSeat(game_t *game, seat_t *seat, seat_t *source, card_array_t *cards, int damage, int attribute)
 {
-    /* TODO */
     event_context_t damageContext;
     extra_damage_t damageExtra;
     seat_list_t *chainSeatList = NULL;
@@ -234,14 +259,19 @@ void Game_DealDamageToSeat(game_t *game, seat_t *seat, seat_t *source, card_arra
         seatListIter = chainSeatList;
         while (seatListIter != NULL)
         {
-            Game_PostEventToSeat(game, &damageContext, seatListIter->seat);
+            Game_PostEventToSeat(game, seatListIter->seat, &damageContext);
             seatListIter = seatListIter->next;
         }
     }
     else
     {
-        Game_PostEventToSeat(game, &damageContext, seat);
+        Game_PostEventToSeat(game, seat, &damageContext);
     }
+    
+    /* TODO
+     * add asCard to parameter for caiwenji's skill
+     * add EVENT_OTHER_DAMAGE to event system
+     */
 }
 
 void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t *seat)
@@ -280,7 +310,7 @@ void Game_PostEventToAllNextSeat(game_t *game, event_context_t *context, seat_t 
     }
 }
 
-void Game_PostEventToSeat(game_t *game, event_context_t *context, seat_t *seat)
+void Game_PostEventToSeat(game_t *game, seat_t *seat, event_context_t *context)
 {
     Seat_HandleEvent(seat, context);
 }
@@ -455,22 +485,50 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
 
 void Game_PhaseTurnDeal(game_t *game, seat_t *seat, event_context_t *context)
 {
+    event_context_t event;
+    memset(&event, 0, sizeof(event_context_t));
     
+    event.event = EVENT_ON_DEAL;
+    event.game = game;
+    event.seat = seat;
+    
+    Game_PostEventToSeat(game, seat, &event);
 }
 
 void Game_PhaseTurnPlay(game_t *game, seat_t *seat, event_context_t *context)
 {
+    event_context_t event;
+    memset(&event, 0, sizeof(event_context_t));
     
+    event.event = EVENT_ON_PLAY;
+    event.game = game;
+    event.seat = seat;
+    
+    Game_PostEventToSeat(game, seat, &event);
 }
 
 void Game_PhaseTurnDrop(game_t *game, seat_t *seat, event_context_t *context)
 {
+    event_context_t event;
+    memset(&event, 0, sizeof(event_context_t));
     
+    event.event = EVENT_ON_DROP;
+    event.game = game;
+    event.seat = seat;
+    
+    Game_PostEventToSeat(game, seat, &event);
 }
 
 void Game_PhaseTurnEnd(game_t *game, seat_t *seat, event_context_t *context)
 {
+    event_context_t event;
+    memset(&event, 0, sizeof(event_context_t));
     
+    event.event = EVENT_TURN_END;
+    event.game = game;
+    event.seat = seat;
+    
+    Game_PostEventToSeat(game, seat, &event);
 }
 
 /*
@@ -479,12 +537,61 @@ void Game_PhaseTurnEnd(game_t *game, seat_t *seat, event_context_t *context)
  * ************************************************************
  */
 
+void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
+{
+    event_context_t phaseContext;
+    extra_process_phase_t extra;
+    
+    memset(&phaseContext, 0, sizeof(event_context_t));
+    memset(&extra, 0, sizeof(extra_process_phase_t));
+    
+    phaseContext.game = game;
+    phaseContext.seat = seat;
+    phaseContext.extra = &extra;
+    
+    /* turn begin */
+    Game_PhaseTurnBegin(game, seat, &phaseContext);
+    
+    /* some hero can bypass determine phases */
+    phaseContext.event = EVENT_TURN_DETERMINE;
+    Game_PostEventToSeat(game, seat, &phaseContext);
+    
+    /* turn determine */
+    if (!extra.shouldPassDetermine)
+        Game_PhaseTurnDetermine(game, seat, &phaseContext);
+    
+    /* some hero can bypass deal phase */
+    phaseContext.event = EVENT_TURN_DEAL;
+    Game_PostEventToSeat(game, seat, &phaseContext);
+    
+    /* turn deal */
+    if (!extra.shouldPassDeal)
+        Game_PhaseTurnDeal(game, seat, &phaseContext);
+    
+    /* some hero can bypass play phase */
+    phaseContext.event = EVENT_TURN_PLAY;
+    Game_PostEventToSeat(game, seat, &phaseContext);
+    
+    /* turn play */
+    if (!extra.shouldPassPlay)
+        Game_PhaseTurnPlay(game, seat, &phaseContext);
+    
+    /* some hero can bypass drop phase */
+    phaseContext.event = EVENT_TURN_DROP;
+    Game_PostEventToSeat(game, seat, &phaseContext);
+    
+    /* turn drop */
+    if (!extra.shouldPassDrop)
+        Game_PhaseTurnDrop(game, seat, &phaseContext);
+    
+    /* turn end */
+    phaseContext.event = EVENT_TURN_END;
+    Game_PostEventToSeat(game, seat, &phaseContext);
+}
+
 void Game_Running(game_t *game)
 {
     int seatIndex = 0;
-    event_context_t phaseContext;
-    extra_process_phase_t extra;
-    seat_t *seat = NULL;
     
     /* loop */
     while (game->stage != GameStage_End)
@@ -492,49 +599,9 @@ void Game_Running(game_t *game)
         /* seat iteration */
         for (seatIndex = 0; seatIndex < game->seatCapacity; seatIndex++)
         {
-            /* TODO Game_ExecuteSeatLogic for liushan */
-            memset(&phaseContext, 0, sizeof(event_context_t));
-            memset(&extra, 0, sizeof(extra_process_phase_t));
-            
-            phaseContext.game = game;
-            phaseContext.seat = seat;
-            phaseContext.extra = &extra;
-            
-            /* turn begin */
+            seat_t *seat = NULL;
             seat = game->seats[seatIndex];
-            Game_PhaseTurnBegin(game, seat, &phaseContext);
-            
-            /* some hero can bypass determine phases */
-            phaseContext.event = EVENT_TURN_DETERMINE;
-            Game_PostEventToSeat(game, &phaseContext, seat);
-            
-            /* turn determine */
-            if (!extra.shouldPassDetermine)
-                Game_PhaseTurnDetermine(game, seat, &phaseContext);
-            
-            /* some hero can bypass deal phase */
-            phaseContext.event = EVENT_TURN_DEAL;
-            Game_PostEventToSeat(game, &phaseContext, seat);
-            
-            /* turn deal */
-            if (!extra.shouldPassDeal)
-                Game_PhaseTurnDeal(game, seat, &phaseContext);
-            
-            /* some hero can bypass play phase */
-            phaseContext.event = EVENT_TURN_PLAY;
-            Game_PostEventToSeat(game, &phaseContext, seat);
-            
-            /* turn play */
-            if (!extra.shouldPassPlay)
-                Game_PhaseTurnPlay(game, seat, &phaseContext);
-
-            /* some hero can bypass drop phase */
-            phaseContext.event = EVENT_TURN_DROP;
-            Game_PostEventToSeat(game, &phaseContext, seat);
-            
-            /* trun drop */
-            if (!extra.shouldPassDrop)
-                Game_PhaseTurnDrop(game, seat, &phaseContext);
+            Game_ExecuteSeatLogic(game, seat);
         }
         game->stage = GameStage_End;
     }

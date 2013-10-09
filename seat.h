@@ -62,6 +62,8 @@ typedef struct seat_t
     int             aggressiveDistance;
     int             defensiveDistance;
     
+    char            *name;
+    
     uint32_t        equipments[SEAT_EQUIP_CAPACITY];
     uint32_t        delaySpecialCards[3];
     uint32_t        delaySpecialTypes[3];
@@ -77,7 +79,9 @@ void Seat_Destroy(seat_t *seat);
 
 void Seat_HandleEvent(seat_t *seat, event_context_t *context);
 
-/* TODO: refactor this function later */
+/* TODO: refactor this function
+ *          use extra_affectbycard_t
+ */
 int Seat_CanAffectByCard(seat_t *seat, uint32_t card);
 
 void Seat_SortDelaySpecials(seat_t *seat);
@@ -85,6 +89,8 @@ void Seat_SortDelaySpecials(seat_t *seat);
 int Seat_HasDelaySpecial(seat_t *seat, int delayType);
 
 int Seat_AttachDelaySpecial(seat_t *seat, int delayType, uint32_t card);
+
+char *Seat_SetName(seat_t *seat, const char *name);
 
 void Seat_Print(seat_t *seat, int mode);
 

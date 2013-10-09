@@ -56,6 +56,11 @@ seat_t *Seat_Create(void)
     ret->eventHandlers[EVENT_TURN_PLAY]         = StandardAI_Handler_TurnPlay;
     ret->eventHandlers[EVENT_TURN_DROP]         = StandardAI_Handler_TurnDrop;
     ret->eventHandlers[EVENT_TURN_END]          = StandardAI_Handler_TurnEnd;
+    ret->eventHandlers[EVENT_ON_DEAL]           = StandardAI_Handler_OnDeal;
+    ret->eventHandlers[EVENT_ON_PLAY]           = StandardAI_Handler_OnPlay;
+    ret->eventHandlers[EVENT_ON_DROP]           = StandardAI_Handler_OnDrop;
+    ret->eventHandlers[EVENT_OTHER_DROP]        = StandardAI_Handler_OnOtherDrop;
+    ret->eventHandlers[EVENT_ON_DAMAGE]         = StandardAI_Handler_OnDamage;
     ret->eventHandlers[EVENT_QUERY_CARD]        = StandardAI_Handler_QueryCard;
     ret->eventHandlers[EVENT_PRE_DETERMINE]     = StandardAI_Handler_PreDetermine;
     ret->eventHandlers[EVENT_POST_DETERMINE]    = StandardAI_Handler_PostDetermine;
@@ -67,6 +72,7 @@ void Seat_Destroy(seat_t *seat)
 {
     CardArray_Destroy(seat->hands);
     
+    free(seat->name);
     free(seat);
 }
 
@@ -141,12 +147,31 @@ int Seat_AttachDelaySpecial(seat_t *seat, int delayType, uint32_t card)
     return attached;
 }
 
+char *Seat_SetName(seat_t *seat, const char *name)
+{
+    if (seat->name != NULL)
+        free(seat->name);
+    
+    seat->name = NULL;
+    
+    seat->name = calloc(1, strlen(name) + 1);
+    memcpy(seat->name, name, strlen(name));
+    
+    return seat->name;
+}
+
 void Seat_Print(seat_t *seat, int mode)
 {
     int i = 0;
     
     /* basic information */
-    printf("[%s][%s][%d/%d][%d] ", Identity_GetString(seat->identity), Force_GetString(seat->force), seat->curHealth, seat->maxHealth, seat->hands->length);
+    printf("[%s][%s][%s][%d/%d][%d] ",
+           Identity_GetString(seat->identity),
+           Force_GetString(seat->force),
+           seat->name,
+           seat->curHealth,
+           seat->maxHealth,
+           seat->hands->length);
     
     if ((seat->status & PlayerStatus_Flipped) != 0)
         printf("%s ", szFlipped);

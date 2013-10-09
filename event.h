@@ -20,11 +20,18 @@
 #define EVENT_TURN_DROP         6
 #define EVENT_TURN_END          7
 
-#define EVENT_ON_DAMAGE         8
+#define EVENT_ON_DEAL           8
+#define EVENT_ON_PLAY           9
+#define EVENT_ON_DROP           10
 
-#define EVENT_QUERY_CARD        9
-#define EVENT_PRE_DETERMINE     10
-#define EVENT_POST_DETERMINE    11
+#define EVENT_OTHER_DROP        11
+#define EVENT_OTHER_RECYLE      12
+
+#define EVENT_ON_DAMAGE         13
+
+#define EVENT_QUERY_CARD        14
+#define EVENT_PRE_DETERMINE     15
+#define EVENT_POST_DETERMINE    16
 
 #define EVENT_COUNT             256
 
@@ -81,6 +88,13 @@ typedef struct extra_damage_t
     
 } extra_damage_t;
 
+typedef struct extra_drop_t
+{
+    void *source;
+    void *cards;
+    
+} extra_drop_t;
+
 void StandardAI_Handler_GameStart(event_context_t *context);
 void StandardAI_Handler_TurnBegin(event_context_t *context);
 void StandardAI_Handler_TurnDetermine(event_context_t *context);
@@ -88,6 +102,11 @@ void StandardAI_Handler_TurnDeal(event_context_t *context);
 void StandardAI_Handler_TurnPlay(event_context_t *context);
 void StandardAI_Handler_TurnDrop(event_context_t *context);
 void StandardAI_Handler_TurnEnd(event_context_t *context);
+void StandardAI_Handler_OnDeal(event_context_t *context);
+void StandardAI_Handler_OnPlay(event_context_t *context);
+void StandardAI_Handler_OnDrop(event_context_t *context);
+void StandardAI_Handler_OnOtherDrop(event_context_t *context);
+void StandardAI_Handler_OnOtherRecyle(event_context_t *context);
 void StandardAI_Handler_OnDamage(event_context_t *context);
 void StandardAI_Handler_QueryCard(event_context_t *context);
 void StandardAI_Handler_PreDetermine(event_context_t *context);
