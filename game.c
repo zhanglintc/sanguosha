@@ -271,6 +271,10 @@ void Game_DealDamageToSeat(game_t *game, seat_t *seat, seat_t *source, card_arra
     /* TODO
      * add asCard to parameter for caiwenji's skill
      * add EVENT_OTHER_DAMAGE to event system
+     *
+     * add a mechanism to
+     * post extra_seat_determine_result event to other seat for caopi
+     * then decide whether give a card to caopi
      */
 }
 
