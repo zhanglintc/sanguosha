@@ -7,6 +7,7 @@
  */
 
 #include "seat.h"
+#include "standard_ai.h"
 
 unsigned char szIdentities[][7] = {
     { 0xE5, 0xB9, 0xBD, 0xE7, 0x81, 0xB5, 0 },
@@ -60,6 +61,8 @@ seat_t *Seat_Create(void)
     ret->eventHandlers[EVENT_ON_PLAY]           = StandardAI_Handler_OnPlay;
     ret->eventHandlers[EVENT_ON_DROP]           = StandardAI_Handler_OnDrop;
     ret->eventHandlers[EVENT_OTHER_DROP]        = StandardAI_Handler_OnOtherDrop;
+    ret->eventHandlers[EVENT_PRE_DAMAGE]        = StandardAI_Handler_PreDamage;
+    ret->eventHandlers[EVENT_POST_DAMAGE]       = StandardAI_Handler_PostDamage;
     ret->eventHandlers[EVENT_ON_DAMAGE]         = StandardAI_Handler_OnDamage;
     ret->eventHandlers[EVENT_QUERY_CARD]        = StandardAI_Handler_QueryCard;
     ret->eventHandlers[EVENT_PRE_DETERMINE]     = StandardAI_Handler_PreDetermine;

@@ -219,21 +219,17 @@ void Game_MoveDelayToNextSeat(game_t *game, seat_t *seat, int delayIndex)
     }
 }
 
-void Game_DealDamageToSeat(game_t *game, seat_t *seat, seat_t *source, card_array_t *cards, int damage, int attribute)
+void Game_SeatPreDamage(game_t *game, event_context_t *context, seat_t *seat)
 {
-    event_context_t damageContext;
-    extra_damage_t damageExtra;
+    int i = 0;
+    int seatIndex = 0;
+    int attribute = 0;
     seat_list_t *chainSeatList = NULL;
     seat_list_t *seatListIter = NULL;
-    int seatIndex = 0;
-    int i = 0;
     
-    memset(&damageExtra, 0, sizeof(extra_damage_t));
-    damageExtra.damage = damage;
-    damageExtra.source = source;
-    damageExtra.cards = &cards;
+    extra_damage_t *damageExtra = (extra_damage_t *)context->extra;
     
-    EventContextSet(&damageContext, EVENT_ON_DAMAGE, game, seat, &damageExtra);
+    attribute = damageExtra->attribute;
     
     /* if player is chained, and damage is attribute, build a list of chained players */
     if ((attribute == ATTRIBUTE_FIRE || attribute == ATTRIBUTE_LIGHTNING) &&
@@ -259,13 +255,13 @@ void Game_DealDamageToSeat(game_t *game, seat_t *seat, seat_t *source, card_arra
         seatListIter = chainSeatList;
         while (seatListIter != NULL)
         {
-            Game_PostEventToSeat(game, seatListIter->seat, &damageContext);
+            Game_PostEventToSeat(game, seatListIter->seat, context);
             seatListIter = seatListIter->next;
         }
     }
     else
     {
-        Game_PostEventToSeat(game, seat, &damageContext);
+        Game_PostEventToSeat(game, seat, context);
     }
     
     /* TODO
@@ -276,6 +272,16 @@ void Game_DealDamageToSeat(game_t *game, seat_t *seat, seat_t *source, card_arra
      * post extra_seat_determine_result event to other seat for caopi
      * then decide whether give a card to caopi
      */
+}
+
+void Game_SeatPostDamage(game_t *game, event_context_t *context, seat_t *seat)
+{
+    
+}
+
+void Game_SeatOnDamage(game_t *game, event_context_t *context, seat_t *seat)
+{
+    
 }
 
 void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t *seat)
@@ -466,11 +472,28 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
                             CARD_RANK(determineCard) < RANK_TEN)
                         {
                             /* booom! */
+                            uint32_t card;
                             card_array_t cards;
-                            CardArray_Clear(&cards);
-                            CardArray_PushBack(&cards, seat->delaySpecialCards[delayIndex]);
+                            event_context_t damageContext;
+                            extra_damage_t damageExtra;
                             
-                            Game_DealDamageToSeat(game, seat, NULL, &cards, 3, ATTRIBUTE_LIGHTNING);
+                            memset(&damageContext, 0, sizeof(event_context_t));
+                            memset(&damageExtra, 0, sizeof(extra_damage_t));
+                            
+                            CardArray_Clear(&cards);
+                            card = seat->delaySpecialCards[delayIndex];
+                            CardArray_PushBack(&cards, card);
+                            
+                            damageExtra.asCard = card;
+                            damageExtra.damage = 3;
+                            damageExtra.attribute = ATTRIBUTE_LIGHTNING;
+                            damageExtra.canDodge = 0;
+                            damageExtra.source = NULL;
+                            damageExtra.cards = &cards;
+                            
+                            EventContextSet(&damageContext, EVENT_PRE_DAMAGE, game, seat, &damageExtra);
+                            
+                            Game_SeatPreDamage(game, &damageContext, seat);
                         }
                         else
                         {

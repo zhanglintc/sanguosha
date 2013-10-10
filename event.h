@@ -27,11 +27,13 @@
 #define EVENT_OTHER_DROP        11
 #define EVENT_OTHER_RECYLE      12
 
-#define EVENT_ON_DAMAGE         13
+#define EVENT_QUERY_CARD        13
+#define EVENT_PRE_DETERMINE     14
+#define EVENT_POST_DETERMINE    15
 
-#define EVENT_QUERY_CARD        14
-#define EVENT_PRE_DETERMINE     15
-#define EVENT_POST_DETERMINE    16
+#define EVENT_PRE_DAMAGE        16
+#define EVENT_POST_DAMAGE       17
+#define EVENT_ON_DAMAGE         18
 
 #define EVENT_COUNT             256
 
@@ -82,9 +84,12 @@ typedef struct extra_process_phase_t
 
 typedef struct extra_damage_t
 {
-    int damage;
-    void *source;
-    void *cards;
+    int         damage;
+    int         attribute;
+    uint32_t    asCard;
+    int         canDodge;
+    void        *source;
+    void        *cards;
     
 } extra_damage_t;
 
@@ -94,25 +99,5 @@ typedef struct extra_drop_t
     void *cards;
     
 } extra_drop_t;
-
-void StandardAI_Handler_GameStart(event_context_t *context);
-void StandardAI_Handler_TurnBegin(event_context_t *context);
-void StandardAI_Handler_TurnDetermine(event_context_t *context);
-void StandardAI_Handler_TurnDeal(event_context_t *context);
-void StandardAI_Handler_TurnPlay(event_context_t *context);
-void StandardAI_Handler_TurnDrop(event_context_t *context);
-void StandardAI_Handler_TurnEnd(event_context_t *context);
-void StandardAI_Handler_OnDeal(event_context_t *context);
-void StandardAI_Handler_OnPlay(event_context_t *context);
-void StandardAI_Handler_OnDrop(event_context_t *context);
-void StandardAI_Handler_OnOtherDrop(event_context_t *context);
-void StandardAI_Handler_OnOtherRecyle(event_context_t *context);
-void StandardAI_Handler_OnDamage(event_context_t *context);
-void StandardAI_Handler_QueryCard(event_context_t *context);
-void StandardAI_Handler_PreDetermine(event_context_t *context);
-void StandardAI_Handler_PostDetermine(event_context_t *context);
-
-void GodZhugeAI_Handler_GameStart(event_context_t *context);
-void ZhangheAI_Handler_TurnDetermine(event_context_t *context);
 
 #endif /* EVENT_H_ */

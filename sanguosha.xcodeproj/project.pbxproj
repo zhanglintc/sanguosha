@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E2CC9051806F80B00E12DB8 /* standard_ai.c in Sources */ = {isa = PBXBuildFile; fileRef = 2E2CC9041806F80B00E12DB8 /* standard_ai.c */; };
 		2E844F5F17C218D200C6C49E /* mt19937.c in Sources */ = {isa = PBXBuildFile; fileRef = 2E844F5E17C218D200C6C49E /* mt19937.c */; };
 		2EB42C8617C1C72700D37653 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = 2EB42C8517C1C72700D37653 /* game.c */; };
 		2EB8E8C217BBC2EE008D7765 /* memtracker.c in Sources */ = {isa = PBXBuildFile; fileRef = 2EB8E8C017BBC2EE008D7765 /* memtracker.c */; };
@@ -30,6 +31,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2E2CC9031806F7B300E12DB8 /* standard_ai.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = standard_ai.h; sourceTree = "<group>"; };
+		2E2CC9041806F80B00E12DB8 /* standard_ai.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = standard_ai.c; sourceTree = "<group>"; };
 		2E2E16AE17B379B400B05F2F /* card.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = card.h; sourceTree = "<group>"; };
 		2E75B60217AFE3F4000CC7DF /* sanguosha */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sanguosha; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E844F5D17C218C900C6C49E /* mt19937.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mt19937.h; sourceTree = SOURCE_ROOT; };
@@ -70,6 +73,8 @@
 				2ED4833B17B8D9390033E4BD /* card.c */,
 				2EE99D8C17BDCD4D007CB940 /* seat.h */,
 				2EE99D8D17BDD1B5007CB940 /* seat.c */,
+				2E2CC9031806F7B300E12DB8 /* standard_ai.h */,
+				2E2CC9041806F80B00E12DB8 /* standard_ai.c */,
 				2ED1BD2F17C3B661008C0B97 /* event.h */,
 				2ED1BD3017C3B68E008C0B97 /* event.c */,
 				2EB42C8417C1C6F600D37653 /* game.h */,
@@ -157,6 +162,7 @@
 				2EE99D8E17BDD1B5007CB940 /* seat.c in Sources */,
 				2EB42C8617C1C72700D37653 /* game.c in Sources */,
 				2E844F5F17C218D200C6C49E /* mt19937.c in Sources */,
+				2E2CC9051806F80B00E12DB8 /* standard_ai.c in Sources */,
 				2ED1BD3117C3B68E008C0B97 /* event.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
