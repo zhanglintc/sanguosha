@@ -134,6 +134,7 @@ int Game_DealCard(game_t *game, int count, card_array_t *array)
 
 void Game_DropCard(game_t *game, seat_t *seat, card_array_t *array)
 {
+    int i = 0;
     event_context_t dropEvent;
     extra_drop_t dropExtra;
     
@@ -155,6 +156,9 @@ void Game_DropCard(game_t *game, seat_t *seat, card_array_t *array)
     Game_PostEventToAllNextSeat(game, &dropEvent, seat);
     
     Game_PostEventToAllNextSeat(game, &recyleEvent, seat);
+    
+    for (i = 0; i < array->length; i++)
+        Deck_RecycleCard(game->deck, CardArray_PopFront(array));
 }
 
 seat_t *Game_FindNextSeat(game_t *game, seat_t *seat, int alive)
@@ -619,6 +623,7 @@ void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
 void Game_Running(game_t *game)
 {
     int seatIndex = 0;
+    int temp = 2;
     
     /* loop */
     while (game->stage != GameStage_End)
@@ -630,7 +635,10 @@ void Game_Running(game_t *game)
             seat = game->seats[seatIndex];
             Game_ExecuteSeatLogic(game, seat);
         }
-        game->stage = GameStage_End;
+        
+        temp--;
+        if (temp <= 0)
+            game->stage = GameStage_End;
     }
 }
 
