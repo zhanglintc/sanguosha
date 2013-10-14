@@ -265,6 +265,15 @@ int32_t CardArray_Insert(card_array_t *arr, int index, int32_t card);
  */
 int32_t CardArray_Remove(card_array_t *arr, int index);
 
+/**
+ *	@brief	Remove a card from the array
+ *
+ *	@param 	arr 	the array to remove the card from
+ *	@param 	card 	the card to remove
+ *
+ *	@return         0 : card not found, otherwise success
+ */
+int CardArray_RemoveCard(card_array_t *arr, uint32_t card);
 
 /**
  *	@brief	Copy a card set

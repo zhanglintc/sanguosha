@@ -511,6 +511,32 @@ int32_t CardArray_Remove(card_array_t *arr, int index)
     return card;
 }
 
+int CardArray_RemoveCard(card_array_t *arr, uint32_t card)
+{
+    int removed = 0;
+    int i = 0;
+    
+    if (arr->length <= 0)
+        return removed;
+    
+    for (i = 0; i < arr->length; i++)
+    {
+        if (arr->cards[i] == card)
+        {
+            removed = 1;
+            break;
+        }
+    }
+    
+    if (removed)
+    {
+        memmove(&arr->cards[i], &arr->cards[i+1], sizeof(int32_t) * (arr->length - 1));
+        arr->length--;
+    }
+    
+    return removed;
+}
+
 void CardArray_Copy(card_array_t *dst, card_array_t *src)
 {
     memcpy(dst, src, sizeof(card_array_t));

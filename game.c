@@ -135,6 +135,7 @@ int Game_DealCard(game_t *game, int count, card_array_t *array)
 void Game_DropCard(game_t *game, seat_t *seat, card_array_t *array)
 {
     int i = 0;
+    int dropCount = 0;
     event_context_t dropEvent;
     extra_drop_t dropExtra;
     
@@ -157,7 +158,8 @@ void Game_DropCard(game_t *game, seat_t *seat, card_array_t *array)
     
     Game_PostEventToAllNextSeat(game, &recyleEvent, seat);
     
-    for (i = 0; i < array->length; i++)
+    dropCount = array->length;
+    for (i = 0; i < dropCount; i++)
         Deck_RecycleCard(game->deck, CardArray_PopFront(array));
 }
 
@@ -367,6 +369,7 @@ void Game_PhaseTurnBegin(game_t *game, seat_t *seat, event_context_t *phaseConte
     extra_process_phase_t *extra = (extra_process_phase_t *)phaseContext->extra;
     
     memset(&turnBegin, 0, sizeof(event_context_t));
+    turnBegin.game = game;
     turnBegin.event = EVENT_TURN_BEGIN;
     
     if (seat != NULL && !seat->dead)
@@ -382,6 +385,7 @@ void Game_PhaseTurnBegin(game_t *game, seat_t *seat, event_context_t *phaseConte
         }
         else
         {
+            turnBegin.seat = seat;
             Seat_HandleEvent(seat, &turnBegin);
         }
     }
@@ -623,7 +627,7 @@ void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
 void Game_Running(game_t *game)
 {
     int seatIndex = 0;
-    int temp = 2;
+    int temp = 200;
     
     /* loop */
     while (game->stage != GameStage_End)

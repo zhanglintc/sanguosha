@@ -14,6 +14,7 @@
 
 #define DEBUG_PRINT_DEAL
 #define DEBUG_PRINT_DROP
+#define DEBUG_PRINT_PLAY
 
 /* basic cards */
 int value_basic[5] = {
@@ -145,7 +146,8 @@ void StandardAI_Handler_GameStart(event_context_t *context)
 
 void StandardAI_Handler_TurnBegin(event_context_t *context)
 {
-    
+    Seat_Print(context->seat, SeatPrintMode_Minimum);
+    printf("\n");
 }
 
 void StandardAI_Handler_TurnDetermine(event_context_t *context)
@@ -160,7 +162,67 @@ void StandardAI_Handler_TurnDeal(event_context_t *context)
 
 void StandardAI_Handler_TurnPlay(event_context_t *context)
 {
+    seat_t *seat = NULL;
+    card_array_t *hands = NULL;
+    card_array_t equipments;
+    card_array_t tempArray;
+    card_array_t dropEquips;
+    int i = 0;
+    int cnt = 0;
+    int32_t equipCard = 0;
+    int32_t dropCard = 0;
     
+    seat = context->seat;
+    hands = seat->hands;
+    
+    StandardAI_Sort_Hands(seat);
+    CardArray_Copy(&tempArray, hands);
+    memset(&equipments, 0, sizeof(card_array_t));
+    
+    cnt = tempArray.length;
+    for (i = 0; i < tempArray.length; i++)
+    {
+        if (CARD_GET_CATEGORY(tempArray.cards[i]) == CATEGORY_EQUIPMENT)
+        {
+            CardArray_PushBack(&equipments, tempArray.cards[i]);
+            CardArray_RemoveCard(hands, tempArray.cards[i]);
+        }
+    }
+    
+    if (equipments.length > 0)
+    {
+        for (i = equipments.length - 1; i >= 0; i--)
+        {
+            memset(&dropEquips, 0, sizeof(card_array_t));
+            equipCard = equipments.cards[i];
+            dropCard = seat->equipments[CARD_GET_ATTRIBUTE(equipCard)];
+            
+            if (seat->equipments[CARD_GET_ATTRIBUTE(equipCard)])
+                CardArray_PushBack(&dropEquips, dropCard);
+            
+            seat->equipments[CARD_GET_ATTRIBUTE(equipCard)] = equipCard;
+            Game_DropCard(context->game, seat, &dropEquips);
+            
+            if (CARD_ID_CATEGORY(dropCard, CARD_ID_SILVER_LION, CATEGORY_EQUIPMENT))
+            {
+                seat->curHealth++;
+                if (seat->curHealth > seat->maxHealth)
+                    seat->curHealth = seat->maxHealth;
+
+#ifdef DEBUG_PRINT_PLAY
+                printf("silver lion recover 1 health\n");
+#endif
+            }
+#ifdef DEBUG_PRINT_PLAY
+            printf("equip ");
+            Card_Print(equipCard);
+            printf(" ");
+#endif
+        }
+#ifdef DEBUG_PRINT_PLAY
+        printf("\n");
+#endif
+    }
 }
 
 void StandardAI_Handler_TurnDrop(event_context_t *context)
@@ -189,7 +251,6 @@ void StandardAI_Handler_OnDeal(event_context_t *context)
         CardArray_PushBack(seat->hands, cards.cards[i]);
     
 #ifdef DEBUG_PRINT_DEAL
-    Seat_Print(seat, SeatPrintMode_Minimum);
     printf("get ");
     
     for (i = 0; i < count; i++)
@@ -198,7 +259,7 @@ void StandardAI_Handler_OnDeal(event_context_t *context)
         printf(" ");
     }
     
-    printf("from deck\n\n");
+    printf("from deck\n");
 #endif
 }
 
@@ -226,14 +287,9 @@ void StandardAI_Handler_OnDrop(event_context_t *context)
         return;
     
     for (i = 0; i < dropcount; i++)
-    {
         CardArray_PushBack(&drops, CardArray_PopBack(seat->hands));
-    }
-    
-    Game_DropCard(context->game, context->seat, &drops);
     
 #ifdef DEBUG_PRINT_DROP
-    Seat_Print(seat, SeatPrintMode_Minimum);
     printf("drop ");
     
     for (i = 0; i < drops.length; i++)
@@ -244,6 +300,8 @@ void StandardAI_Handler_OnDrop(event_context_t *context)
     
     printf("to deck\n\n");
 #endif
+    
+    Game_DropCard(context->game, context->seat, &drops);
 }
 
 void StandardAI_Handler_OnOtherDrop(event_context_t *context)
