@@ -78,6 +78,7 @@ game_t *Game_Create(int mode, int seed)
         seat->force = Random_int32(&game->mtRandom) % 4 + 1;
         seat->maxHealth = (i == 0) ? 4 : 3;
         seat->curHealth = seat->maxHealth;
+        seat->sex = Random_int32(&game->mtRandom) % 2;
         
         Seat_SetName(seat, name);
         
@@ -627,7 +628,7 @@ void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
 void Game_Running(game_t *game)
 {
     int seatIndex = 0;
-    int temp = 200;
+    int temp = 1;
     
     /* loop */
     while (game->stage != GameStage_End)

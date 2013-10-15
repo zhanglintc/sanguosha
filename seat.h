@@ -22,6 +22,9 @@
 #define FORCE_SHU           3
 #define FORCE_WU            4
 
+#define SEX_MALE            0
+#define SEX_FEMALE          1
+
 #define SEAT_EQUIP_CAPACITY 4
 #define SEAT_DELAY_CAPACITY 3
 
@@ -56,6 +59,7 @@ typedef struct seat_t
     int             curHealth;
     int             maxHealth;
     
+    int             sex;
     int             status;
     int             dead;
     
@@ -121,5 +125,7 @@ const char* Identity_GetString(int identity);
 void Force_Print(int force);
 
 const char* Force_GetString(int force);
+
+const char* Sex_GetString(int sex);
 
 #endif /* SEAT_H_ */

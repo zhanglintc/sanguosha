@@ -308,7 +308,7 @@ void Card_Print(int32_t card)
     
     Card_ToString(card, buffer);
     
-    printf("%s", buffer);
+    DEBUG_PRINT(("%s", buffer));
 }
 
 int Card_ToString(int32_t card, char str[])
@@ -539,6 +539,7 @@ int CardArray_RemoveCard(card_array_t *arr, uint32_t card)
 
 void CardArray_Copy(card_array_t *dst, card_array_t *src)
 {
+    memset(dst, 0, sizeof(card_array_t));
     memcpy(dst, src, sizeof(card_array_t));
 }
 

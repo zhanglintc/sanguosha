@@ -12,10 +12,6 @@
 #include "seat.h"
 #include "game.h"
 
-#define DEBUG_PRINT_DEAL
-#define DEBUG_PRINT_DROP
-#define DEBUG_PRINT_PLAY
-
 /* basic cards */
 int value_basic[5] = {
     0, 29, 28, 41, 40
@@ -138,30 +134,9 @@ void StandardAI_Sort_Hands(seat_t *seat)
     }
 }
 
-/* event handlers */
-void StandardAI_Handler_GameStart(event_context_t *context)
+void StandardAI_Play_Equipment(event_context_t *context)
 {
-    
-}
-
-void StandardAI_Handler_TurnBegin(event_context_t *context)
-{
-    Seat_Print(context->seat, SeatPrintMode_Minimum);
-    printf("\n");
-}
-
-void StandardAI_Handler_TurnDetermine(event_context_t *context)
-{
-    
-}
-
-void StandardAI_Handler_TurnDeal(event_context_t *context)
-{
-    
-}
-
-void StandardAI_Handler_TurnPlay(event_context_t *context)
-{
+    game_t *game = NULL;
     seat_t *seat = NULL;
     card_array_t *hands = NULL;
     card_array_t equipments;
@@ -172,12 +147,12 @@ void StandardAI_Handler_TurnPlay(event_context_t *context)
     int32_t equipCard = 0;
     int32_t dropCard = 0;
     
+    game = context->game;
     seat = context->seat;
     hands = seat->hands;
     
-    StandardAI_Sort_Hands(seat);
-    CardArray_Copy(&tempArray, hands);
     memset(&equipments, 0, sizeof(card_array_t));
+    CardArray_Copy(&tempArray, hands);
     
     cnt = tempArray.length;
     for (i = 0; i < tempArray.length; i++)
@@ -189,6 +164,7 @@ void StandardAI_Handler_TurnPlay(event_context_t *context)
         }
     }
     
+    /* put on equipments */
     if (equipments.length > 0)
     {
         for (i = equipments.length - 1; i >= 0; i--)
@@ -208,21 +184,154 @@ void StandardAI_Handler_TurnPlay(event_context_t *context)
                 seat->curHealth++;
                 if (seat->curHealth > seat->maxHealth)
                     seat->curHealth = seat->maxHealth;
-
-#ifdef DEBUG_PRINT_PLAY
-                printf("silver lion recover 1 health\n");
-#endif
+                
+                DEBUG_PRINT(("silver lion recover 1 health\n"));
             }
-#ifdef DEBUG_PRINT_PLAY
-            printf("equip ");
+            
+            DEBUG_PRINT(("equip "));
             Card_Print(equipCard);
-            printf(" ");
-#endif
+            DEBUG_PRINT((" "));
         }
-#ifdef DEBUG_PRINT_PLAY
-        printf("\n");
-#endif
+        DEBUG_PRINT(("\n"));
     }
+}
+
+void StandardAI_Play_EatPeach(event_context_t *context)
+{
+    game_t *game = NULL;
+    seat_t *seat = NULL;
+    card_array_t *hands = NULL;
+    card_array_t tempArray;
+    int i = 0;
+    int cnt = 0;
+    
+    game = context->game;
+    seat = context->seat;
+    hands = seat->hands;
+    
+    /* eat peach if heal is not full */
+    CardArray_Copy(&tempArray, hands);
+    cnt = tempArray.length;
+    for (i = 0; i < tempArray.length; i++)
+    {
+        if (CARD_ID_CATEGORY(tempArray.cards[i], CARD_ID_PEACH, CATEGORY_BASIC))
+        {
+            if (seat->curHealth < seat->maxHealth)
+            {
+                seat->curHealth++;
+                Deck_RecycleCard(game->deck, tempArray.cards[i]);
+                CardArray_RemoveCard(hands, tempArray.cards[i]);
+                
+                DEBUG_PRINT(("eat peach, health restore 1 point\n"));
+            }
+        }
+    }
+}
+
+void StandardAI_Play_UseSpecial(event_context_t *context)
+{
+    game_t *game = NULL;
+    seat_t *seat = NULL;
+    card_array_t *hands = NULL;
+    card_array_t tempArray;
+    int i = 0;
+    int cnt = 0;
+    int fabricated = 0;
+    
+    game = context->game;
+    seat = context->seat;
+    hands = seat->hands;
+    
+    /* use fabricate */
+    do
+    {
+        CardArray_Copy(&tempArray, hands);
+        cnt = tempArray.length;
+        for (i = 0; i < tempArray.length; i++)
+        {
+            fabricated = 0;
+            
+            if (CARD_ID_CATEGORY(tempArray.cards[i], CARD_ID_FABRICATE, CATEGORY_SPECIAL))
+            {
+                /* ask for impeccable */
+                event_context_t queryContext;
+                extra_request_t request;
+                memset(&queryContext, 0, sizeof(event_context_t));
+                memset(&request, 0, sizeof(extra_request_t));
+                
+                EventContextSet(&queryContext, EVENT_QUERY_CARD, game, seat, &request);
+                
+                request.card = Card_Make(0, 0, CATEGORY_SPECIAL, ATTRIBUTE_NONE, CARD_ID_IMPECCABLE);
+                
+                /* this process will be very complicated */
+                Game_PostEventToAllFromSeat(game, &queryContext, seat);
+                
+                /* impeccable */
+                if (((extra_request_t *)queryContext.extra)->count % 2)
+                {
+                }
+                else
+                {
+                    int ci = 0;
+                    int count = 0;
+                    int32_t fabricateCard = 0;
+                    card_array_t cards;
+                    
+                    memset(&cards, 0, sizeof(card_array_t));
+                    
+                    /* recyle card */
+                    Deck_RecycleCard(game->deck, tempArray.cards[i]);
+                    CardArray_RemoveCard(hands, tempArray.cards[i]);
+                    
+                    /* deal two card from deck */
+                    count = Game_DealCard(game, 2, &cards);
+                    DEBUG_PRINT(("fabricate "));
+                    for (ci = 0; ci < count; ci++)
+                    {
+                        fabricateCard = CardArray_PopBack(&cards);
+                        CardArray_PushBack(hands, fabricateCard);
+                        
+                        Card_Print(fabricateCard);
+                        DEBUG_PRINT((" "));
+                    }
+                    
+                    DEBUG_PRINT(("from deck\n"));
+                    
+                    /* re-run the OnPlay phase */
+                    fabricated = 1;
+                    StandardAI_Handler_OnPlay(context);
+                    break;
+                }
+            }
+        }
+    } while (fabricated);
+}
+
+/* event handlers */
+void StandardAI_Handler_GameStart(event_context_t *context)
+{
+    
+}
+
+void StandardAI_Handler_TurnBegin(event_context_t *context)
+{
+    Seat_Print(context->seat, SeatPrintMode_Minimum);
+    DEBUG_PRINT(("\n"));
+}
+
+void StandardAI_Handler_TurnDetermine(event_context_t *context)
+{
+    
+}
+
+void StandardAI_Handler_TurnDeal(event_context_t *context)
+{
+    
+}
+
+void StandardAI_Handler_TurnPlay(event_context_t *context)
+{
+    
 }
 
 void StandardAI_Handler_TurnDrop(event_context_t *context)
@@ -250,22 +359,25 @@ void StandardAI_Handler_OnDeal(event_context_t *context)
     for (i = 0; i < count; i++)
         CardArray_PushBack(seat->hands, cards.cards[i]);
     
-#ifdef DEBUG_PRINT_DEAL
-    printf("get ");
+    DEBUG_PRINT(("get "));
     
     for (i = 0; i < count; i++)
     {
         Card_Print(cards.cards[i]);
-        printf(" ");
+        DEBUG_PRINT((" "));
     }
     
-    printf("from deck\n");
-#endif
+    DEBUG_PRINT(("from deck\n"));
 }
 
 void StandardAI_Handler_OnPlay(event_context_t *context)
 {
-    /* TODO */
+    seat_t *seat = context->seat;
+    StandardAI_Sort_Hands(seat);
+    
+    StandardAI_Play_Equipment(context);
+    StandardAI_Play_UseSpecial(context);
+    StandardAI_Play_EatPeach(context);
 }
 
 void StandardAI_Handler_OnDrop(event_context_t *context)
@@ -289,17 +401,15 @@ void StandardAI_Handler_OnDrop(event_context_t *context)
     for (i = 0; i < dropcount; i++)
         CardArray_PushBack(&drops, CardArray_PopBack(seat->hands));
     
-#ifdef DEBUG_PRINT_DROP
-    printf("drop ");
+    DEBUG_PRINT(("drop "));
     
     for (i = 0; i < drops.length; i++)
     {
         Card_Print(drops.cards[i]);
-        printf(" ");
+        DEBUG_PRINT((" "));
     }
     
-    printf("to deck\n\n");
-#endif
+    DEBUG_PRINT(("to deck\n\n"));
     
     Game_DropCard(context->game, context->seat, &drops);
 }
@@ -347,12 +457,12 @@ void StandardAI_Handler_PostDetermine(event_context_t *context)
 
 void GodZhugeAI_Handler_GameStart(event_context_t *context)
 {
-    printf("祈星辰之力,佑我蜀汉!\n");
+    DEBUG_PRINT(("祈星辰之力,佑我蜀汉!\n"));
 }
 
 void ZhangheAI_Handler_TurnDetermine(event_context_t *context)
 {
     extra_process_phase_t *extra = (extra_process_phase_t *)context->extra;
     extra->shouldPassDetermine = 1;
-    printf("用兵之道,变化万千!\n");
+    DEBUG_PRINT(("用兵之道,变化万千!\n"));
 }
