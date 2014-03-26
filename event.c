@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  event.c
  *  sanguosha
  *

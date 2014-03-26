@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  seat.h
  *  sanguosha
  *

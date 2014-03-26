@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  standard_ai.c
  *  sanguosha
  *

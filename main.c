@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  main.c
  *  sanguosha
  *
@@ -87,9 +87,10 @@ void test_Game()
 
 int main(int argc, const char * argv[])
 {
-    test_Game();
-    
-    memtrack_list_allocations();
+    printf("乱臣贼子 %s\n","反贼");
+	test_Game();
+	//memtrack_list_allocations();
+	getchar();
     
     return 0;
 }

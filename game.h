@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  game.h
  *  sanguosha
  *

@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  common.h
  *  sanguosha
  *
