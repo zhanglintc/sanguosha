@@ -25,4 +25,8 @@
 #define DEBUG_PRINT(x) do {} while (0)
 #endif
 
+//#define CODE_UTF8
+#define CODE_GBK
+//#define CODE_KANJI
+
 #endif /* COMMON_H_ */
