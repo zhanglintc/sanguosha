@@ -15,7 +15,11 @@
  char szHEART[]      = {3,0};//{ 0xE2, 0x99, 0xA5, 0};//♡
  char szSPADE[]      = {6,0};//{ 0xE2, 0x99, 0xA0, 0};//♠
 
-unsigned char szBasic[][16]    =
+#ifdef CODE_KANJI
+wchar_t szBasic[][160]    =
+#else //CODE_KANJI
+unsigned char szBasic[][160]    =
+#endif //CODE_KANJI
 {//basic_card
 #ifdef CODE_UTF8	
     {0xE6, 0x97, 0xA0, 0xE6, 0x95, 0x88, 0xE5, 0x8D, 0xA1, 0xE7, 0x89, 0x8C, 0},//无效卡
@@ -38,17 +42,21 @@ unsigned char szBasic[][16]    =
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	{"无效卡"},
-    {"杀"},
-    {"闪"},
-    {"桃"},
-    {"酒"},
-    {"火杀"},
-    {"雷杀"}
+	{L"无效卡"},
+    {L"杀"},
+    {L"闪"},
+    {L"桃"},
+    {L"酒"},
+    {L"火杀"},
+    {L"雷杀"}
 #endif //CODE_KANJI
 };//basic_card
 
-unsigned char szSpecial[][16]    =
+#ifdef CODE_KANJI
+wchar_t szSpecial[][160]    =
+#else //CODE_KANJI
+unsigned char szSpecial[][160]    =
+#endif //CODE_KANJI
 {//special_card
 #ifdef CODE_UTF8	
     {0xE6, 0x97, 0xA0, 0xE6, 0x95, 0x88, 0xE5, 0x8D, 0xA1, 0xE7, 0x89, 0x8C, 0},//无效卡牌
@@ -89,26 +97,30 @@ unsigned char szSpecial[][16]    =
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	{"无效卡牌"},
-    {"无懈可击"},
-    {"闪电"},
-    {"乐不思蜀"},
-    {"借刀杀人"},
-    {"五谷丰登"},
-    {"无中生有"},
-	{"桃园结义"},
-	{"南蛮入侵"},
-	{"万箭齐发"},
-	{"顺手牵羊"},
-	{"过河拆桥"},
-	{"决斗"},
-	{"火攻"},
-	{"铁索连环"},
-	{"兵粮寸断"},
+	{L"无效卡牌"},
+    {L"无懈可击"},
+    {L"闪电"},
+    {L"乐不思蜀"},
+    {L"借刀杀人"},
+    {L"五谷丰登"},
+    {L"无中生有"},
+	{L"桃园结义"},
+	{L"南蛮入侵"},
+	{L"万箭齐发"},
+	{L"顺手牵羊"},
+	{L"过河拆桥"},
+	{L"决斗"},
+	{L"火攻"},
+	{L"铁索连环"},
+	{L"兵粮寸断"},
 #endif //CODE_KANJI
 };//special_card
 
-unsigned char szEquipment[][16]  =
+#ifdef CODE_KANJI
+wchar_t szEquipment[][160]  =
+#else //CODE_KANJI
+unsigned char szEquipment[][160]  =
+#endif //CODE_KANJI
 {//equipment_card
 #ifdef CODE_UTF8	
     {0xE6, 0x97, 0xA0, 0xE6, 0x95, 0x88, 0xE5, 0x8D, 0xA1, 0xE7, 0x89, 0x8C, 0},//无效卡牌
@@ -163,29 +175,29 @@ unsigned char szEquipment[][16]  =
 #endif //CODE_GBK
 	
 #ifdef CODE_KANJI	
-	{"无效卡牌"},
-    {"爪黄飞电"},
-    {"的卢"},
-    {"绝影"},
-    {"赤兔"},
-    {"紫骍"},
-    {"大宛"},
-    {"仁王盾"},
-    {"八卦阵"},
-    {"寒冰剑"},
-    {"麒麟弓"},
-    {"方天画戟"},
-    {"丈八蛇矛"},
-    {"青龙偃月刀"},
-    {"贯石斧"},
-    {"雌雄双股剑"},
-    {"青缸剑"},
-    {"诸葛连弩"},
-    {"骅骝"},
-    {"白银狮子"},
-    {"藤甲"},
-    {"朱雀羽扇"},
-    {"古锭刀"}
+	{L"无效卡牌"},
+    {L"爪黄飞电"},
+    {L"的卢"},
+    {L"绝影"},
+    {L"赤兔"},
+    {L"紫骍"},
+    {L"大宛"},
+    {L"仁王盾"},
+    {L"八卦阵"},
+    {L"寒冰剑"},
+    {L"麒麟弓"},
+    {L"方天画戟"},
+    {L"丈八蛇矛"},
+    {L"青龙偃月刀"},
+    {L"贯石斧"},
+    {L"雌雄双股剑"},
+    {L"青缸剑"},
+    {L"诸葛连弩"},
+    {L"骅骝"},
+    {L"白银狮子"},
+    {L"藤甲"},
+    {L"朱雀羽扇"},
+    {L"古锭刀"}
 #endif //CODE_KANJI
 };//equipment_card
 

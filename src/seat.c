@@ -9,7 +9,11 @@
 #include "seat.h"
 #include "standard_ai.h"
 
-unsigned char szIdentities[][7] = 
+#ifdef CODE_KANJI
+wchar_t szIdentities[][70] = 
+#else //CODE_KANJI
+unsigned char szIdentities[][70] = 
+#endif //CODE_KANJI
 {//identity
 #ifdef CODE_UTF8
     { 0xE5, 0xB9, 0xBD, 0xE7, 0x81, 0xB5, 0 },//幽灵
@@ -28,15 +32,19 @@ unsigned char szIdentities[][7] =
 #endif //CODE_GBK
 	
 #ifdef CODE_KANJI
-	{"幽灵"},
-	{"主公"},
-	{"忠臣"},
-	{"反贼"},
-	{"内奸"}
+	{L"幽灵"},
+	{L"主公"},
+	{L"忠臣"},
+	{L"反贼"},
+	{L"内奸"}
 #endif //CODE_KANJI
 };//identity
 
-unsigned char szForces[][7] = 
+#ifdef CODE_KANJI
+wchar_t szForces[][70] = 
+#else //CODE_KANJI
+unsigned char szForces[][70] = 
+#endif //CODE_KANJI
 {//force
 #ifdef CODE_UTF8
     { 0xE5, 0x80, 0xAD, 0xE5, 0xAF, 0x87, 0 },//倭寇
@@ -55,15 +63,19 @@ unsigned char szForces[][7] =
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	{"倭寇"},
-	{"群雄"},
-	{"魏"},
-	{"蜀"},
-	{"吴"}
+	{L"倭寇"},
+	{L"群雄"},
+	{L"魏"},
+	{L"蜀"},
+	{L"吴"}
 #endif //CODE_KANJI
 };//force
 
-unsigned char szDelaySP[][4] = 
+#ifdef CODE_KANJI
+wchar_t szDelaySP[][40] = 
+#else //CODE_KANJI
+unsigned char szDelaySP[][40] = 
+#endif //CODE_KANJI
 {//delay
 #ifdef CODE_UTF8
     { 0xE9, 0x94, 0x99, 0 },//错
@@ -80,14 +92,18 @@ unsigned char szDelaySP[][4] =
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	{"错"},
-	{"乐"},
-	{"电"},
-	{"兵"},
+	{L"错"},
+	{L"乐"},
+	{L"电"},
+	{L"兵"},
 #endif //CODE_KANJI
 };//delay
 
+#ifdef CODE_KANJI
+wchar_t szFlipped[] = 
+#else //CODE_KANJI
 unsigned char szFlipped[] = 
+#endif //CODE_KANJI
 {//flip
 #ifdef CODE_UTF8
     0xE7, 0xBF, 0xBB, 0xE9, 0x9D, 0xA2, 0//翻面
@@ -98,11 +114,15 @@ unsigned char szFlipped[] =
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	"翻面"
+	L"翻面"
 #endif //CODE_KANJI
 };//flip
 
+#ifdef CODE_KANJI
+wchar_t szDrunk[] = 
+#else //CODE_KANJI
 unsigned char szDrunk[] = 
+#endif //CODE_KANJI
 {//drunk
 #ifdef CODE_UTF8
     0xE9, 0xA5, 0xAE, 0xE9, 0x85, 0x92, 0//饮酒
@@ -113,11 +133,15 @@ unsigned char szDrunk[] =
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	"饮酒"
+	L"饮酒"
 #endif //CODE_KANJI
 };//drunk
 
+#ifdef CODE_KANJI
+wchar_t szChained[] = 
+#else //CODE_KANJI
 unsigned char szChained[] = 
+#endif //CODE_KANJI
 {//chain
 #ifdef CODE_UTF8
     0xE9, 0x93, 0x81, 0xE7, 0xB4, 0xA2, 0//铁索
@@ -128,11 +152,15 @@ unsigned char szChained[] =
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	"铁索"
+	L"铁索"
 #endif //CODE_KANJI
 };//chain
 
-unsigned char szSex[][4] = 
+#ifdef CODE_KANJI
+wchar_t szSex[][40] = 
+#else //CODE_KANJI
+unsigned char szSex[][40] = 
+#endif //CODE_KANJI
 {//sex
 #ifdef CODE_UTF8
     { 0xE2, 0x99, 0x82, 0 },//♂
@@ -145,8 +173,8 @@ unsigned char szSex[][4] =
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	{"♂"},
-	{"♀"}
+	{L"♂"},
+	{L"♀"}
 #endif //CODE_KANJI
 };//sex
 

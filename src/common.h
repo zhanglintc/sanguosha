@@ -19,14 +19,20 @@
 #include "memtracker.h"
 
 #define SGS_DEBUG
-#ifdef SGS_DEBUG
-#define DEBUG_PRINT(x) printf x
-#else
-#define DEBUG_PRINT(x) do {} while (0)
-#endif
-
 //#define CODE_UTF8
 #define CODE_GBK
 //#define CODE_KANJI
+
+#ifdef SGS_DEBUG
+		#ifdef CODE_KANJI
+			#define DEBUG_PRINT(x) wprintf (x)
+		#else //CODE_KANJI
+			#define DEBUG_PRINT(x) printf x
+		#endif //CODE_KANJI
+#else //SGS_DEBUG
+	#define DEBUG_PRINT(x) do {} while (0)
+#endif //SGS_DEBUG
+
+
 
 #endif /* COMMON_H_ */
