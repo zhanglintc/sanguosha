@@ -5,7 +5,8 @@
  *  Created by Master.G on 13-10-10.
  *  Copyright (c) 2013 Master.G. All rights reserved.
  */
-
+ 
+#include "common.h"
 #include "standard_ai.h"
 
 #include "event.h"
@@ -185,14 +186,14 @@ void StandardAI_Play_Equipment(event_context_t *context)
                 if (seat->curHealth > seat->maxHealth)
                     seat->curHealth = seat->maxHealth;
                 
-                DEBUG_PRINT(("silver lion recover 1 health\n"));
+                DEBUG_PRINT("silver lion recover 1 health\n");
             }
             
-            DEBUG_PRINT(("equip "));
+            DEBUG_PRINT("equip ");
             Card_Print(equipCard);
-            DEBUG_PRINT((" "));
+            DEBUG_PRINT(" ");
         }
-        DEBUG_PRINT(("\n"));
+        DEBUG_PRINT("\n");
     }
 }
 
@@ -222,7 +223,7 @@ void StandardAI_Play_EatPeach(event_context_t *context)
                 Deck_RecycleCard(game->deck, tempArray.cards[i]);
                 CardArray_RemoveCard(hands, tempArray.cards[i]);
                 
-                DEBUG_PRINT(("eat peach, health restore 1 point\n"));
+                DEBUG_PRINT("eat peach, health restore 1 point\n");
             }
         }
     }
@@ -285,17 +286,17 @@ void StandardAI_Play_UseSpecial(event_context_t *context)
                     
                     /* deal two card from deck */
                     count = Game_DealCard(game, 2, &cards);
-                    DEBUG_PRINT(("fabricate "));
+                    DEBUG_PRINT("fabricate ");
                     for (ci = 0; ci < count; ci++)
                     {
                         fabricateCard = CardArray_PopBack(&cards);
                         CardArray_PushBack(hands, fabricateCard);
                         
                         Card_Print(fabricateCard);
-                        DEBUG_PRINT((" "));
+                        DEBUG_PRINT(" ");
                     }
                     
-                    DEBUG_PRINT(("from deck\n"));
+                    DEBUG_PRINT("from deck\n");
                     
                     /* re-run the OnPlay phase */
                     fabricated = 1;
@@ -316,7 +317,7 @@ void StandardAI_Handler_GameStart(event_context_t *context)
 void StandardAI_Handler_TurnBegin(event_context_t *context)
 {
     Seat_Print(context->seat, SeatPrintMode_Minimum);
-    DEBUG_PRINT(("\n"));
+    DEBUG_PRINT("\n");
 }
 
 void StandardAI_Handler_TurnDetermine(event_context_t *context)
@@ -359,15 +360,15 @@ void StandardAI_Handler_OnDeal(event_context_t *context)
     for (i = 0; i < count; i++)
         CardArray_PushBack(seat->hands, cards.cards[i]);
     
-    DEBUG_PRINT(("get "));
+    DEBUG_PRINT("get ");
     
     for (i = 0; i < count; i++)
     {
         Card_Print(cards.cards[i]);
-        DEBUG_PRINT((" "));
+        DEBUG_PRINT(" ");
     }
     
-    DEBUG_PRINT(("from deck\n"));
+    DEBUG_PRINT("from deck\n");
 }
 
 void StandardAI_Handler_OnPlay(event_context_t *context)
@@ -401,15 +402,15 @@ void StandardAI_Handler_OnDrop(event_context_t *context)
     for (i = 0; i < dropcount; i++)
         CardArray_PushBack(&drops, CardArray_PopBack(seat->hands));
     
-    DEBUG_PRINT(("drop "));
+    DEBUG_PRINT("drop ");
     
     for (i = 0; i < drops.length; i++)
     {
         Card_Print(drops.cards[i]);
-        DEBUG_PRINT((" "));
+        DEBUG_PRINT(" ");
     }
     
-    DEBUG_PRINT(("to deck\n\n"));
+    DEBUG_PRINT("to deck\n\n");
     
     Game_DropCard(context->game, context->seat, &drops);
 }
@@ -457,12 +458,12 @@ void StandardAI_Handler_PostDetermine(event_context_t *context)
 
 void GodZhugeAI_Handler_GameStart(event_context_t *context)
 {
-    DEBUG_PRINT(("祈星辰之力,佑我蜀汉!\n"));
+    //DEBUG_PRINT("祈星辰之力,佑我蜀汉!\n");
 }
 
 void ZhangheAI_Handler_TurnDetermine(event_context_t *context)
 {
     extra_process_phase_t *extra = (extra_process_phase_t *)context->extra;
     extra->shouldPassDetermine = 1;
-    DEBUG_PRINT(("用兵之道,变化万千!\n"));
+    //DEBUG_PRINT("用兵之道,变化万千!\n");
 }

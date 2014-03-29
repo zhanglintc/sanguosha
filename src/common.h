@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <time.h>
+#include <stdarg.h>
+#include <locale.h>
 
 #include "mt19937.h"
 #define KITSUNE_DEBUG
@@ -25,14 +27,15 @@
 
 #ifdef SGS_DEBUG
 		#ifdef CODE_KANJI
-			#define DEBUG_PRINT(x) wprintf (x)
+			#define DEBUG_PRINT my_wprintf
 		#else //CODE_KANJI
-			#define DEBUG_PRINT(x) printf x
+			#define DEBUG_PRINT my_printf
 		#endif //CODE_KANJI
 #else //SGS_DEBUG
-	#define DEBUG_PRINT(x) do {} while (0)
+	#define DEBUG_PRINT do {} while (0)
 #endif //SGS_DEBUG
 
-
+void my_wprintf(char *fmt, ...);
+void my_printf(char *fmt, ...);
 
 #endif /* COMMON_H_ */

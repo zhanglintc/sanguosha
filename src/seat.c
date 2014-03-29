@@ -5,7 +5,7 @@
  *  Created by Master.G on 13-8-16.
  *  Copyright (c) 2013 Master.G. All rights reserved.
  */
-
+#include "common.h"
 #include "seat.h"
 #include "standard_ai.h"
 
@@ -302,21 +302,21 @@ void Seat_Print(seat_t *seat, int mode)
     int i = 0;
     
     /* basic information */
-    DEBUG_PRINT(("[%s][%s][%s][%s][%d/%d][%d] ",
+    DEBUG_PRINT("[%s][%s][%s][%s][%d/%d][%d] ",
            Identity_GetString(seat->identity),
            Force_GetString(seat->force),
            Sex_GetString(seat->sex),
            seat->name,
            seat->curHealth,
            seat->maxHealth,
-           seat->hands->length));
+           seat->hands->length);
     
     if ((seat->status & PlayerStatus_Flipped) != 0)
-        DEBUG_PRINT(("%s ", szFlipped));
+        DEBUG_PRINT("%s ", szFlipped);
     if ((seat->status & PlayerStatus_Drunk) != 0)
-        DEBUG_PRINT(("%s ", szDrunk));
+        DEBUG_PRINT("%s ", szDrunk);
     if ((seat->status & PlayerStatus_Chained) != 0)
-        DEBUG_PRINT(("%s ", szChained));
+        DEBUG_PRINT("%s ", szChained);
     
     /* delay specials */
     if ((mode & SeatPrintMode_DelaySP) != 0)
@@ -325,11 +325,11 @@ void Seat_Print(seat_t *seat, int mode)
         {
             if (seat->delaySpecialTypes[i] != 0)
             {
-                DEBUG_PRINT(("%s ", szDelaySP[seat->delaySpecialTypes[i]]));
+                DEBUG_PRINT("%s ", szDelaySP[seat->delaySpecialTypes[i]]);
             }
         }
         
-        DEBUG_PRINT(("\n"));
+        DEBUG_PRINT("\n");
     }
     
     /* equipments */
@@ -341,7 +341,7 @@ void Seat_Print(seat_t *seat, int mode)
                 continue;
             
             Card_Print(seat->equipments[i]);
-            DEBUG_PRINT(("\n"));
+            DEBUG_PRINT("\n");
         }
     }
     
@@ -351,10 +351,10 @@ void Seat_Print(seat_t *seat, int mode)
         for (i = 0; i < seat->hands->length; i++)
         {
             Card_Print(seat->hands->cards[i]);
-            DEBUG_PRINT((" "));
+            DEBUG_PRINT(" ");
         }
         
-        DEBUG_PRINT(("\n\n"));
+        DEBUG_PRINT("\n\n");
     }
 }
 
@@ -471,7 +471,7 @@ seat_list_t *SeatList_Remove(seat_list_t *list, seat_t *seat)
 
 void Identity_Print(int identity)
 {
-    DEBUG_PRINT(("%s", szIdentities[identity]));
+    DEBUG_PRINT("%s", szIdentities[identity]);
 }
 
 const char* Identity_GetString(int identity)
@@ -481,7 +481,7 @@ const char* Identity_GetString(int identity)
 
 void Force_Print(int force)
 {
-    DEBUG_PRINT(("%s", szForces[force]));
+    DEBUG_PRINT("%s", szForces[force]);
 }
 
 const char* Force_GetString(int force)

@@ -436,7 +436,7 @@ void Card_Print(int32_t card)
     
     Card_ToString(card, buffer);
     
-    DEBUG_PRINT(("%s", buffer));
+    DEBUG_PRINT("%s", buffer);
 }
 
 int Card_ToString(int32_t card, char str[])

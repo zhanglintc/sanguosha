@@ -87,7 +87,7 @@ void test_Game()
 
 int main(int argc, const char * argv[])
 {
-    printf("乱臣贼子 %s\n","反贼");
+	setlocale(LC_ALL,"CHS");
 	test_Game();
 	//memtrack_list_allocations();
 	getchar();
