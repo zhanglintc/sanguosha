@@ -17,6 +17,8 @@
 #include <locale.h>
 
 #include "mt19937.h"
+#define KITSUNE_DEBUG
+#include "memtracker.h"
 
 #define SGS_DEBUG
 //#define CODE_UTF8
