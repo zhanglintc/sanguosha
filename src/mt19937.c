@@ -16,7 +16,7 @@
 #define FULL_MASK   0xFFFFFFFF
 #define DEF_SEED    0x012BD6AA
 
-void Random_Init(mt19937_t *context, uint32_t seed)
+void Random_Init(mt19937_t *context, uint32_t seed)//根据seed的不同,生成一大堆数据(作用未知)
 {
     context->mt[0] = seed & FULL_MASK;
     for (context->mti = 1; context->mti < MT_N; context->mti++)
@@ -65,7 +65,7 @@ void Random_InitWithArray(mt19937_t *context, uint32_t initarr[], int length)
     context->mt[0] = UPPER_MASK;
 }
 
-uint32_t Random_uint32(mt19937_t *context)
+uint32_t Random_uint32(mt19937_t *context)//用来生成随机数
 {
     uint32_t y;
     int kk;
@@ -105,7 +105,7 @@ uint32_t Random_uint32(mt19937_t *context)
     return y;
 }
 
-int32_t Random_int32(mt19937_t *context)
+int32_t Random_int32(mt19937_t *context)//用来生成随机数
 {
     return (int32_t)(Random_uint32(context)>>1);
 }

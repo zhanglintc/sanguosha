@@ -206,7 +206,7 @@ unsigned char szRank[][3]    =
     "X", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"
 };
 
-int32_t TotalCardSet[][5]   =
+int32_t TotalCardSet[][5]   =//所有卡牌组合（作者写这里的时候费了点时间吧。。。）
 {
     { SUIT_DIAMOND, RANK_SIX,   CATEGORY_BASIC, ATTRIBUTE_NONE, CARD_ID_SLASH },
     { SUIT_DIAMOND, RANK_SEVEN, CATEGORY_BASIC, ATTRIBUTE_NONE, CARD_ID_SLASH },
@@ -536,7 +536,7 @@ const char* Card_GetSuitString(int32_t card)
  * ************************************************************
  */
 
-card_array_t* CardArray_CreateEmpty(void)
+card_array_t* CardArray_CreateEmpty(void)//开辟一个新的空间盛放牌堆
 {
     card_array_t *ret = NULL;
     ret = (card_array_t *)calloc(1, sizeof(card_array_t));
@@ -546,8 +546,8 @@ card_array_t* CardArray_CreateEmpty(void)
 
 card_array_t* CardArray_CreateSet(int extension)
 {
-    card_array_t *ret = CardArray_CreateEmpty();
-    ret->length = Card_InitSet(ret->cards, extension);
+    card_array_t *ret = CardArray_CreateEmpty();//新建空牌堆
+    ret->length = Card_InitSet(ret->cards, extension);//初始化牌堆
     
     return ret;
 }
@@ -691,16 +691,16 @@ int CardArray_Dump(card_array_t *arr, int32_t *buf)
     return length;
 }
 
-void shuffle(int32_t arr[], int len, mt19937_t *mt)
+void shuffle(int32_t arr[], int len, mt19937_t *mt)//洗牌
 {
 	int i = len, j;
     uint32_t tmp = 0;
 	
 	while (--i > 0)
 	{
-        if (mt != NULL)
+        if (mt != NULL)//如果mt不为空,使用Random_int32()生成随机数
             j = Random_int32(mt) % (i+1);
-        else
+		else//否则使用rand()函数 (那看来可以用time来做种子初始化)
             j = rand() % (i+1);
 		
         tmp = arr[j];

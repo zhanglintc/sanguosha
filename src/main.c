@@ -33,15 +33,15 @@ void convert_chinese2unicode(char* str)
 void test_CardArray()
 {
     int i = 0;
-    card_array_t *arr = CardArray_CreateSet(1);
-    CardArray_Shuffle(arr, NULL);
+    card_array_t *arr = CardArray_CreateSet(1);//新建牌堆
+    CardArray_Shuffle(arr, NULL);//洗牌
     
     for (i = 0; i < arr->length; i++)
     {
-        Card_Print(arr->cards[i]); printf("\n");
+        Card_Print(arr->cards[i]); printf("\n");//打印卡牌组合
     }
     
-    CardArray_Destroy(arr);
+    CardArray_Destroy(arr);//释放内存
 }
 
 void test_Deck()
@@ -87,11 +87,35 @@ void test_Game()
 
 int main(int argc, const char * argv[])
 {
+	mt19937_t mt;
+	FILE *fp=NULL;
+	int i=0;
+
 	setlocale(LC_ALL,"CHS");
-	test_Game();
+	
+	
+	Random_Init(&mt, 1);
+	
+	if((fp=fopen("result.txt","w"))!=NULL)
+	{
+		for(i=0;i<MT_N;i++)
+		{
+			fprintf(fp,"%d\n",(uint32_t)mt.mt[i]);
+		}
+	}
+	else
+	{
+		printf("bug\n");
+	}
+	fclose(fp);
+
+	//test_CardArray();
+	//test_Deck();
+	//test_Game();
 	//memtrack_list_allocations();
-	getchar();
-    
+
+	//getchar();
+
     return 0;
 }
 
