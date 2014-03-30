@@ -89,7 +89,6 @@ int main(int argc, const char * argv[])
 {
 	setlocale(LC_ALL,"CHS");
 	test_Game();
-	//memtrack_list_allocations();
 	getchar();
     
     return 0;
