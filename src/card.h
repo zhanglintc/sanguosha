@@ -162,7 +162,7 @@
  */
 typedef struct card_array_t
 {
-    int32_t cards[CARDS_COUNT_TOTAL];
+    int32_t cards[CARDS_COUNT_TOTAL]; //32 bits cards information
     int     length;
     
 } card_array_t;

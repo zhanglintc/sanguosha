@@ -207,7 +207,7 @@ unsigned char szRank[][3]    =
 };
 
 int32_t TotalCardSet[][5]   =//所有卡牌组合（作者写这里的时候费了点时间吧。。。）
-{
+{//	  suit			rank		category		attribute		cid=card id
     { SUIT_DIAMOND, RANK_SIX,   CATEGORY_BASIC, ATTRIBUTE_NONE, CARD_ID_SLASH },
     { SUIT_DIAMOND, RANK_SEVEN, CATEGORY_BASIC, ATTRIBUTE_NONE, CARD_ID_SLASH },
     { SUIT_DIAMOND, RANK_EIGHT, CATEGORY_BASIC, ATTRIBUTE_NONE, CARD_ID_SLASH },
@@ -402,31 +402,45 @@ int32_t TotalCardSet[][5]   =//所有卡牌组合（作者写这里的时候费�
 
 int32_t Card_Make(int32_t suit, int32_t rank, int32_t category, int32_t attribute, int32_t cid)
 {
+/*
+ *  +--------+--------+--------+--------+
+ *  |ccaaaxxx|xxxxxxxx|xxxxxxxx|cdhsrrrr|	int32_t card
+ *  +--------+--------+--------+--------+
+ *
+ *  cc = category
+ *  aaa = attribute
+ *  xx = card id
+ *  r = rank of card (deuce=0,trey=1,four=2,five=3,...,ace=12)
+ *  cdhs = suit of card, club ♣, diamond ♦, heart ♥, spade ♠
+ *
+ */
     int32_t card = 0;
     
-    card |= (suit & 0xF0);
-    card |= (rank & 0xF);
-    card |= ((category << 30) & 0xC0000000);
-    card |= ((attribute << 27) & 0x38000000);
-    card |= ((cid << 8) & 0x07FFFF00);
+    card |= (suit & 0xF0);						//00000000 00000000 00000000 11110000
+    card |= (rank & 0xF);						//00000000 00000000 00000000 00001111
+    card |= ((category << 30) & 0xC0000000);	//11000000 00000000 00000000 00000000
+    card |= ((attribute << 27) & 0x38000000);	//00111000 00000000 00000000 00000000
+    card |= ((cid << 8) & 0x07FFFF00);			//00000111 11111111 11111111 00000000
     
-    return card;
+	return card;//return cards information (32bit)
 }
 
 int Card_InitSet(int32_t cards[], int extension)
 {
-    int ret = 0;
+    int length = 0;
     int i = 0;
     
-    ret = extension ? CARDS_COUNT_TOTAL : CARDS_COUNT_BASIC;
+    length = extension ? CARDS_COUNT_TOTAL : CARDS_COUNT_BASIC;//extension==1 → CARDS_COUNT_TOTAL. extension==0 → CARDS_COUNT_BASIC
     
     if (cards != NULL)
     {
-        for (i = 0; i < ret; i++)
+        for (i = 0; i < length; i++)
+    	{
             cards[i] = Card_Make(TotalCardSet[i][0], TotalCardSet[i][1], TotalCardSet[i][2], TotalCardSet[i][3], TotalCardSet[i][4]);
+    	}
     }
     
-    return ret;
+    return length;
 }
 
 void Card_Print(int32_t card)
@@ -546,10 +560,10 @@ card_array_t* CardArray_CreateEmpty(void)//开辟一个新的空间盛放牌堆
 
 card_array_t* CardArray_CreateSet(int extension)
 {
-    card_array_t *ret = CardArray_CreateEmpty();//新建空牌堆
-    ret->length = Card_InitSet(ret->cards, extension);//初始化牌堆
+    card_array_t *Card_Array = CardArray_CreateEmpty();//新建空牌堆
+    Card_Array->length = Card_InitSet(Card_Array->cards, extension);//初始化牌堆
     
-    return ret;
+    return Card_Array;
 }
 
 void CardArray_Clear(card_array_t *arr)
@@ -604,7 +618,9 @@ int32_t CardArray_PopBack(card_array_t *arr)
 {
     int32_t card = 0;
     if (arr->length <= 0)
+	{
         return -1;
+	}
     
     card = arr->cards[arr->length-1];
     arr->cards[arr->length-1] = 0;
@@ -691,17 +707,22 @@ int CardArray_Dump(card_array_t *arr, int32_t *buf)
     return length;
 }
 
-void shuffle(int32_t arr[], int len, mt19937_t *mt)//洗牌
+void shuffle(int32_t arr[], int length, mt19937_t *mt)//洗牌
 {
-	int i = len, j;
+	int i=0, j=0;
     uint32_t tmp = 0;
 	
+	i=length;
 	while (--i > 0)
 	{
         if (mt != NULL)//如果mt不为空,使用Random_int32()生成随机数
+		{
             j = Random_int32(mt) % (i+1);
+		}
 		else//否则使用rand()函数 (那看来可以用time来做种子初始化)
+		{
             j = rand() % (i+1);
+		}
 		
         tmp = arr[j];
         arr[j] = arr[i];
@@ -709,7 +730,7 @@ void shuffle(int32_t arr[], int len, mt19937_t *mt)//洗牌
 	}
 }
 
-void CardArray_Shuffle(card_array_t *arr, mt19937_t *mt)
+void CardArray_Shuffle(card_array_t *Card_Array, mt19937_t *mt)
 {
-    shuffle(arr->cards, arr->length, mt);
+    shuffle(Card_Array->cards, Card_Array->length, mt);
 }

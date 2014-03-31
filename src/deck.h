@@ -19,11 +19,11 @@
  * ************************************************************
  */
 
-typedef struct deck_t
+typedef struct deck_t//桌面上包含牌堆和已经用到的牌
 {
-    int             extension;
-    card_array_t    *cardStack;
-    card_array_t    *usedCards;
+    int             extension;		//是否是扩展包
+    card_array_t    *cardStack;		//牌堆
+    card_array_t    *usedCards;		//弃牌堆
     
 } deck_t;
 

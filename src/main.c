@@ -33,15 +33,15 @@ void convert_chinese2unicode(char* str)
 void test_CardArray()
 {
     int i = 0;
-    card_array_t *arr = CardArray_CreateSet(1);//新建牌堆
-    CardArray_Shuffle(arr, NULL);//洗牌
+    card_array_t *Card_Array = CardArray_CreateSet(1);//新建牌堆
+    CardArray_Shuffle(Card_Array, NULL);//洗牌
     
-    for (i = 0; i < arr->length; i++)
+    for (i = 0; i < Card_Array->length; i++)
     {
-        Card_Print(arr->cards[i]); printf("\n");//打印卡牌组合
+        Card_Print(Card_Array->cards[i]); printf("\n");//打印卡牌组合
     }
     
-    CardArray_Destroy(arr);//释放内存
+    CardArray_Destroy(Card_Array);//释放内存
 }
 
 void test_Deck()
@@ -52,22 +52,22 @@ void test_Deck()
     deck_t *deck = NULL;
     mt19937_t mt;
     Random_Init(&mt, 1);
-    deck = Deck_Create(1);
-    Deck_Shuffle(deck, &mt);
+    deck = Deck_Create(1);//建立桌面（牌堆和用掉的牌）
+    Deck_Shuffle(deck, &mt);//洗桌面上的牌(牌堆和弃牌堆)
     
     while ( i < 1024 )
     {
         i++;
         
-        card = Deck_DealCard(deck);
+        card = Deck_DealCard(deck);//发牌
         if (card == -1)
         {
-            Deck_NewRound(deck);
+            Deck_NewRound(deck);//重新发牌
         }
         else
         {
             Card_ToString(card, buffer);
-            Deck_RecycleCard(deck, card);
+            Deck_RecycleCard(deck, card);//放入弃牌堆
             printf("%s\n", buffer);
         }
     }
@@ -100,7 +100,7 @@ int main(int argc, const char * argv[])
 	{
 		for(i=0;i<MT_N;i++)
 		{
-			fprintf(fp,"%d\n",(uint32_t)mt.mt[i]);
+			fprintf(fp,"%l\n",(uint32_t)mt.mt[i]);
 		}
 	}
 	else
