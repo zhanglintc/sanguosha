@@ -66,7 +66,7 @@ void test_Deck()
         }
         else
         {
-            Card_ToString(card, buffer);
+            Card_ToString(card, buffer);//取出 card 各种信息到 buffer
             Deck_RecycleCard(deck, card);//放入弃牌堆
             printf("%s\n", buffer);
         }
@@ -109,7 +109,7 @@ int main(int argc, const char * argv[])
 	}
 	fclose(fp);
 
-	//test_CardArray();
+	test_CardArray();
 	//test_Deck();
 	//test_Game();
 	//memtrack_list_allocations();

@@ -15,6 +15,7 @@
  char szHEART[]      = {3,0};//{ 0xE2, 0x99, 0xA5, 0};//♡
  char szSPADE[]      = {6,0};//{ 0xE2, 0x99, 0xA0, 0};//♠
 
+/* 基本卡牌：杀闪桃 */
 #ifdef CODE_KANJI
 wchar_t szBasic[][160]    =
 #else //CODE_KANJI
@@ -26,6 +27,7 @@ unsigned char szBasic[][160]    =
     {0xE6, 0x9D, 0x80, 0},//杀
     {0xE9, 0x97, 0xAA, 0},//闪
     {0xE6, 0xA1, 0x83, 0},//桃
+	/******************************************************/
     {0xE9, 0x85, 0x92, 0},//酒
     {0xE7, 0x81, 0xAB, 0xE6, 0x9D, 0x80, 0},//火杀
     {0xE9, 0x9B, 0xB7, 0xE6, 0x9D, 0x80, 0}//雷杀
@@ -36,6 +38,7 @@ unsigned char szBasic[][160]    =
 	{0xc9,0xb1,0},//杀
 	{0xc9,0xc1,0},//闪
 	{0xcc,0xd2,0},//桃
+	/******************************************************/
 	{0xbe,0xc6,0},//酒
 	{0xbb,0xf0,0xc9,0xb1,0},//火杀
 	{0xc0,0xd7,0xc9,0xb1,0}//雷杀
@@ -46,12 +49,14 @@ unsigned char szBasic[][160]    =
     {L"杀"},
     {L"闪"},
     {L"桃"},
+	/******************************************************/
     {L"酒"},
     {L"火杀"},
     {L"雷杀"}
 #endif //CODE_KANJI
 };//basic_card
 
+/* 特殊卡牌：锦囊 */
 #ifdef CODE_KANJI
 wchar_t szSpecial[][160]    =
 #else //CODE_KANJI
@@ -72,6 +77,7 @@ unsigned char szSpecial[][160]    =
     {0xE9, 0xA1, 0xBA, 0xE6, 0x89, 0x8B, 0xE7, 0x89, 0xB5, 0xE7, 0xBE, 0x8A, 0},//顺手牵羊
     {0xE8, 0xBF, 0x87, 0xE6, 0xB2, 0xB3, 0xE6, 0x8B, 0x86, 0xE6, 0xA1, 0xA5, 0},//过河拆桥
     {0xE5, 0x86, 0xB3, 0xE6, 0x96, 0x97, 0},//决斗
+	/******************************************************/
     {0xE7, 0x81, 0xAB, 0xE6, 0x94, 0xBB, 0},//火攻
     {0xE9, 0x93, 0x81, 0xE7, 0xB4, 0xA2, 0xE8, 0xBF, 0x9E, 0xE7, 0x8E, 0xAF, 0},//铁索连环
     {0xE5, 0x85, 0xB5, 0xE7, 0xB2, 0xAE, 0xE5, 0xAF, 0xB8, 0xE6, 0x96, 0xAD, 0}//兵粮寸断
@@ -91,6 +97,7 @@ unsigned char szSpecial[][160]    =
 	{0xcb,0xb3,0xca,0xd6,0xc7,0xa3,0xd1,0xf2,0},//顺手牵羊
 	{0xb9,0xfd,0xba,0xd3,0xb2,0xf0,0xc7,0xc5,0},//过河拆桥
 	{0xbe,0xf6,0xb6,0xb7,0},//决斗
+	/******************************************************/
 	{0xbb,0xf0,0xb9,0xa5,0},//火攻
 	{0xcc,0xfa,0xcb,0xf7,0xc1,0xac,0xbb,0xb7,0},//铁索连环
 	{0xb1,0xf8,0xc1,0xb8,0xb4,0xe7,0xb6,0xcf,0}//兵粮寸断
@@ -110,12 +117,14 @@ unsigned char szSpecial[][160]    =
 	{L"顺手牵羊"},
 	{L"过河拆桥"},
 	{L"决斗"},
+	/******************************************************/
 	{L"火攻"},
 	{L"铁索连环"},
 	{L"兵粮寸断"},
 #endif //CODE_KANJI
 };//special_card
 
+/* 基本卡牌：装备牌 */
 #ifdef CODE_KANJI
 wchar_t szEquipment[][160]  =
 #else //CODE_KANJI
@@ -141,11 +150,12 @@ unsigned char szEquipment[][160]  =
     {0xE9, 0x9B, 0x8C, 0xE9, 0x9B, 0x84, 0xE5, 0x8F, 0x8C, 0xE8, 0x82, 0xA1, 0xE5, 0x89, 0x91, 0},//雌雄双股剑
     {0xE9, 0x9D, 0x92, 0xE7, 0xBC, 0xB8, 0xE5, 0x89, 0x91, 0},//青缸剑
     {0xE8, 0xAF, 0xB8, 0xE8, 0x91, 0x9B, 0xE8, 0xBF, 0x9E, 0xE5, 0xBC, 0xA9, 0},//诸葛连弩
+	/******************************************************/
     {0xE9, 0xAA, 0x85, 0xE9, 0xAA, 0x9D, 0},//骅骝
     {0xE7, 0x99, 0xBD, 0xE9, 0x93, 0xB6, 0xE7, 0x8B, 0xAE, 0xE5, 0xAD, 0x90, 0},//白银狮子
     {0xE8, 0x97, 0xA4, 0xE7, 0x94, 0xB2, 0},//藤甲
     {0xE6, 0x9C, 0xB1, 0xE9, 0x9B, 0x80, 0xE7, 0xBE, 0xBD, 0xE6, 0x89, 0x87, 0},//朱雀羽扇
-    {0xE5, 0x8F, 0xA4, 0xE9, 0x94, 0xAD, 0xE5, 0x88, 0x80, 0}//古锭刀	
+    {0xE5, 0x8F, 0xA4, 0xE9, 0x94, 0xAD, 0xE5, 0x88, 0x80, 0}//古锭刀
 #endif //CODE_UTF8
 
 #ifdef CODE_GBK
@@ -167,6 +177,7 @@ unsigned char szEquipment[][160]  =
 	{0xb4,0xc6,0xd0,0xdb,0xcb,0xab,0xb9,0xc9,0xbd,0xa3,0},//雌雄双股剑
 	{0xc7,0xe0,0xb8,0xd7,0xbd,0xa3,0},//青缸剑
 	{0xd6,0xee,0xb8,0xf0,0xc1,0xac,0xe5,0xf3,0},//诸葛连弩
+	/******************************************************/
 	{0xe6,0xe8,0xe6,0xf2,0},//骅骝
 	{0xb0,0xd7,0xd2,0xf8,0xca,0xa8,0xd7,0xd3,0},//白银狮子
 	{0xcc,0xd9,0xbc,0xd7,0},//藤甲
@@ -193,6 +204,7 @@ unsigned char szEquipment[][160]  =
     {L"雌雄双股剑"},
     {L"青缸剑"},
     {L"诸葛连弩"},
+	/******************************************************/
     {L"骅骝"},
     {L"白银狮子"},
     {L"藤甲"},
@@ -435,7 +447,7 @@ int Card_InitSet(int32_t cards[], int extension)
     if (cards != NULL)
     {
         for (i = 0; i < length; i++)
-    	{
+    		{					//suit花色	||		rank点数	||	category(基？锦？装？) || attribute属性	||	cid（杀？闪？桃）
             cards[i] = Card_Make(TotalCardSet[i][0], TotalCardSet[i][1], TotalCardSet[i][2], TotalCardSet[i][3], TotalCardSet[i][4]);
     	}
     }
@@ -453,14 +465,15 @@ void Card_Print(int32_t card)
     DEBUG_PRINT("%s", buffer);
 }
 
+//Get Card's infomation and put int *str
 int Card_ToString(int32_t card, char str[])
 {
     int length = 0;
     char *ptr = str;
     
-    const char *name = Card_GetNameString(card);
-    const char *suit = Card_GetSuitString(card);
-    const char *rank = (char *)szRank[CARD_RANK(card)];
+    const char *name = Card_GetNameString(card);		//get name 名字
+    const char *suit = Card_GetSuitString(card);		//get suit 花色
+    const char *rank = (char *)szRank[CARD_RANK(card)];	//get rank 点数
     
     length = (int)strlen(name);
     length += (int)strlen(suit);
@@ -480,68 +493,69 @@ int Card_ToString(int32_t card, char str[])
     
     return length;
 }
-
+/* return name of card */
 const char* Card_GetNameString(int32_t card)
 {
     int category = 0;
     int attribute = 0;
-    const char *ret = NULL;
+    const char *name = NULL;
     
-    category = CARD_GET_CATEGORY(card);
-    attribute = CARD_GET_ATTRIBUTE(card);
+    category = CARD_GET_CATEGORY(card);		//类别（基本牌还是锦囊、装备）
+    attribute = CARD_GET_ATTRIBUTE(card); 	//属性（是否是火杀，雷杀等）
     
     switch (category)
     {
-        case CATEGORY_BASIC:
-            if (attribute != 0)
-                ret = (char *)szBasic[CARD_GET_ID(card) + attribute + 3];
-            else
-                ret = (char *)szBasic[CARD_GET_ID(card)];
+        case CATEGORY_BASIC://基本牌
+            if (attribute != 0)//带属性杀
+                name = (char *)szBasic[CARD_GET_ID(card) + attribute + 3];//属性杀宏定义是1,2. 属性杀在数组中是5,6. 加上偏移量3，再加上attribute数值，可取出正确卡牌
+            else //普通杀
+                name = (char *)szBasic[CARD_GET_ID(card)];//取出普通杀
             break;
             
-        case CATEGORY_EQUIPMENT:
-            ret = (char *)szEquipment[CARD_GET_ID(card)];
+        case CATEGORY_EQUIPMENT://装备牌
+            name = (char *)szEquipment[CARD_GET_ID(card)];
             break;
             
-        case CATEGORY_SPECIAL:
-            ret = (char *)szSpecial[CARD_GET_ID(card)];
+        case CATEGORY_SPECIAL://锦囊牌
+            name = (char *)szSpecial[CARD_GET_ID(card)];
             break;
             
-        default:
+        default://其他
             break;
     }
     
-    return ret;
+    return name;
 }
 
+/* return suit of card */
 const char* Card_GetSuitString(int32_t card)
 {
-    const char *ret = NULL;
+    const char *suit = NULL;
     int suit = CARD_SUIT(card);
     
     switch (suit)
     {
         case SUIT_CLUB:
-            ret = (char *)szCLUB;
+            suit = (char *)szCLUB;
             break;
         
         case SUIT_DIAMOND:
-            ret = (char *)szDIAMOND;
+            suit = (char *)szDIAMOND;
             break;
             
         case SUIT_HEART:
-            ret = (char *)szHEART;
+            suit = (char *)szHEART;
             break;
             
         case SUIT_SPADE:
-            ret = (char *)szSPADE;
+            suit = (char *)szSPADE;
             break;
             
         default:
             break;
     }
     
-    return ret;
+    return suit;
 }
 
 /*
