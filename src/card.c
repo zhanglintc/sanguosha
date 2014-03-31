@@ -530,32 +530,32 @@ const char* Card_GetNameString(int32_t card)
 /* return suit of card */
 const char* Card_GetSuitString(int32_t card)
 {
-    const char *suit = NULL;
-    int suit = CARD_SUIT(card);
+    const char *suit_str = NULL;
+    int suit_int = CARD_SUIT(card);
     
-    switch (suit)
+    switch (suit_int)
     {
         case SUIT_CLUB:
-            suit = (char *)szCLUB;
+            suit_str = (char *)szCLUB;
             break;
         
         case SUIT_DIAMOND:
-            suit = (char *)szDIAMOND;
+            suit_str = (char *)szDIAMOND;
             break;
             
         case SUIT_HEART:
-            suit = (char *)szHEART;
+            suit_str = (char *)szHEART;
             break;
             
         case SUIT_SPADE:
-            suit = (char *)szSPADE;
+            suit_str = (char *)szSPADE;
             break;
             
         default:
             break;
     }
     
-    return suit;
+    return suit_str;
 }
 
 /*
