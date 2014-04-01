@@ -11,8 +11,8 @@
 #include "game.h"
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 原作者的某函数（看名字是用来转为unicode代码的，未测试）
+Argument: char* str
 Return  : None
 *******************************************************/
 void convert_chinese2unicode(char* str)
@@ -100,7 +100,7 @@ void test_Game()
 {
     int seed = 1;
     game_t *game = NULL;
-    game = Game_Create(GameMode_Military5, seed);
+    game = Game_Create(GameMode_Military5, seed);//生成一个 game
     
     Game_Execute(game);
     Game_Destroy(game);

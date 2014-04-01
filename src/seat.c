@@ -224,14 +224,22 @@ void Seat_Destroy(seat_t *seat)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 
+    根据传入的 context 不同，处理不同的事件
+Argument: 
+    seat_t *seat                座位信息
+    event_context_t *context    context 信息
+Return  : 
+    None
 *******************************************************/
+//详细跳转设置请参照这个函数: Seat_Create()
 void Seat_HandleEvent(seat_t *seat, event_context_t *context)
 {
     if (seat->eventHandlers[context->event] != NULL)
+    {
         seat->eventHandlers[context->event](context);
+    }
+        
 }
 
 /*******************************************************

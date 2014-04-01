@@ -92,6 +92,7 @@ game_t *Game_Create(int mode, int seed)
         
         Seat_SetName(seat, name);
         
+        //为该角色发四张手牌
         CardArray_PushBack(seat->hands, Deck_DealCard(game->deck));
         CardArray_PushBack(seat->hands, Deck_DealCard(game->deck));
         CardArray_PushBack(seat->hands, Deck_DealCard(game->deck));
@@ -102,8 +103,8 @@ game_t *Game_Create(int mode, int seed)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 销毁游戏
+Argument: game_t *game
 Return  : None
 *******************************************************/
 void Game_Destroy(game_t *game)
@@ -413,8 +414,8 @@ void Game_SeatTryPlay(game_t *game, seat_t *seat, card_array_t *cards, uint32_t 
  * game Phase
 *************************************************************/
 /*******************************************************
-Function: None
-Argument: None
+Function: 游戏开始
+Argument: game_t *game
 Return  : None
 *******************************************************/
 void Game_Start(game_t *game)
@@ -425,7 +426,7 @@ void Game_Start(game_t *game)
     event_context_t context;
     memset(&context, 0, sizeof(event_context_t));
     context.game = game;
-    context.event = EVENT_GAME_START;
+    context.event = EVENT_GAME_START;//事件游戏开始
     
     for (i = 0; i < game->seatCapacity; i++)
     {
@@ -433,7 +434,7 @@ void Game_Start(game_t *game)
         if (seat != NULL)
         {
             context.seat = seat;
-            Seat_HandleEvent(seat, &context);
+            Seat_HandleEvent(seat, &context);//每个角色处理游戏开始阶段事件
         }
     }
 }
@@ -732,8 +733,8 @@ void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 游戏运行
+Argument: game_t *game
 Return  : None
 *******************************************************/
 void Game_Running(game_t *game)
@@ -759,8 +760,8 @@ void Game_Running(game_t *game)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 执行游戏
+Argument: game_t *game
 Return  : None
 *******************************************************/
 void Game_Execute(game_t *game)
