@@ -179,35 +179,35 @@ unsigned char szSex[][40] =
 };//sex
 
 /*******************************************************
-Function: None
+Function: 新建一个座位，并初始化它的所有出牌阶段
 Argument: None
-Return  : None
+Return  : seat_t *
 *******************************************************/
 seat_t *Seat_Create(void)
 {
-    seat_t *ret = (seat_t *)calloc(1, sizeof(seat_t));
+    seat_t *seat = (seat_t *)calloc(1, sizeof(seat_t));
     
-    ret->hands = CardArray_CreateEmpty();
+    seat->hands = CardArray_CreateEmpty();//为座位上的人建立空的手牌序列
     
-    ret->eventHandlers[EVENT_GAME_START]        = StandardAI_Handler_GameStart;
-    ret->eventHandlers[EVENT_TURN_BEGIN]        = StandardAI_Handler_TurnBegin;
-    ret->eventHandlers[EVENT_TURN_DETERMINE]    = StandardAI_Handler_TurnDetermine;
-    ret->eventHandlers[EVENT_TURN_DEAL]         = StandardAI_Handler_TurnDeal;
-    ret->eventHandlers[EVENT_TURN_PLAY]         = StandardAI_Handler_TurnPlay;
-    ret->eventHandlers[EVENT_TURN_DROP]         = StandardAI_Handler_TurnDrop;
-    ret->eventHandlers[EVENT_TURN_END]          = StandardAI_Handler_TurnEnd;
-    ret->eventHandlers[EVENT_ON_DEAL]           = StandardAI_Handler_OnDeal;
-    ret->eventHandlers[EVENT_ON_PLAY]           = StandardAI_Handler_OnPlay;
-    ret->eventHandlers[EVENT_ON_DROP]           = StandardAI_Handler_OnDrop;
-    ret->eventHandlers[EVENT_OTHER_DROP]        = StandardAI_Handler_OnOtherDrop;
-    ret->eventHandlers[EVENT_PRE_DAMAGE]        = StandardAI_Handler_PreDamage;
-    ret->eventHandlers[EVENT_POST_DAMAGE]       = StandardAI_Handler_PostDamage;
-    ret->eventHandlers[EVENT_ON_DAMAGE]         = StandardAI_Handler_OnDamage;
-    ret->eventHandlers[EVENT_QUERY_CARD]        = StandardAI_Handler_QueryCard;
-    ret->eventHandlers[EVENT_PRE_DETERMINE]     = StandardAI_Handler_PreDetermine;
-    ret->eventHandlers[EVENT_POST_DETERMINE]    = StandardAI_Handler_PostDetermine;
+    seat->eventHandlers[EVENT_GAME_START]        = StandardAI_Handler_GameStart;
+    seat->eventHandlers[EVENT_TURN_BEGIN]        = StandardAI_Handler_TurnBegin;
+    seat->eventHandlers[EVENT_TURN_DETERMINE]    = StandardAI_Handler_TurnDetermine;
+    seat->eventHandlers[EVENT_TURN_DEAL]         = StandardAI_Handler_TurnDeal;
+    seat->eventHandlers[EVENT_TURN_PLAY]         = StandardAI_Handler_TurnPlay;
+    seat->eventHandlers[EVENT_TURN_DROP]         = StandardAI_Handler_TurnDrop;
+    seat->eventHandlers[EVENT_TURN_END]          = StandardAI_Handler_TurnEnd;
+    seat->eventHandlers[EVENT_ON_DEAL]           = StandardAI_Handler_OnDeal;
+    seat->eventHandlers[EVENT_ON_PLAY]           = StandardAI_Handler_OnPlay;
+    seat->eventHandlers[EVENT_ON_DROP]           = StandardAI_Handler_OnDrop;
+    seat->eventHandlers[EVENT_OTHER_DROP]        = StandardAI_Handler_OnOtherDrop;
+    seat->eventHandlers[EVENT_PRE_DAMAGE]        = StandardAI_Handler_PreDamage;
+    seat->eventHandlers[EVENT_POST_DAMAGE]       = StandardAI_Handler_PostDamage;
+    seat->eventHandlers[EVENT_ON_DAMAGE]         = StandardAI_Handler_OnDamage;
+    seat->eventHandlers[EVENT_QUERY_CARD]        = StandardAI_Handler_QueryCard;
+    seat->eventHandlers[EVENT_PRE_DETERMINE]     = StandardAI_Handler_PreDetermine;
+    seat->eventHandlers[EVENT_POST_DETERMINE]    = StandardAI_Handler_PostDetermine;
     
-    return ret;
+    return seat;
 }
 
 /*******************************************************

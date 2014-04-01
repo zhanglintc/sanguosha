@@ -17,8 +17,8 @@
 #define DEF_SEED    0x012BD6AA
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 作用未知
+Argument: mt19937_t *context, uint32_t seed
 Return  : None
 *******************************************************/
 void Random_Init(mt19937_t *context, uint32_t seed)//根据seed的不同,生成一大堆数据(作用未知)
@@ -76,11 +76,11 @@ void Random_InitWithArray(mt19937_t *context, uint32_t initarr[], int length)
 }
 
 /*******************************************************
-Function: None
+Function: 似乎用来生成随机数
 Argument: None
 Return  : None
 *******************************************************/
-uint32_t Random_uint32(mt19937_t *context)//用来生成随机数
+uint32_t Random_uint32(mt19937_t *context)
 {
     uint32_t y;
     int kk;
@@ -121,11 +121,11 @@ uint32_t Random_uint32(mt19937_t *context)//用来生成随机数
 }
 
 /*******************************************************
-Function: None
+Function: 似乎用来生成随机数
 Argument: None
 Return  : None
 *******************************************************/
-int32_t Random_int32(mt19937_t *context)//用来生成随机数
+int32_t Random_int32(mt19937_t *context)
 {
     return (int32_t)(Random_uint32(context)>>1);
 }

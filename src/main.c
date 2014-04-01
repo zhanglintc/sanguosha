@@ -36,7 +36,7 @@ void convert_chinese2unicode(char* str)
 }
 
 /*******************************************************
-Function: None
+Function: 测试牌堆功能
 Argument: None
 Return  : None
 *******************************************************/
@@ -55,7 +55,7 @@ void test_CardArray()
 }
 
 /*******************************************************
-Function: None
+Function: 测试整个桌面功能
 Argument: None
 Return  : None
 *******************************************************/
@@ -82,7 +82,7 @@ void test_Deck()
         else
         {
             Card_ToString(card, buffer);//取出 card 各种信息到 buffer
-            Deck_RecycleCard(deck, card);//放入弃牌堆
+            Deck_RecycleCard(deck, card);//放入弃牌堆(返回值被忽略)
             printf("%s\n", buffer);
         }
     }
@@ -136,12 +136,12 @@ int main(int argc, const char * argv[])
 	}
 	fclose(fp);
 
-	test_CardArray();
+	//test_CardArray();
 	//test_Deck();
-	//test_Game();
+	test_Game();
 	//memtrack_list_allocations();
 
-	//getchar();
+	getchar();
 
     return 0;
 }

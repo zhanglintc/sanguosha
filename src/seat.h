@@ -49,7 +49,7 @@ typedef enum
     
 } PlayerStatus;
 
-typedef void (*event_handler)(event_context_t *context);
+typedef void (*event_handler)(event_context_t *context);  /* 一个函数跳转指针 */
 
 typedef struct seat_t
 {
@@ -71,9 +71,9 @@ typedef struct seat_t
     uint32_t        equipments[SEAT_EQUIP_CAPACITY];
     uint32_t        delaySpecialCards[3];
     uint32_t        delaySpecialTypes[3];
-    card_array_t    *hands;
+    card_array_t    *hands;//手牌
     
-    event_handler   eventHandlers[EVENT_COUNT];
+    event_handler   eventHandlers[EVENT_COUNT];//角色当前阶段处理器
     
 }seat_t;
 

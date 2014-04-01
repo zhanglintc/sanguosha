@@ -10,9 +10,13 @@
 
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 
+    创建整个游戏，初始化一些基本信息
+Argument: 
+    int mode：游戏模式（几人局）
+    int seed：初始化种子（使用方法暂未明了）
+Return: 
+    game_t *
 *******************************************************/
 game_t *Game_Create(int mode, int seed)
 {
@@ -78,12 +82,12 @@ game_t *Game_Create(int mode, int seed)
         char name[20];
         sprintf(name, "AI_%02d", i);
         
-        seat = Seat_Create();
-        game->seats[i] = seat;
-        seat->identity = identities[i];
+        seat = Seat_Create();//新建座位
+        game->seats[i] = seat;//把座位分配给游戏
+        seat->identity = identities[i];//分配身份
         seat->force = Random_int32(&game->mtRandom) % 4 + 1;
-        seat->maxHealth = (i == 0) ? 4 : 3;
-        seat->curHealth = seat->maxHealth;
+        seat->maxHealth = (i == 0) ? 4 : 3;//似乎目前只有主公是4血，别人都是3血的小傻逼
+        seat->curHealth = seat->maxHealth;//初始化为最大血量
         seat->sex = Random_int32(&game->mtRandom) % 2;
         
         Seat_SetName(seat, name);

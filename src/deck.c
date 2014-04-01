@@ -11,9 +11,9 @@
 #include "deck.h"
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 新建一个新的 deck 并将其返回，deck 上包含牌堆和弃牌堆
+Argument: int extension
+Return  : deck_t*
 *******************************************************/
 deck_t* Deck_Create(int extension)
 {
@@ -29,16 +29,16 @@ deck_t* Deck_Create(int extension)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 销毁一个桌面 deck
+Argument: eck_t *deck
 Return  : None
 *******************************************************/
 void Deck_Destroy(deck_t *deck)
 {
-    CardArray_Destroy(deck->cardStack);
-    CardArray_Destroy(deck->usedCards);
+    CardArray_Destroy(deck->cardStack);//清空牌堆
+    CardArray_Destroy(deck->usedCards);//清空弃牌堆
     
-    free(deck);
+    free(deck);//释放 deck 的内存
     deck = NULL;
 }
 
@@ -67,9 +67,9 @@ void Deck_Shuffle(deck_t *deck, mt19937_t *mt)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 发牌,将桌面上的牌堆数据传入,从其最后取出一张牌并将其返回
+Argument: deck_t *deck
+Return  : int32_t card
 *******************************************************/
 int32_t Deck_DealCard(deck_t *deck)
 {
@@ -90,9 +90,9 @@ int32_t Deck_PeekCard(deck_t *deck)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 将一张卡片放入弃牌堆
+Argument: deck_t *deck, int32_t card
+Return  : int32_t card (估计无用? 或者仅用于测试?)
 *******************************************************/
 int32_t Deck_RecycleCard(deck_t *deck, int32_t card)
 {
@@ -100,8 +100,8 @@ int32_t Deck_RecycleCard(deck_t *deck, int32_t card)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 牌堆已用尽,重新发牌(将弃牌堆数据依次弹出,压入牌堆)
+Argument: deck_t *deck
 Return  : None
 *******************************************************/
 void Deck_NewRound(deck_t *deck)

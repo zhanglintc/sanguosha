@@ -413,9 +413,12 @@ int32_t TotalCardSet[][5]   =//所有卡牌组合（作者写这里的时候费�
 };
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function:
+    读取牌的数据,生成一张新牌并将其返回
+Argument:
+    suit, rank, category, attribute, cid
+Return  : 
+    int32_t: A card
 *******************************************************/
 int32_t Card_Make(int32_t suit, int32_t rank, int32_t category, int32_t attribute, int32_t cid)
 {
@@ -443,9 +446,13 @@ int32_t Card_Make(int32_t suit, int32_t rank, int32_t category, int32_t attribut
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 
+    初始化牌堆。从 TotalCardSet 中取出所有的数据，放入 cards[] 序列中
+Argument: 
+    int32_t cards[]: 牌堆序列
+    int extension:   是否是扩展包
+Return:
+    int
 *******************************************************/
 int Card_InitSet(int32_t cards[], int extension)
 {
@@ -466,8 +473,8 @@ int Card_InitSet(int32_t cards[], int extension)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 打印卡牌相应信息
+Argument: int32_t card
 Return  : None
 *******************************************************/
 void Card_Print(int32_t card)
@@ -481,11 +488,14 @@ void Card_Print(int32_t card)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 
+    Get Card's infomation and put into *str
+Argument:   
+    int32_t card: card's info
+    char str[]  : string buffer
+Return:   
+    None
 *******************************************************/
-//Get Card's infomation and put int *str
 int Card_ToString(int32_t card, char str[])
 {
     int length = 0;
@@ -515,11 +525,10 @@ int Card_ToString(int32_t card, char str[])
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: return name of card
+Argument: int32_t card
+Return  : char*
 *******************************************************/
-/* return name of card */
 const char* Card_GetNameString(int32_t card)
 {
     int category = 0;
@@ -554,11 +563,10 @@ const char* Card_GetNameString(int32_t card)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: return suit of card
+Argument: nt32_t card
+Return  : char*
 *******************************************************/
-/* return suit of card */
 const char* Card_GetSuitString(int32_t card)
 {
     const char *suit_str = NULL;
@@ -593,9 +601,9 @@ const char* Card_GetSuitString(int32_t card)
   card_array_t
 ************************************************************/
 /*******************************************************
-Function: None
+Function: 为新牌堆开辟空间
 Argument: None
-Return  : None
+Return  : card_array_t*
 *******************************************************/
 card_array_t* CardArray_CreateEmpty(void)//开辟一个新的空间盛放牌堆
 {
@@ -606,21 +614,21 @@ card_array_t* CardArray_CreateEmpty(void)//开辟一个新的空间盛放牌堆
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 新建一个牌堆，并对其进行初始化
+Argument: int extension (是否是扩展包)
+Return  : card_array_t*
 *******************************************************/
 card_array_t* CardArray_CreateSet(int extension)
 {
-    card_array_t *Card_Array = CardArray_CreateEmpty();//新建空牌堆
+    card_array_t *Card_Array = CardArray_CreateEmpty();//为新建的空牌堆开辟空间
     Card_Array->length = Card_InitSet(Card_Array->cards, extension);//初始化牌堆
     
     return Card_Array;
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 清空一个卡牌序列
+Argument: card_array_t *arr
 Return  : None
 *******************************************************/
 void CardArray_Clear(card_array_t *arr)
@@ -629,8 +637,8 @@ void CardArray_Clear(card_array_t *arr)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 释放内存（有宏定义则使用定义的函数，否则使用系统函数）
+Argument: card_array_t *arr
 Return  : None
 *******************************************************/
 void CardArray_Destroy(card_array_t *arr)
@@ -657,9 +665,13 @@ int32_t CardArray_PushFront(card_array_t *arr, int32_t card)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 
+    将一张卡牌数据压入一个序列之中
+Argument: 
+    card_array_t *arr: 待压入的序列
+    int32_t card     : 待压入卡牌信息
+Return: 
+    None
 *******************************************************/
 int32_t CardArray_PushBack(card_array_t *arr, int32_t card)
 {
@@ -692,9 +704,9 @@ int32_t CardArray_PopFront(card_array_t *arr)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 从给入的序列最末尾取出一张卡片并返回
+Argument: card_array_t *arr
+Return  : int32_t card
 *******************************************************/
 int32_t CardArray_PopBack(card_array_t *arr)
 {
@@ -704,11 +716,11 @@ int32_t CardArray_PopBack(card_array_t *arr)
         return -1;
 	}
     
-    card = arr->cards[arr->length-1];
-    arr->cards[arr->length-1] = 0;
-    arr->length--;
+    card = arr->cards[arr->length-1];//从 cars[] 序列最末取出卡牌
+    arr->cards[arr->length-1] = 0;//将该卡牌值置为空
+    arr->length--;//序列长度-1
     
-    return card;
+    return card;//返回该卡片
 }
 
 /*******************************************************
