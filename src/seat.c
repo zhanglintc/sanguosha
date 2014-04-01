@@ -178,6 +178,11 @@ unsigned char szSex[][40] =
 #endif //CODE_KANJI
 };//sex
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 seat_t *Seat_Create(void)
 {
     seat_t *ret = (seat_t *)calloc(1, sizeof(seat_t));
@@ -205,6 +210,11 @@ seat_t *Seat_Create(void)
     return ret;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Seat_Destroy(seat_t *seat)
 {
     CardArray_Destroy(seat->hands);
@@ -213,17 +223,32 @@ void Seat_Destroy(seat_t *seat)
     free(seat);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Seat_HandleEvent(seat_t *seat, event_context_t *context)
 {
     if (seat->eventHandlers[context->event] != NULL)
         seat->eventHandlers[context->event](context);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int Seat_CanAffectByCard(seat_t *seat, uint32_t card)
 {
     return 1;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Seat_SortDelaySpecials(seat_t *seat)
 {
     int i = 0;
@@ -248,6 +273,11 @@ void Seat_SortDelaySpecials(seat_t *seat)
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int Seat_HasDelaySpecial(seat_t *seat, int delayType)
 {
     int i = 0;
@@ -265,6 +295,11 @@ int Seat_HasDelaySpecial(seat_t *seat, int delayType)
     return haveDelay;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int Seat_AttachDelaySpecial(seat_t *seat, int delayType, uint32_t card)
 {
     int i = 0;
@@ -284,6 +319,11 @@ int Seat_AttachDelaySpecial(seat_t *seat, int delayType, uint32_t card)
     return attached;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 char *Seat_SetName(seat_t *seat, const char *name)
 {
     if (seat->name != NULL)
@@ -297,6 +337,11 @@ char *Seat_SetName(seat_t *seat, const char *name)
     return seat->name;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Seat_Print(seat_t *seat, int mode)
 {
     int i = 0;
@@ -358,6 +403,11 @@ void Seat_Print(seat_t *seat, int mode)
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 seat_list_t *SeatList_Create(void)
 {
     seat_list_t *ret = calloc(1, sizeof(seat_list_t));
@@ -365,6 +415,11 @@ seat_list_t *SeatList_Create(void)
     return ret;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void SeatList_Destroy(seat_list_t *list)
 {
     seat_list_t *prev = NULL;
@@ -378,6 +433,11 @@ void SeatList_Destroy(seat_list_t *list)
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int SeatList_Count(seat_list_t *list)
 {
     int count = 0;
@@ -390,6 +450,11 @@ int SeatList_Count(seat_list_t *list)
     return count;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 seat_list_t *SeatList_PushBack(seat_list_t *list, seat_t *seat)
 {
     seat_list_t *tail = list;
@@ -413,6 +478,11 @@ seat_list_t *SeatList_PushBack(seat_list_t *list, seat_t *seat)
     return list;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 seat_list_t *SeatList_PushFront(seat_list_t *list, seat_t *seat)
 {
     seat_list_t *node = NULL;
@@ -430,6 +500,11 @@ seat_list_t *SeatList_PushFront(seat_list_t *list, seat_t *seat)
     return node;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 seat_list_t *SeatList_Remove(seat_list_t *list, seat_t *seat)
 {
     seat_list_t *node = list;
@@ -469,26 +544,51 @@ seat_list_t *SeatList_Remove(seat_list_t *list, seat_t *seat)
     return list;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Identity_Print(int identity)
 {
     DEBUG_PRINT("%s", szIdentities[identity]);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 const char* Identity_GetString(int identity)
 {
     return (char *)szIdentities[identity];
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Force_Print(int force)
 {
     DEBUG_PRINT("%s", szForces[force]);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 const char* Force_GetString(int force)
 {
     return (char *)szForces[force];
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 const char* Sex_GetString(int sex)
 {
     return (char *)szSex[sex];

@@ -10,6 +10,11 @@
 
 #include "deck.h"
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 deck_t* Deck_Create(int extension)
 {
     deck_t *deck = NULL;
@@ -23,6 +28,11 @@ deck_t* Deck_Create(int extension)
     return deck;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Deck_Destroy(deck_t *deck)
 {
     CardArray_Destroy(deck->cardStack);
@@ -32,22 +42,45 @@ void Deck_Destroy(deck_t *deck)
     deck = NULL;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Deck_ResetAll(deck_t *deck)
 {
     deck->cardStack->length = Card_InitSet(deck->cardStack->cards, deck->extension);
     CardArray_Clear(deck->usedCards);
 }
 
+/*******************************************************
+Function:
+    对桌面上的牌堆进行随机排序（不包含弃牌堆）
+Argument:
+    *deck   牌堆序列
+    *mt     随机数种子?
+Return  :   None
+*******************************************************/
 void Deck_Shuffle(deck_t *deck, mt19937_t *mt)
 {
     CardArray_Shuffle(deck->cardStack, mt);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int32_t Deck_DealCard(deck_t *deck)
 {
     return CardArray_PopBack(deck->cardStack);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int32_t Deck_PeekCard(deck_t *deck)
 {
     if (deck->cardStack->length <= 0)
@@ -56,11 +89,21 @@ int32_t Deck_PeekCard(deck_t *deck)
     return deck->cardStack->cards[0];
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int32_t Deck_RecycleCard(deck_t *deck, int32_t card)
 {
     return CardArray_PushBack(deck->usedCards, card);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Deck_NewRound(deck_t *deck)
 {
     while (deck->usedCards->length > 0)

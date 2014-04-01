@@ -10,6 +10,11 @@
 #include "deck.h"
 #include "game.h"
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void convert_chinese2unicode(char* str)
 {
     char *c = str;
@@ -30,6 +35,11 @@ void convert_chinese2unicode(char* str)
     printf("%s\n", c);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void test_CardArray()
 {
     int i = 0;
@@ -44,6 +54,11 @@ void test_CardArray()
     CardArray_Destroy(Card_Array);//释放内存
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void test_Deck()
 {
     int i = 0;
@@ -75,6 +90,12 @@ void test_Deck()
     Deck_Destroy(deck);
 }
 
+/*******************************************************
+Function:
+    测试整个游戏
+Argument: None
+Return  : None
+*******************************************************/
 void test_Game()
 {
     int seed = 1;
@@ -85,6 +106,12 @@ void test_Game()
     Game_Destroy(game);
 }
 
+/*******************************************************
+Function:
+    游戏主入口（尽量保持简短，多余功能化为函数独立出去）
+Argument: None
+Return  : None
+*******************************************************/
 int main(int argc, const char * argv[])
 {
 	mt19937_t mt;

@@ -8,6 +8,12 @@
 
 #include "game.h"
 
+
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 game_t *Game_Create(int mode, int seed)
 {
     int i = 0;
@@ -91,6 +97,11 @@ game_t *Game_Create(int mode, int seed)
     return game;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_Destroy(game_t *game)
 {
     int i = 0;
@@ -105,12 +116,14 @@ void Game_Destroy(game_t *game)
     free(game);
 }
 
-/*
- * ************************************************************
+/*************************************************************
  * game play
- * ************************************************************
- */
-
+*************************************************************/
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int Game_DealCard(game_t *game, int count, card_array_t *array)
 {
     int i = 0;
@@ -133,6 +146,11 @@ int Game_DealCard(game_t *game, int count, card_array_t *array)
     return i;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_DropCard(game_t *game, seat_t *seat, card_array_t *array)
 {
     int i = 0;
@@ -164,6 +182,11 @@ void Game_DropCard(game_t *game, seat_t *seat, card_array_t *array)
         Deck_RecycleCard(game->deck, CardArray_PopFront(array));
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 seat_t *Game_FindNextSeat(game_t *game, seat_t *seat, int alive)
 {
     int i = 0;
@@ -187,6 +210,11 @@ seat_t *Game_FindNextSeat(game_t *game, seat_t *seat, int alive)
     return nextSeat;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int Game_FindSeatIndex(game_t *game, seat_t *seat)
 {
     int index = 0;
@@ -201,6 +229,11 @@ int Game_FindSeatIndex(game_t *game, seat_t *seat)
     return index;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_MoveDelayToNextSeat(game_t *game, seat_t *seat, int delayIndex)
 {
     seat_t *nextSeat = NULL;
@@ -226,6 +259,11 @@ void Game_MoveDelayToNextSeat(game_t *game, seat_t *seat, int delayIndex)
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_SeatPreDamage(game_t *game, event_context_t *context, seat_t *seat)
 {
     int i = 0;
@@ -281,16 +319,31 @@ void Game_SeatPreDamage(game_t *game, event_context_t *context, seat_t *seat)
      */
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_SeatPostDamage(game_t *game, event_context_t *context, seat_t *seat)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_SeatOnDamage(game_t *game, event_context_t *context, seat_t *seat)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t *seat)
 {
     int i = 0;
@@ -309,6 +362,11 @@ void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t 
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_PostEventToAllNextSeat(game_t *game, event_context_t *context, seat_t *seat)
 {
     int i = 0;
@@ -327,22 +385,34 @@ void Game_PostEventToAllNextSeat(game_t *game, event_context_t *context, seat_t 
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_PostEventToSeat(game_t *game, seat_t *seat, event_context_t *context)
 {
     Seat_HandleEvent(seat, context);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_SeatTryPlay(game_t *game, seat_t *seat, card_array_t *cards, uint32_t asCard)
 {
     
 }
 
-/*
- * ************************************************************
+/************************************************************
  * game Phase
- * ************************************************************
- */
-
+*************************************************************/
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_Start(game_t *game)
 {
     int i = 0;
@@ -364,6 +434,11 @@ void Game_Start(game_t *game)
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_PhaseTurnBegin(game_t *game, seat_t *seat, event_context_t *phaseContext)
 {
     event_context_t turnBegin;
@@ -392,6 +467,11 @@ void Game_PhaseTurnBegin(game_t *game, seat_t *seat, event_context_t *phaseConte
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseContext)
 {
     int seatIndex = 0;
@@ -519,6 +599,11 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_PhaseTurnDeal(game_t *game, seat_t *seat, event_context_t *context)
 {
     event_context_t event;
@@ -531,6 +616,11 @@ void Game_PhaseTurnDeal(game_t *game, seat_t *seat, event_context_t *context)
     Game_PostEventToSeat(game, seat, &event);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_PhaseTurnPlay(game_t *game, seat_t *seat, event_context_t *context)
 {
     event_context_t event;
@@ -543,6 +633,11 @@ void Game_PhaseTurnPlay(game_t *game, seat_t *seat, event_context_t *context)
     Game_PostEventToSeat(game, seat, &event);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_PhaseTurnDrop(game_t *game, seat_t *seat, event_context_t *context)
 {
     event_context_t event;
@@ -555,6 +650,11 @@ void Game_PhaseTurnDrop(game_t *game, seat_t *seat, event_context_t *context)
     Game_PostEventToSeat(game, seat, &event);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_PhaseTurnEnd(game_t *game, seat_t *seat, event_context_t *context)
 {
     event_context_t event;
@@ -567,12 +667,14 @@ void Game_PhaseTurnEnd(game_t *game, seat_t *seat, event_context_t *context)
     Game_PostEventToSeat(game, seat, &event);
 }
 
-/*
- * ************************************************************
+/***********************************************************
  * game loop
- * ************************************************************
- */
-
+***********************************************************/
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
 {
     event_context_t phaseContext;
@@ -625,6 +727,11 @@ void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
     Game_PostEventToSeat(game, seat, &phaseContext);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_Running(game_t *game)
 {
     int seatIndex = 0;
@@ -647,6 +754,11 @@ void Game_Running(game_t *game)
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Game_Execute(game_t *game)
 {
     Game_Start(game);

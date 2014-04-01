@@ -40,11 +40,21 @@ struct memblock
 
 struct memblock *memblockList = NULL;
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 static void memblock_print_info(struct memblock *mb)
 {
     printf("%d bytes allocated with \"%s\" at %s:%d\n", (int)mb->size, mb->expr, mb->file, mb->line);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void* memtrack_malloc(size_t size, const char* expr, const char* file, int line)
 {
     struct memblock *mb = malloc(size + sizeof(*mb));
@@ -69,6 +79,11 @@ void* memtrack_malloc(size_t size, const char* expr, const char* file, int line)
     return (void *)&mb[1];
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void* memtrack_calloc(size_t count, size_t elem_size, const char* expr, const char* file, int line)
 {
     struct memblock *mb = malloc(count*elem_size + sizeof(*mb));
@@ -95,6 +110,11 @@ void* memtrack_calloc(size_t count, size_t elem_size, const char* expr, const ch
     return (void *)&mb[1];
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void* memtrack_realloc(void* ptr, const char* eptr, size_t size, const char* expr, const char* file, int line)
 {
     if (!ptr)
@@ -130,6 +150,11 @@ void* memtrack_realloc(void* ptr, const char* eptr, size_t size, const char* exp
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void memtrack_free(void* ptr, const char* expr, const char* file, int line)
 {
     if (!ptr)
@@ -167,6 +192,11 @@ void memtrack_free(void* ptr, const char* expr, const char* file, int line)
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void memtrack_list_allocations(void)
 {
     struct memblock *mb;

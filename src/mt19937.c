@@ -16,6 +16,11 @@
 #define FULL_MASK   0xFFFFFFFF
 #define DEF_SEED    0x012BD6AA
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Random_Init(mt19937_t *context, uint32_t seed)//根据seed的不同,生成一大堆数据(作用未知)
 {
     context->mt[0] = seed & FULL_MASK;
@@ -27,6 +32,11 @@ void Random_Init(mt19937_t *context, uint32_t seed)//根据seed的不同,生成�
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Random_InitWithArray(mt19937_t *context, uint32_t initarr[], int length)
 {
     int i, j, k;
@@ -65,6 +75,11 @@ void Random_InitWithArray(mt19937_t *context, uint32_t initarr[], int length)
     context->mt[0] = UPPER_MASK;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 uint32_t Random_uint32(mt19937_t *context)//用来生成随机数
 {
     uint32_t y;
@@ -105,11 +120,21 @@ uint32_t Random_uint32(mt19937_t *context)//用来生成随机数
     return y;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int32_t Random_int32(mt19937_t *context)//用来生成随机数
 {
     return (int32_t)(Random_uint32(context)>>1);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 double Random_real_0_1(mt19937_t *context)
 {
     return (double)(Random_uint32(context)*(1.0/4294967296.0));

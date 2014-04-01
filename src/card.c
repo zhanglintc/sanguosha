@@ -412,6 +412,11 @@ int32_t TotalCardSet[][5]   =//所有卡牌组合（作者写这里的时候费�
     { SUIT_SPADE,   RANK_ACE,   CATEGORY_EQUIPMENT, ATTRIBUTE_WEAPON, CARD_ID_RAW_SABER }
 };
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int32_t Card_Make(int32_t suit, int32_t rank, int32_t category, int32_t attribute, int32_t cid)
 {
 /*
@@ -437,6 +442,11 @@ int32_t Card_Make(int32_t suit, int32_t rank, int32_t category, int32_t attribut
 	return card;//return cards information (32bit)
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int Card_InitSet(int32_t cards[], int extension)
 {
     int length = 0;
@@ -455,6 +465,11 @@ int Card_InitSet(int32_t cards[], int extension)
     return length;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void Card_Print(int32_t card)
 {
     char buffer[256];
@@ -465,6 +480,11 @@ void Card_Print(int32_t card)
     DEBUG_PRINT("%s", buffer);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 //Get Card's infomation and put int *str
 int Card_ToString(int32_t card, char str[])
 {
@@ -493,6 +513,12 @@ int Card_ToString(int32_t card, char str[])
     
     return length;
 }
+
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 /* return name of card */
 const char* Card_GetNameString(int32_t card)
 {
@@ -527,6 +553,11 @@ const char* Card_GetNameString(int32_t card)
     return name;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 /* return suit of card */
 const char* Card_GetSuitString(int32_t card)
 {
@@ -558,12 +589,14 @@ const char* Card_GetSuitString(int32_t card)
     return suit_str;
 }
 
-/*
- * ************************************************************
- * card_array_t
- * ************************************************************
- */
-
+/*************************************************************
+  card_array_t
+************************************************************/
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 card_array_t* CardArray_CreateEmpty(void)//开辟一个新的空间盛放牌堆
 {
     card_array_t *ret = NULL;
@@ -572,6 +605,11 @@ card_array_t* CardArray_CreateEmpty(void)//开辟一个新的空间盛放牌堆
     return ret;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 card_array_t* CardArray_CreateSet(int extension)
 {
     card_array_t *Card_Array = CardArray_CreateEmpty();//新建空牌堆
@@ -580,16 +618,31 @@ card_array_t* CardArray_CreateSet(int extension)
     return Card_Array;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void CardArray_Clear(card_array_t *arr)
 {
     memset(arr, 0, sizeof(card_array_t));
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void CardArray_Destroy(card_array_t *arr)
 {
     free(arr);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int32_t CardArray_PushFront(card_array_t *arr, int32_t card)
 {
     if (arr->length >= CARDS_COUNT_TOTAL)
@@ -603,6 +656,11 @@ int32_t CardArray_PushFront(card_array_t *arr, int32_t card)
     return card;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int32_t CardArray_PushBack(card_array_t *arr, int32_t card)
 {
     if (arr->length >= CARDS_COUNT_TOTAL)
@@ -614,6 +672,11 @@ int32_t CardArray_PushBack(card_array_t *arr, int32_t card)
     return card;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int32_t CardArray_PopFront(card_array_t *arr)
 {
     int32_t card = 0;
@@ -628,6 +691,11 @@ int32_t CardArray_PopFront(card_array_t *arr)
     return card;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int32_t CardArray_PopBack(card_array_t *arr)
 {
     int32_t card = 0;
@@ -643,6 +711,11 @@ int32_t CardArray_PopBack(card_array_t *arr)
     return card;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int32_t CardArray_Insert(card_array_t *arr, int index, int32_t card)
 {
     if (arr->length >= CARDS_COUNT_TOTAL || index > arr->length)
@@ -655,6 +728,11 @@ int32_t CardArray_Insert(card_array_t *arr, int index, int32_t card)
     return card;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int32_t CardArray_Remove(card_array_t *arr, int index)
 {
     int32_t card = 0;
@@ -669,6 +747,11 @@ int32_t CardArray_Remove(card_array_t *arr, int index)
     return card;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int CardArray_RemoveCard(card_array_t *arr, uint32_t card)
 {
     int removed = 0;
@@ -695,12 +778,22 @@ int CardArray_RemoveCard(card_array_t *arr, uint32_t card)
     return removed;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void CardArray_Copy(card_array_t *dst, card_array_t *src)
 {
     memset(dst, 0, sizeof(card_array_t));
     memcpy(dst, src, sizeof(card_array_t));
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void CardArray_InitFromArray(card_array_t *arr, int32_t cards[], int length)
 {
     CardArray_Clear(arr);
@@ -711,6 +804,11 @@ void CardArray_InitFromArray(card_array_t *arr, int32_t cards[], int length)
     arr->length = length;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int CardArray_Dump(card_array_t *arr, int32_t *buf)
 {
     int length = arr->length;
@@ -721,6 +819,15 @@ int CardArray_Dump(card_array_t *arr, int32_t *buf)
     return length;
 }
 
+/*******************************************************
+Function:
+    随机排序的共通函数，传入一个序列，将其随机排序后退出
+Argument:
+    arr[]   待排序序列
+    length  序列长度
+    *mt     随机数种子?
+Return  :   None
+*******************************************************/
 void shuffle(int32_t arr[], int length, mt19937_t *mt)//洗牌
 {
 	int i=0, j=0;
@@ -744,6 +851,14 @@ void shuffle(int32_t arr[], int length, mt19937_t *mt)//洗牌
 	}
 }
 
+/*******************************************************
+Function:
+    洗牌函数，通过调用随机排序函数，对传入的牌堆进行重洗
+Argument:
+    *Card_Array   牌堆序列
+    *mt           随机数种子?
+Return  :         None
+*******************************************************/
 void CardArray_Shuffle(card_array_t *Card_Array, mt19937_t *mt)
 {
     shuffle(Card_Array->cards, Card_Array->length, mt);

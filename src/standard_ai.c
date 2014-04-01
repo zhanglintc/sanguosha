@@ -71,7 +71,13 @@ int value_equip[23] = {
 #define VALUE_RED_HORSE       8     /* 骅骝 */
 #define VALUE_WHITE_SPOT      7     /* 的卢 */
 
+
 /* internal methods */
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 int StandardAI_Card_Evaluator(uint32_t card)
 {
     int category = 0;
@@ -102,6 +108,11 @@ int StandardAI_Card_Evaluator(uint32_t card)
     return value;
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Sort_Hands(seat_t *seat)
 {
     int i = 0;
@@ -135,6 +146,11 @@ void StandardAI_Sort_Hands(seat_t *seat)
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Play_Equipment(event_context_t *context)
 {
     game_t *game = NULL;
@@ -197,6 +213,11 @@ void StandardAI_Play_Equipment(event_context_t *context)
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Play_EatPeach(event_context_t *context)
 {
     game_t *game = NULL;
@@ -229,6 +250,11 @@ void StandardAI_Play_EatPeach(event_context_t *context)
     }
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Play_UseSpecial(event_context_t *context)
 {
     game_t *game = NULL;
@@ -308,43 +334,84 @@ void StandardAI_Play_UseSpecial(event_context_t *context)
     } while (fabricated);
 }
 
+
 /* event handlers */
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_GameStart(event_context_t *context)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_TurnBegin(event_context_t *context)
 {
     Seat_Print(context->seat, SeatPrintMode_Minimum);
     DEBUG_PRINT("\n");
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_TurnDetermine(event_context_t *context)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_TurnDeal(event_context_t *context)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_TurnPlay(event_context_t *context)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_TurnDrop(event_context_t *context)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_TurnEnd(event_context_t *context)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_OnDeal(event_context_t *context)
 {
     int count = 0;
@@ -371,6 +438,11 @@ void StandardAI_Handler_OnDeal(event_context_t *context)
     DEBUG_PRINT("from deck\n");
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_OnPlay(event_context_t *context)
 {
     seat_t *seat = context->seat;
@@ -381,6 +453,11 @@ void StandardAI_Handler_OnPlay(event_context_t *context)
     StandardAI_Play_EatPeach(context);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_OnDrop(event_context_t *context)
 {
     int dropcount = 0;
@@ -415,52 +492,102 @@ void StandardAI_Handler_OnDrop(event_context_t *context)
     Game_DropCard(context->game, context->seat, &drops);
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_OnOtherDrop(event_context_t *context)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_OnOtherRecyle(event_context_t *context)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_PreDamage(event_context_t *context)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_PostDamage(event_context_t *context)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_OnDamage(event_context_t *context)
 {
     /* some hero will have different skill on damage */
     /* sunce, yujin, xiaoqiao etc */
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_QueryCard(event_context_t *context)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_PreDetermine(event_context_t *context)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void StandardAI_Handler_PostDetermine(event_context_t *context)
 {
     
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void GodZhugeAI_Handler_GameStart(event_context_t *context)
 {
     //DEBUG_PRINT("祈星辰之力,佑我蜀汉!\n");
 }
 
+/*******************************************************
+Function: None
+Argument: None
+Return  : None
+*******************************************************/
 void ZhangheAI_Handler_TurnDetermine(event_context_t *context)
 {
     extra_process_phase_t *extra = (extra_process_phase_t *)context->extra;
