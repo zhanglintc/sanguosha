@@ -211,21 +211,21 @@ seat_t *Seat_Create(void)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 销毁座位
+Argument: seat_t *seat
 Return  : None
 *******************************************************/
 void Seat_Destroy(seat_t *seat)
 {
-    CardArray_Destroy(seat->hands);
+    CardArray_Destroy(seat->hands);//销毁手牌
     
-    free(seat->name);
-    free(seat);
+    free(seat->name);//清理座位姓名内存
+    free(seat);//清理座位内存
 }
 
 /*******************************************************
 Function: 
-    根据传入的 context 不同，处理不同的事件
+    根据传入的 context 不同，处理传入座位不同的事件
 Argument: 
     seat_t *seat                座位信息
     event_context_t *context    context 信息
@@ -235,9 +235,9 @@ Return  :
 //详细跳转设置请参照这个函数: Seat_Create()
 void Seat_HandleEvent(seat_t *seat, event_context_t *context)
 {
-    if (seat->eventHandlers[context->event] != NULL)
+    if (seat->eventHandlers[context->event] != NULL)//传入座位的环境参数不为空
     {
-        seat->eventHandlers[context->event](context);
+        seat->eventHandlers[context->event](context);//处理该座位的这个环境参数带入的事件
     }
         
 }
@@ -346,8 +346,8 @@ char *Seat_SetName(seat_t *seat, const char *name)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 打印座位信息
+Argument: seat_t *seat, int mode
 Return  : None
 *******************************************************/
 void Seat_Print(seat_t *seat, int mode)
@@ -355,28 +355,28 @@ void Seat_Print(seat_t *seat, int mode)
     int i = 0;
     
     /* basic information */
-    DEBUG_PRINT("[%s][%s][%s][%s][%d/%d][%d] ",
-           Identity_GetString(seat->identity),
-           Force_GetString(seat->force),
-           Sex_GetString(seat->sex),
-           seat->name,
-           seat->curHealth,
-           seat->maxHealth,
-           seat->hands->length);
+    DEBUG_PRINT("[%s][%s][%s][%s][%d/%d][%d] ", //格式控制
+           Identity_GetString(seat->identity),  //身份信息
+           Force_GetString(seat->force),        //势力信息
+           Sex_GetString(seat->sex),            //性别信息
+           seat->name,                          //名字
+           seat->curHealth,                     //当前血量
+           seat->maxHealth,                     //最大血量
+           seat->hands->length);                //大概是手牌数量
     
-    if ((seat->status & PlayerStatus_Flipped) != 0)
+    if ((seat->status & PlayerStatus_Flipped) != 0)//处于翻牌状态 第0位
         DEBUG_PRINT("%s ", szFlipped);
-    if ((seat->status & PlayerStatus_Drunk) != 0)
+    if ((seat->status & PlayerStatus_Drunk) != 0)//处于饮酒状态 第1位
         DEBUG_PRINT("%s ", szDrunk);
-    if ((seat->status & PlayerStatus_Chained) != 0)
+    if ((seat->status & PlayerStatus_Chained) != 0)//处于铁索状态 第2位
         DEBUG_PRINT("%s ", szChained);
-    
+                                                //第3位(无牌状态)暂未在此处使用,大概只是用于判断伤害时使用
     /* delay specials */
-    if ((mode & SeatPrintMode_DelaySP) != 0)
+    if ((mode & SeatPrintMode_DelaySP) != 0)//大概是输出延时锦囊的相关信息?
     {
-        for (i = SEAT_DELAY_CAPACITY - 1; i >= 0; i--)
+        for (i = SEAT_DELAY_CAPACITY - 1; i >= 0; i--)//这里用-- 作者随心所欲啊
         {
-            if (seat->delaySpecialTypes[i] != 0)
+            if (seat->delaySpecialTypes[i] != 0)//该处有延时锦囊,则输出
             {
                 DEBUG_PRINT("%s ", szDelaySP[seat->delaySpecialTypes[i]]);
             }
@@ -386,24 +386,24 @@ void Seat_Print(seat_t *seat, int mode)
     }
     
     /* equipments */
-    if ((mode & SeatPrintMode_Equipment) != 0)
+    if ((mode & SeatPrintMode_Equipment) != 0)//输出装备牌信息
     {
-        for (i = 0; i < SEAT_EQUIP_CAPACITY; i++)
+        for (i = 0; i < SEAT_EQUIP_CAPACITY; i++)//这里用++ 作者随心所欲啊
         {
-            if (seat->equipments[i] == 0)
+            if (seat->equipments[i] == 0)//此位置无装备牌则越过
                 continue;
             
-            Card_Print(seat->equipments[i]);
+            Card_Print(seat->equipments[i]);//输出这张装备牌
             DEBUG_PRINT("\n");
         }
     }
     
     /* hands */
-    if ((mode & SeatPrintMode_Hands) != 0)
+    if ((mode & SeatPrintMode_Hands) != 0)//输出手牌信息
     {
-        for (i = 0; i < seat->hands->length; i++)
+        for (i = 0; i < seat->hands->length; i++)//遍历所有手牌
         {
-            Card_Print(seat->hands->cards[i]);
+            Card_Print(seat->hands->cards[i]);//输出这张手牌信息
             DEBUG_PRINT(" ");
         }
         
@@ -563,9 +563,9 @@ void Identity_Print(int identity)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 获取给定身份编号的字符串信息
+Argument: int identity
+Return  : const char*
 *******************************************************/
 const char* Identity_GetString(int identity)
 {
@@ -583,9 +583,9 @@ void Force_Print(int force)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 获取给定势力编号的字符串信息
+Argument: int force
+Return  : const char*
 *******************************************************/
 const char* Force_GetString(int force)
 {
@@ -593,9 +593,9 @@ const char* Force_GetString(int force)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 获取给定性别编号的字符串信息
+Argument: int sex
+Return  : const char*
 *******************************************************/
 const char* Sex_GetString(int sex)
 {

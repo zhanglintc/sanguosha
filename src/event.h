@@ -50,11 +50,11 @@
 
 typedef struct event_context_t
 {
-    int     event;
-    void    *game;
-    void    *seat;
+    int     event;//事件
+    void    *game;//游戏  game_t *game
+    void    *seat;//座位  seat_t *seat
     
-    void    *extra;
+    void    *extra;//其他信息
     
 } event_context_t;
 

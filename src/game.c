@@ -65,7 +65,7 @@ game_t *Game_Create(int mode, int seed)
             break;
     }
     
-    game->stage = GameStage_Begin;
+    game->stage = GameStage_Begin;//创建为开始阶段，值为0
     
     /* init deck */
     game->deck = Deck_Create(extension);
@@ -110,15 +110,15 @@ Return  : None
 void Game_Destroy(game_t *game)
 {
     int i = 0;
-    for (i = 0; i < game->seatCapacity; i++)
+    for (i = 0; i < game->seatCapacity; i++)//输出场上每座位的当前信息,并将其销毁
     {
-        Seat_Print(game->seats[i], SeatPrintMode_All);
-        Seat_Destroy(game->seats[i]);
+        Seat_Print(game->seats[i], SeatPrintMode_All);//打印当前座位的信息
+        Seat_Destroy(game->seats[i]);//销毁这个座位的信息
     }
     
-    Deck_Destroy(game->deck);
+    Deck_Destroy(game->deck);//销毁这个桌面
     
-    free(game);
+    free(game);//释放 game 的内存
 }
 
 /*************************************************************
@@ -414,7 +414,7 @@ void Game_SeatTryPlay(game_t *game, seat_t *seat, card_array_t *cards, uint32_t 
  * game Phase
 *************************************************************/
 /*******************************************************
-Function: 游戏开始
+Function: 游戏开始（每个座位开始发牌阶段的处理，目前未作处理？）
 Argument: game_t *game
 Return  : None
 *******************************************************/
@@ -426,14 +426,14 @@ void Game_Start(game_t *game)
     event_context_t context;
     memset(&context, 0, sizeof(event_context_t));
     context.game = game;
-    context.event = EVENT_GAME_START;//事件游戏开始
+    context.event = EVENT_GAME_START;//事件游戏开始(目前对应函数 StandardAI_Handler_GameStart() 相关未作任何处理)
     
-    for (i = 0; i < game->seatCapacity; i++)
+    for (i = 0; i < game->seatCapacity; i++)//遍历每个作为
     {
-        seat = game->seats[i];
+        seat = game->seats[i];//获取当前座位信息
         if (seat != NULL)
         {
-            context.seat = seat;
+            context.seat = seat;//传递座位信息给环境参数
             Seat_HandleEvent(seat, &context);//每个角色处理游戏开始阶段事件
         }
     }
@@ -676,8 +676,8 @@ void Game_PhaseTurnEnd(game_t *game, seat_t *seat, event_context_t *context)
  * game loop
 ***********************************************************/
 /*******************************************************
-Function: None
-Argument: None
+Function: 貌似是一个很牛掰的函数，很多重要内容
+Argument: game_t *game, seat_t *seat
 Return  : None
 *******************************************************/
 void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
@@ -737,20 +737,20 @@ Function: 游戏运行
 Argument: game_t *game
 Return  : None
 *******************************************************/
-void Game_Running(game_t *game)
+void Game_Running(game_t *game)//目前传入的 game_stage是0
 {
     int seatIndex = 0;
     int temp = 1;
     
     /* loop */
-    while (game->stage != GameStage_End)
+    while (game->stage != GameStage_End)//只要不是游戏结束阶段
     {
         /* seat iteration */
-        for (seatIndex = 0; seatIndex < game->seatCapacity; seatIndex++)
+        for (seatIndex = 0; seatIndex < game->seatCapacity; seatIndex++)//遍历每个座位，进行处理
         {
-            seat_t *seat = NULL;
-            seat = game->seats[seatIndex];
-            Game_ExecuteSeatLogic(game, seat);
+            seat_t *seat = NULL;//创建一个座位
+            seat = game->seats[seatIndex];//获取座位信息
+            Game_ExecuteSeatLogic(game, seat);//处理座位
         }
         
         temp--;
@@ -766,6 +766,6 @@ Return  : None
 *******************************************************/
 void Game_Execute(game_t *game)
 {
-    Game_Start(game);
+    Game_Start(game);//处理发牌阶段每个座位的事件。目前似乎没有处理
     Game_Running(game);
 }

@@ -337,8 +337,8 @@ void StandardAI_Play_UseSpecial(event_context_t *context)
 
 /* event handlers */
 /*******************************************************
-Function: None
-Argument: None
+Function: Unknown
+Argument: event_context_t *context
 Return  : None
 *******************************************************/
 void StandardAI_Handler_GameStart(event_context_t *context)
@@ -347,8 +347,8 @@ void StandardAI_Handler_GameStart(event_context_t *context)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: Unknown
+Argument: event_context_t *context
 Return  : None
 *******************************************************/
 void StandardAI_Handler_TurnBegin(event_context_t *context)
@@ -358,8 +358,8 @@ void StandardAI_Handler_TurnBegin(event_context_t *context)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: Unknown
+Argument: event_context_t *context
 Return  : None
 *******************************************************/
 void StandardAI_Handler_TurnDetermine(event_context_t *context)
@@ -368,8 +368,8 @@ void StandardAI_Handler_TurnDetermine(event_context_t *context)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: Unknown
+Argument: event_context_t *context
 Return  : None
 *******************************************************/
 void StandardAI_Handler_TurnDeal(event_context_t *context)
@@ -378,8 +378,8 @@ void StandardAI_Handler_TurnDeal(event_context_t *context)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: Unknown
+Argument: event_context_t *context
 Return  : None
 *******************************************************/
 void StandardAI_Handler_TurnPlay(event_context_t *context)
@@ -388,8 +388,8 @@ void StandardAI_Handler_TurnPlay(event_context_t *context)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: Unknown
+Argument: event_context_t *context
 Return  : None
 *******************************************************/
 void StandardAI_Handler_TurnDrop(event_context_t *context)
@@ -398,8 +398,8 @@ void StandardAI_Handler_TurnDrop(event_context_t *context)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: Unknown
+Argument: event_context_t *context
 Return  : None
 *******************************************************/
 void StandardAI_Handler_TurnEnd(event_context_t *context)

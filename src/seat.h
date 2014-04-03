@@ -12,40 +12,46 @@
 #include "card.h"
 #include "event.h"
 
-#define IDENTITY_LORD       1
-#define IDENTITY_GUARD      2
-#define IDENTITY_REBEL      3
-#define IDENTITY_SPY        4
+#define IDENTITY_LORD       1   //主公
+#define IDENTITY_GUARD      2   //忠臣
+#define IDENTITY_REBEL      3   //反贼
+#define IDENTITY_SPY        4   //内奸
 
-#define FORCE_NEUTRAL       1
-#define FORCE_WEI           2
-#define FORCE_SHU           3
-#define FORCE_WU            4
+#define FORCE_NEUTRAL       1   //群雄?
+#define FORCE_WEI           2   //魏
+#define FORCE_SHU           3   //蜀
+#define FORCE_WU            4   //吴
 
-#define SEX_MALE            0
-#define SEX_FEMALE          1
+#define SEX_MALE            0   //男性无疑
+#define SEX_FEMALE          1   //女性无疑
 
-#define SEAT_EQUIP_CAPACITY 4
-#define SEAT_DELAY_CAPACITY 3
+#define SEAT_EQUIP_CAPACITY 4   //装备牌最大数量?
+#define SEAT_DELAY_CAPACITY 3   //延时锦囊最大数量?
 
 typedef enum
 {
-    SeatPrintMode_Minimum   = 0 << 0,
-    SeatPrintMode_Equipment = 1 << 0,
-    SeatPrintMode_DelaySP   = 1 << 1,
-    SeatPrintMode_Hands     = 1 << 2,
+    SeatPrintMode_Minimum   = 0 << 0,       //0000 0    ???
+    SeatPrintMode_Equipment = 1 << 0,       //0001 1    装备牌
+    SeatPrintMode_DelaySP   = 1 << 1,       //0010 2    延时锦囊
+    SeatPrintMode_Hands     = 1 << 2,       //0100 4    手牌
     
-    SeatPrintMode_All       = (1 << 3) - 1
+    SeatPrintMode_All       = (1 << 3) - 1  //1000 - 1 = 0111 3
     
 } SeatPrintMode;
 
 typedef enum
 {
-    PlayerStatus_Normal     = 0 << 0,
-    PlayerStatus_Flipped    = 1 << 0,
-    PlayerStatus_Drunk      = 1 << 1,
-    PlayerStatus_Chained    = 1 << 2,
-    PlayerStatus_Naked      = 1 << 3
+/**************************************
+    3-------2-------1-------0
+    x-------x-------x-------x
+    |       |       |       |
+    nake    chain   drunk   flip
+**************************************/
+    PlayerStatus_Normal     = 0 << 0,       //0000 0    正常状态
+    PlayerStatus_Flipped    = 1 << 0,       //0001 1    被翻面
+    PlayerStatus_Drunk      = 1 << 1,       //0010 2    醉酒
+    PlayerStatus_Chained    = 1 << 2,       //0100 4    铁索连环
+    PlayerStatus_Naked      = 1 << 3        //1000 8    无牌
     
 } PlayerStatus;
 
@@ -53,27 +59,27 @@ typedef void (*event_handler)(event_context_t *context);  /* 一个函数跳转�
 
 typedef struct seat_t
 {
-    int             identity;
-    int             force;
+    int             identity;                           //身份
+    int             force;                              //势力
     
-    int             curHealth;
-    int             maxHealth;
+    int             curHealth;                          //当前血量
+    int             maxHealth;                          //最大血量
     
-    int             sex;
-    int             status;
-    int             dead;
+    int             sex;                                //性别
+    int             status;                             //状态
+    int             dead;                               //是否存活
     
-    int             aggressiveDistance;
-    int             defensiveDistance;
+    int             aggressiveDistance;                 //进攻距离?
+    int             defensiveDistance;                  //防守距离?
     
-    char            *name;
+    char            *name;                              //名字
     
-    uint32_t        equipments[SEAT_EQUIP_CAPACITY];
-    uint32_t        delaySpecialCards[3];
-    uint32_t        delaySpecialTypes[3];
-    card_array_t    *hands;//手牌
+    uint32_t        equipments[SEAT_EQUIP_CAPACITY];    //装备 (大概是4个,编号分别为0 1 2 3)
+    uint32_t        delaySpecialCards[3];               //延时卡牌数量?
+    uint32_t        delaySpecialTypes[3];               //延时卡牌种类?
+    card_array_t    *hands;                             //手牌
     
-    event_handler   eventHandlers[EVENT_COUNT];//角色当前阶段处理器
+    event_handler   eventHandlers[EVENT_COUNT];         //角色当前阶段处理器
     
 }seat_t;
 

@@ -17,35 +17,35 @@
 
 typedef enum
 {
-    GameMode_Normal5 = 0,
-    GameMode_Normal8,
-    GameMode_Military5,
-    GameMode_Military8
+    GameMode_Normal5 = 0,   //0
+    GameMode_Normal8,       //1
+    GameMode_Military5,     //2
+    GameMode_Military8      //3
     
 } GameMode;
 
 typedef enum
 {
-    GameStage_Begin     = 0,
-    GameStage_Running,
-    GameStage_End
+    GameStage_Begin     = 0,    //0
+    GameStage_Running,          //1
+    GameStage_End               //2
     
 } GameStage;
 
 typedef struct game_s
 {
-    int         mode;
+    int         mode;//游戏状态
     
-    int         stage;
+    int         stage;//当前游戏阶段
     
-    int         seatCapacity;
+    int         seatCapacity;//最大作为数量
     int         seatCount;
     
-    mt19937_t   mtRandom;
+    mt19937_t   mtRandom;//随机数种子?
     
-    deck_t      *deck;
+    deck_t      *deck;//牌面,桌面
     
-    seat_t      *seats[MAXIMUM_SEAT_COUNT];
+    seat_t      *seats[MAXIMUM_SEAT_COUNT];//座位序列
     
 } game_t;
 

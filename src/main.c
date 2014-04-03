@@ -102,8 +102,8 @@ void test_Game()
     game_t *game = NULL;
     game = Game_Create(GameMode_Military5, seed);//生成一个 game
     
-    Game_Execute(game);
-    Game_Destroy(game);
+    Game_Execute(game);//执行游戏
+    Game_Destroy(game);//在销毁游戏的时候,顺便输出了所有的座位信息(大概只是debug的时候这么用的)
 }
 
 /*******************************************************

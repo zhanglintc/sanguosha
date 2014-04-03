@@ -176,7 +176,7 @@
 typedef struct card_array_t
 {
     int32_t cards[CARDS_COUNT_TOTAL]; //32 bits cards information
-    int     length;
+    int     length; //猜测是牌的数量(可以考虑改个名字,譬如 amount)
     
 } card_array_t;
 
