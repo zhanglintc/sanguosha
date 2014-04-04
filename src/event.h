@@ -43,6 +43,7 @@
 #define DETERMINE_TYPE_FAMINE       3
 #define DETERMINE_TYPE_TRIGRAMS     4
 
+//存入各种状态信息
 #define EventContextSet(context, e, g, s, x)    ((context)->event = e,  \
                                                 (context)->game = g,    \
                                                 (context)->seat = s,    \
@@ -50,8 +51,14 @@
 
 //added by zhanglin 2014.04.04
 //Game_PhaseTurnBegin() 等时候使用
-#define EVENT_PASS        1
-#define EVENT_DETERMINE   0
+//计划用法：
+/* if the seat is flipped, flip it back */
+//extra->shouldPassDeal = 1;
+//将其翻回来，然后被设为了 1
+//说明 1 是正常状态
+//if (!extra.shouldPassDetermine)
+#define EVENT_SHOULD_PASS        1         //1 不判定
+#define EVENT_SHOULD_DETERMINE   0         //0 才判定
 
 typedef struct event_context_t
 {

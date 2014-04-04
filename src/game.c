@@ -216,9 +216,9 @@ seat_t *Game_FindNextSeat(game_t *game, seat_t *seat, int alive)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 返回当前座位的序号
+Argument: *game *seat
+Return  : int index
 *******************************************************/
 int Game_FindSeatIndex(game_t *game, seat_t *seat)
 {
@@ -227,7 +227,7 @@ int Game_FindSeatIndex(game_t *game, seat_t *seat)
     /* find seat index */
     for (index = 0; index < game->seatCapacity; index++)
     {
-        if (game->seats[index] == seat)
+        if (game->seats[index] == seat)//这也能比？比的是两个指针的地址？
             break;
     }
     
@@ -345,8 +345,8 @@ void Game_SeatOnDamage(game_t *game, event_context_t *context, seat_t *seat)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 从当前座位开始讲事件依次推向所有的座位（用于处理些全场的事件）
+Argument: *game *context *seat
 Return  : None
 *******************************************************/
 void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t *seat)
@@ -354,13 +354,13 @@ void Game_PostEventToAllFromSeat(game_t *game, event_context_t *context, seat_t 
     int i = 0;
     int j = 0;
     
-    for (i = 0; i < game->seatCapacity; i++)
+    for (i = 0; i < game->seatCapacity; i++)//找到当前座位号
     {
         if (game->seats[i] == seat)
             break;
     }
     
-    for (j = 0; j < game->seatCapacity; j++)
+    for (j = 0; j < game->seatCapacity; j++)//每个座位依次处理事件
     {
         seat = game->seats[(i+j) % game->seatCapacity];
         Seat_HandleEvent(seat, context);
@@ -391,9 +391,13 @@ void Game_PostEventToAllNextSeat(game_t *game, event_context_t *context, seat_t 
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 
+    PostEventToSeat，把事件扔给座位。就是传入一个事件，座位进行
+    处理，然后得到一些结果（比如是否需要跳过判定，发牌出牌阶段等）
+Argument: 
+    *game *seat *context
+Return  : 
+    None
 *******************************************************/
 void Game_PostEventToSeat(game_t *game, seat_t *seat, event_context_t *context)
 {
@@ -456,7 +460,7 @@ void Game_PhaseTurnBegin(game_t *game, seat_t *seat, event_context_t *phaseConte
     if (seat != NULL && !seat->dead)//座位不为空，且当前角色未死亡
     {
         /* if the seat is flipped, flip it back */
-        if (seat->status & PlayerStatus_Flipped)//如果已经被翻面？，将翻面角色卡牌翻回来
+        if (seat->status & PlayerStatus_Flipped)//如果已经被翻面,将翻面角色卡牌翻回来,并且跳过该回合
         {
             seat->status &= ~PlayerStatus_Flipped;
             extra->shouldPassDetermine = 1;
@@ -473,8 +477,8 @@ void Game_PhaseTurnBegin(game_t *game, seat_t *seat, event_context_t *phaseConte
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 卧槽，这个函数好长啊
+Argument: *game *seat *phaseContext
 Return  : None
 *******************************************************/
 void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseContext)
@@ -490,7 +494,7 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
     {
         if (seat->delaySpecialTypes[delayIndex] != 0)
         {
-            /* ask for impeccable */
+            /* ask for impeccable */ //求无懈可击
             event_context_t queryContext;
             extra_request_t request;
             memset(&queryContext, 0, sizeof(event_context_t));
@@ -498,6 +502,7 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
             
             EventContextSet(&queryContext, EVENT_QUERY_CARD, game, seat, &request);
             
+            //创建一张无懈可击
             request.card = Card_Make(0, 0, CATEGORY_SPECIAL, ATTRIBUTE_NONE, CARD_ID_IMPECCABLE);
             
             /* this process will be very complicated */
@@ -693,18 +698,20 @@ void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
     phaseContext.extra = &extra;
     
     /* turn begin */
-    Game_PhaseTurnBegin(game, seat, &phaseContext);
+    Game_PhaseTurnBegin(game, seat, &phaseContext);//回合开始前处理（处理一些翻面信息之类的）
     
     /* some hero can bypass determine phases */
-    phaseContext.event = EVENT_TURN_DETERMINE;
+    //有一些英雄可能会跳过判定阶段，所以要在这里处理，判定是否需要跳过
+    //以下内容同理
+    phaseContext.event = EVENT_TURN_DETERMINE;//判定前处理
     Game_PostEventToSeat(game, seat, &phaseContext);
     
     /* turn determine */
-    if (!extra.shouldPassDetermine)//shouldPassDetermine == 0 才进行判定，说明0是判定，1是跳过
+    if (!extra.shouldPassDetermine)//shouldPassDetermine == 0 才进行判定，说明0是不要跳过，1是要跳过
         Game_PhaseTurnDetermine(game, seat, &phaseContext);
     
     /* some hero can bypass deal phase */
-    phaseContext.event = EVENT_TURN_DEAL;
+    phaseContext.event = EVENT_TURN_DEAL;//发牌前处理
     Game_PostEventToSeat(game, seat, &phaseContext);
     
     /* turn deal */
@@ -712,7 +719,7 @@ void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
         Game_PhaseTurnDeal(game, seat, &phaseContext);
     
     /* some hero can bypass play phase */
-    phaseContext.event = EVENT_TURN_PLAY;
+    phaseContext.event = EVENT_TURN_PLAY;//出牌前处理
     Game_PostEventToSeat(game, seat, &phaseContext);
     
     /* turn play */
@@ -720,7 +727,7 @@ void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
         Game_PhaseTurnPlay(game, seat, &phaseContext);
     
     /* some hero can bypass drop phase */
-    phaseContext.event = EVENT_TURN_DROP;
+    phaseContext.event = EVENT_TURN_DROP;//弃牌前处理
     Game_PostEventToSeat(game, seat, &phaseContext);
     
     /* turn drop */
@@ -728,7 +735,7 @@ void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
         Game_PhaseTurnDrop(game, seat, &phaseContext);
     
     /* turn end */
-    phaseContext.event = EVENT_TURN_END;
+    phaseContext.event = EVENT_TURN_END;//回合结束前处理
     Game_PostEventToSeat(game, seat, &phaseContext);
 }
 
