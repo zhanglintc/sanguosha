@@ -67,7 +67,7 @@ typedef struct seat_t
     
     int             sex;                                //性别
     int             status;                             //状态
-    int             dead;                               //是否存活
+    int             dead;                               //是否存活 1存活 0死亡
     
     int             aggressiveDistance;                 //进攻距离?
     int             defensiveDistance;                  //防守距离?

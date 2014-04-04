@@ -12,28 +12,28 @@
 #include "common.h"
 
 #define EVENT_WILDCARD          0
-#define EVENT_GAME_START        1
-#define EVENT_TURN_BEGIN        2
-#define EVENT_TURN_DETERMINE    3
-#define EVENT_TURN_DEAL         4
-#define EVENT_TURN_PLAY         5
-#define EVENT_TURN_DROP         6
-#define EVENT_TURN_END          7
+#define EVENT_GAME_START        1   //StandardAI_Handler_GameStart
+#define EVENT_TURN_BEGIN        2   //StandardAI_Handler_TurnBegin
+#define EVENT_TURN_DETERMINE    3   //StandardAI_Handler_TurnDetermine
+#define EVENT_TURN_DEAL         4   //StandardAI_Handler_TurnDeal
+#define EVENT_TURN_PLAY         5   //StandardAI_Handler_TurnPlay
+#define EVENT_TURN_DROP         6   //StandardAI_Handler_TurnDrop
+#define EVENT_TURN_END          7   //StandardAI_Handler_TurnEnd
 
-#define EVENT_ON_DEAL           8
-#define EVENT_ON_PLAY           9
-#define EVENT_ON_DROP           10
+#define EVENT_ON_DEAL           8   //StandardAI_Handler_OnDeal
+#define EVENT_ON_PLAY           9   //StandardAI_Handler_OnPlay
+#define EVENT_ON_DROP           10  //StandardAI_Handler_OnDrop
 
-#define EVENT_OTHER_DROP        11
-#define EVENT_OTHER_RECYLE      12
+#define EVENT_OTHER_DROP        11  //StandardAI_Handler_OnOtherDrop
+#define EVENT_OTHER_RECYLE      12  //
 
-#define EVENT_QUERY_CARD        13
-#define EVENT_PRE_DETERMINE     14
-#define EVENT_POST_DETERMINE    15
+#define EVENT_QUERY_CARD        13  //StandardAI_Handler_QueryCard
+#define EVENT_PRE_DETERMINE     14  //StandardAI_Handler_PreDetermine
+#define EVENT_POST_DETERMINE    15  //StandardAI_Handler_PostDetermine
 
-#define EVENT_PRE_DAMAGE        16
-#define EVENT_POST_DAMAGE       17
-#define EVENT_ON_DAMAGE         18
+#define EVENT_PRE_DAMAGE        16  //StandardAI_Handler_PreDamage
+#define EVENT_POST_DAMAGE       17  //StandardAI_Handler_PostDamage
+#define EVENT_ON_DAMAGE         18  //StandardAI_Handler_OnDamage
 
 #define EVENT_COUNT             256
 
@@ -47,6 +47,11 @@
                                                 (context)->game = g,    \
                                                 (context)->seat = s,    \
                                                 (context)->extra = x)
+
+//added by zhanglin 2014.04.04
+//Game_PhaseTurnBegin() 等时候使用
+#define EVENT_PASS        1
+#define EVENT_DETERMINE   0
 
 typedef struct event_context_t
 {
@@ -75,10 +80,10 @@ typedef struct extra_determine_t
 
 typedef struct extra_process_phase_t
 {
-    int shouldPassDetermine;
-    int shouldPassDeal;
-    int shouldPassPlay;
-    int shouldPassDrop;
+    int shouldPassDetermine;    //是否跳过判定阶段
+    int shouldPassDeal;         //是否跳过发牌阶段
+    int shouldPassPlay;         //是否跳过出牌阶段
+    int shouldPassDrop;         //是否跳过弃牌阶段
     
 } extra_process_phase_t;
 

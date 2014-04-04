@@ -440,8 +440,8 @@ void Game_Start(game_t *game)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 回合前的处理（是否需要翻面等）
+Argument: *game, *seat,  *phaseContext
 Return  : None
 *******************************************************/
 void Game_PhaseTurnBegin(game_t *game, seat_t *seat, event_context_t *phaseContext)
@@ -453,10 +453,10 @@ void Game_PhaseTurnBegin(game_t *game, seat_t *seat, event_context_t *phaseConte
     turnBegin.game = game;
     turnBegin.event = EVENT_TURN_BEGIN;
     
-    if (seat != NULL && !seat->dead)
+    if (seat != NULL && !seat->dead)//座位不为空，且当前角色未死亡
     {
         /* if the seat is flipped, flip it back */
-        if (seat->status & PlayerStatus_Flipped)
+        if (seat->status & PlayerStatus_Flipped)//如果已经被翻面？，将翻面角色卡牌翻回来
         {
             seat->status &= ~PlayerStatus_Flipped;
             extra->shouldPassDetermine = 1;
@@ -464,7 +464,7 @@ void Game_PhaseTurnBegin(game_t *game, seat_t *seat, event_context_t *phaseConte
             extra->shouldPassPlay = 1;
             extra->shouldPassDrop = 1;
         }
-        else
+        else//否则正常处理
         {
             turnBegin.seat = seat;
             Seat_HandleEvent(seat, &turnBegin);
@@ -700,7 +700,7 @@ void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
     Game_PostEventToSeat(game, seat, &phaseContext);
     
     /* turn determine */
-    if (!extra.shouldPassDetermine)
+    if (!extra.shouldPassDetermine)//shouldPassDetermine == 0 才进行判定，说明0是判定，1是跳过
         Game_PhaseTurnDetermine(game, seat, &phaseContext);
     
     /* some hero can bypass deal phase */
