@@ -188,27 +188,27 @@ void Game_DropCard(game_t *game, seat_t *seat, card_array_t *array)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 找到下一个座位（目前可能有问题？因为 alive参数未使用）
+Argument: *game, *seat, int alive
+Return  : seat_t *
 *******************************************************/
 seat_t *Game_FindNextSeat(game_t *game, seat_t *seat, int alive)
 {
-    int i = 0;
-    int j = 0;
+    int current = 0;
+    int offset = 0;
     
     seat_t *nextSeat = NULL;
     
-    for (i = 0; i < game->seatCapacity; i++)
+    for (current = 0; current < game->seatCapacity; current++)//找到当前座位
     {
-        if (game->seats[i] == seat)
+        if (game->seats[current] == seat)
             break;
     }
     
-    for (j = 1; j < game->seatCapacity; j++)
+    for (offset = 1; offset < game->seatCapacity; offset++)//从邻座开始找到第一个未死亡角色
     {
-        nextSeat = game->seats[(i + j) % game->seatCapacity];
-        if (!nextSeat->dead)
+        nextSeat = game->seats[(current + offset) % game->seatCapacity];
+        if (!nextSeat->dead)//未死亡则跳出，得到了需要的下一个座位（这里以后可能需要加入越界的判断）
             break;
     }
     
@@ -509,24 +509,24 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
             Game_PostEventToAllFromSeat(game, &queryContext, seat);
             
             /* impeccable */
-            if (((extra_request_t *)queryContext.extra)->count % 2)
+            if (((extra_request_t *)queryContext.extra)->count % 2)//单数张无懈可击，无懈可击生效，延时锦囊无效
             {
                 /* process delay special here */
                 if (seat->delaySpecialCards[delayIndex] != DETERMINE_TYPE_LIGHTNING)
-                {
+                {//不是闪电，就放入弃牌堆
                     /* not lightning, recyle card */
-                    seat->delaySpecialTypes[delayIndex] = DETERMINE_TYPE_NONE;
-                    Deck_RecycleCard(game->deck, seat->delaySpecialCards[delayIndex]);
-                    seat->delaySpecialCards[delayIndex] = 0;
+                    seat->delaySpecialTypes[delayIndex] = DETERMINE_TYPE_NONE;//将该处的判定牌属性取消
+                    Deck_RecycleCard(game->deck, seat->delaySpecialCards[delayIndex]);//锦囊放入弃牌堆
+                    seat->delaySpecialCards[delayIndex] = 0;//销毁判定牌
                 }
-                else
+                else//是闪电则移交给下一角色
                 {
                     /* lightning, move to next seat */
                     Game_MoveDelayToNextSeat(game, seat, delayIndex);
                 }
             }
             /* no impeccable, roll the dice! */
-            else
+            else//否则是双数张无懈可击，不生效
             {
                 event_context_t determineContext;
                 card_array_t determineCardArray;
