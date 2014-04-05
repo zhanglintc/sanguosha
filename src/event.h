@@ -94,7 +94,7 @@ typedef struct extra_process_phase_t
     
 } extra_process_phase_t;
 
-typedef struct extra_damage_t
+typedef struct extra_damage_t //作用不明确
 {
     int         damage;
     int         attribute;

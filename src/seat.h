@@ -110,18 +110,30 @@ void Seat_Print(seat_t *seat, int mode);
  * ************************************************************
  */
 
+//链表实现的铁锁链换
 typedef struct seat_list_t
 {
-    seat_t *seat;
-    struct seat_list_t *next;
+    seat_t *seat;//座位
+    struct seat_list_t *next;//下一个座位
     
 } seat_list_t;
 
+/* 创建铁索连环 */
 seat_list_t *SeatList_Create(void);
+
+/* 销毁铁索连环 */
 void SeatList_Destroy(seat_list_t *list);
+
+/* 计算铁索连环生效的角色数 */
 int SeatList_Count(seat_list_t *list);
+
+/* 在尾部加入一个角色 */ //（头尾能有什么区别？）
 seat_list_t *SeatList_PushBack(seat_list_t *list, seat_t *seat);
+
+/* 在头部加入一个角色 */
 seat_list_t *SeatList_PushFront(seat_list_t *list, seat_t *seat);
+
+/* 从铁索连环移出一个角色 */
 seat_list_t *SeatList_Remove(seat_list_t *list, seat_t *seat);
 
 void Identity_Print(int identity);

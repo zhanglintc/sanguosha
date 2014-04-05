@@ -285,8 +285,8 @@ void Game_SeatPreDamage(game_t *game, event_context_t *context, seat_t *seat)
     attribute = damageExtra->attribute;
     
     /* if player is chained, and damage is attribute, build a list of chained players */
-    if ((attribute == ATTRIBUTE_FIRE || attribute == ATTRIBUTE_LIGHTNING) &&
-        CHECK_FLAG(seat->status, PlayerStatus_Chained))
+    if ((attribute == ATTRIBUTE_FIRE || attribute == ATTRIBUTE_LIGHTNING) && //火杀 或者 雷杀
+        CHECK_FLAG(seat->status, PlayerStatus_Chained)) //被铁索连环
     {
         chainSeatList = SeatList_Create();
         

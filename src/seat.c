@@ -414,9 +414,9 @@ void Seat_Print(seat_t *seat, int mode)
 }
 
 /*******************************************************
-Function: None
+Function: 创建铁索连环节点
 Argument: None
-Return  : None
+Return  : seat_list_t *
 *******************************************************/
 seat_list_t *SeatList_Create(void)
 {
@@ -426,8 +426,8 @@ seat_list_t *SeatList_Create(void)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 销毁一个铁索连环
+Argument: seat_list_t *list
 Return  : None
 *******************************************************/
 void SeatList_Destroy(seat_list_t *list)
@@ -437,16 +437,16 @@ void SeatList_Destroy(seat_list_t *list)
     
     for (node = list; node != NULL;)
     {
-        prev = node;
-        node = node->next;
-        free(prev);
+        prev = node;//记录下当前位置
+        node = node->next;//指针后移一位
+        free(prev);//然后清除存下的位置的数据
     }
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 返回当前处于铁索连环的角色数量
+Argument: *list
+Return  : int count
 *******************************************************/
 int SeatList_Count(seat_list_t *list)
 {
@@ -461,48 +461,49 @@ int SeatList_Count(seat_list_t *list)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 将一个角色的座位加入链表尾部
+Argument: *list, *seat
+Return  : seat_list_t *
 *******************************************************/
 seat_list_t *SeatList_PushBack(seat_list_t *list, seat_t *seat)
 {
-    seat_list_t *tail = list;
+    seat_list_t *tail = list;//tail可以考虑被改名。比如，比如我也不知道了。。。
     seat_list_t *node = NULL;
     
-    if (list->seat == NULL)
+    if (list->seat == NULL)//如果链表为空
     {
-        list->seat = seat;
-        return list;
+        list->seat = seat;//存入该座位
+        return list;//将链表返回
     }
     
-    while (tail->next != NULL)
+    while (tail->next != NULL)//找到链表的尾部
         tail = tail->next;
     
-    node = SeatList_Create();
-    node->next = NULL;
-    node->seat = seat;
+    node = SeatList_Create();//新建一个节点
+    node->next = NULL;//新建节点的的指向为空
+    node->seat = seat;//将座位放入该节点
     
-    tail->next = node;
+    tail->next = node;//该节点链接到链表尾部
     
-    return list;
+    return list;//将链表返回
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 在一个铁索连环链表的头部放入一个角色的座位
+Argument: seat_list_t *list, seat_t *seat
+Return  : seat_list_t *
 *******************************************************/
 seat_list_t *SeatList_PushFront(seat_list_t *list, seat_t *seat)
 {
     seat_list_t *node = NULL;
     
-    if (list->seat == NULL)
+    if (list->seat == NULL)//链表为控，座位放入链表并将其返回
     {
         list->seat = seat;
         return list;
     }
     
+    //否则新建一个节点，并将整个列表放到节点的后面
     node = SeatList_Create();
     node->seat = seat;
     node->next = list;
@@ -511,9 +512,9 @@ seat_list_t *SeatList_PushFront(seat_list_t *list, seat_t *seat)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 从铁索连环中删除一个角色
+Argument: seat_list_t *list, seat_t *seat
+Return  : seat_list_t *
 *******************************************************/
 seat_list_t *SeatList_Remove(seat_list_t *list, seat_t *seat)
 {
@@ -521,37 +522,38 @@ seat_list_t *SeatList_Remove(seat_list_t *list, seat_t *seat)
     seat_list_t *prev = NULL;
     
     /* remove only node in the list */
-    if (node->seat == seat && node->next == NULL)
+    if (node->seat == seat && node->next == NULL)//list的第一个就是目标，而且下一个为零，意味着唯一一个成员
     {
-        SeatList_Destroy(node);
-        return NULL;
+        SeatList_Destroy(node);//销毁它
+        return NULL;//并且返回NULL
     }
     /* remove head of the list */
-    else if (node->seat == seat)
+    else if (node->seat == seat)//已经确认不是唯一一个成员，所以是移掉头部
     {
-        node = list->next;
-        free(list);
-        return node;
+        node = list->next;//移向下一位
+        free(list);//消除头部
+        return node;//返回当前头部
     }
-    
+
+    //上面的处理没有找到合适的，就是删除链表中的某一个（应该包括尾部那个），以下就是开始搜索
     prev = list;
     node = list->next;
     
-    while (node->seat != seat && node != NULL)
-    {
+    while (node->seat != seat && node != NULL)//没找到目标座位，且未到尾部
+    {//一直向后搜索
         prev = node;
         node = node->next;
     }
     
     /* not found */
-    if (node == NULL)
+    if (node == NULL)//已经到了尾部，直接将未删除的链表返回
         return list;
     
-    /* remove node */
-    prev->next = node->next;
-    free(node);
+    /* remove node */  //找到了！
+    prev->next = node->next;//将 prev 链接到 node 的 next，即为移出了目标
+    free(node);//销毁目标
     
-    return list;
+    return list;//将list返回
 }
 
 /*******************************************************
