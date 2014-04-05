@@ -125,30 +125,32 @@ void Game_Destroy(game_t *game)
  * game play
 *************************************************************/
 /*******************************************************
-Function: None
-Argument: None
+Function: 从牌堆取出一张卡牌，放入 card_array
+Argument: *game, count, *card_array
 Return  : None
 *******************************************************/
-int Game_DealCard(game_t *game, int count, card_array_t *array)
+int Game_DealCard(game_t *game, int count, card_array_t *card_array)
 {
     int i = 0;
     
-    if (game->deck->cardStack->length < count)
+    if (game->deck->cardStack->length < count)//牌堆数量不足
     {
-        Deck_NewRound(game->deck);
-        CardArray_Shuffle(game->deck->cardStack, &game->mtRandom);
+        Deck_NewRound(game->deck);//重新发牌
+        CardArray_Shuffle(game->deck->cardStack, &game->mtRandom);//洗牌
         
-        if (game->deck->cardStack->length < count)
+        if (game->deck->cardStack->length < count)//数量仍然不足
         {
             /* no enough card, game tied */
-            game->stage = GameStage_End;
-            return -1;
+            game->stage = GameStage_End;//游戏结束
+            return -1;//返回异常
         }
     }
+
+    //如果没有发生上述意外，则正常从桌面牌堆取出一张牌
     for (i = 0; i < count; i++)
-        CardArray_PushBack(array, Deck_DealCard(game->deck));
+        CardArray_PushBack(card_array, Deck_DealCard(game->deck));
     
-    return i;
+    return i;//返回生成的卡牌数量（有用吗？）
 }
 
 /*******************************************************
@@ -212,7 +214,7 @@ seat_t *Game_FindNextSeat(game_t *game, seat_t *seat, int alive)
             break;
     }
     
-    return nextSeat;
+    return nextSeat;//return下一个座位
 }
 
 /*******************************************************
@@ -235,8 +237,8 @@ int Game_FindSeatIndex(game_t *game, seat_t *seat)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 将延时锦囊移交给下一角色
+Argument: *game, *seat, int delayIndex
 Return  : None
 *******************************************************/
 void Game_MoveDelayToNextSeat(game_t *game, seat_t *seat, int delayIndex)
@@ -245,21 +247,22 @@ void Game_MoveDelayToNextSeat(game_t *game, seat_t *seat, int delayIndex)
     int delayType = 0;
     uint32_t delayCard = 0;
 
-    delayType = seat->delaySpecialTypes[delayIndex];
-    delayCard = seat->delaySpecialCards[delayIndex];
+    delayType = seat->delaySpecialTypes[delayIndex];//获取延时卡牌类型
+    delayCard = seat->delaySpecialCards[delayIndex];//获取延时卡牌（目前未被使用）
     
-    nextSeat = Game_FindNextSeat(game, seat, 1);
+    nextSeat = Game_FindNextSeat(game, seat, 1);//找到下一个座位
     while (Seat_HasDelaySpecial(nextSeat, DETERMINE_TYPE_LIGHTNING) || !Seat_CanAffectByCard(nextSeat, delayType))
-    {
+    {   //在当前角色 “有相同延时锦囊” 或者 “不能被生效” 的时候
+        //继续移交给下一角色
         nextSeat = Game_FindNextSeat(game, nextSeat, 1);
     }
     
-    if (nextSeat == NULL)
+    if (nextSeat == NULL)//如果找不到下一角色则返回（目的不明）
         return;
     
     if (Seat_AttachDelaySpecial(nextSeat, DETERMINE_TYPE_LIGHTNING, seat->delaySpecialCards[delayIndex]))
     {
-        seat->delaySpecialTypes[delayIndex] = 0;
+        seat->delaySpecialTypes[delayIndex] = 0;//放入成功后，清除当前座位的卡牌信息
         seat->delaySpecialCards[delayIndex] = 0;
     }
 }
@@ -528,61 +531,71 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
             /* no impeccable, roll the dice! */
             else//否则是双数张无懈可击，不生效
             {
+                //新建各种变量
                 event_context_t determineContext;
                 card_array_t determineCardArray;
                 extra_determine_t determineExtra;
                 extra_process_phase_t *procPhaseExtra;
                 uint32_t determineCard = 0;
                 
+                //各种初始化
                 memset(&determineContext, 0, sizeof(event_context_t));
                 procPhaseExtra = (extra_process_phase_t *)phaseContext->extra;
                 memset(&determineExtra, 0, sizeof(extra_determine_t));
                 CardArray_Clear(&determineCardArray);
                 
-                Game_DealCard(game, 1, &determineCardArray);
-                determineCard = determineCardArray.cards[0];
+                Game_DealCard(game, 1, &determineCardArray);//生成一张判定牌，放入determineCardArray
+                determineCard = determineCardArray.cards[0];//取出这张判定牌
                 
                 /* ask for swap */
-                determineExtra.origin = determineCard;
+                determineExtra.origin = determineCard;//存下这张判定牌
                 determineExtra.type = seat->delaySpecialTypes[delayIndex];
                 
                 EventContextSet(&determineContext, EVENT_PRE_DETERMINE, game, seat, &determineExtra);
                 
                 Game_PostEventToAllFromSeat(game, &determineContext, seat);
                 
-                determineCard = determineExtra.change;
+                determineCard = determineExtra.change;  //这里肯定没写完，要处理完后，再设为change后的牌。
+                                                        //没人换的话，determineExtra.change应该等于determineExtra.origin
                 
                 /* apply delay result */
-                switch (determineExtra.type)
-                {
-                    case DETERMINE_TYPE_SLEEP:
-                        if (CARD_SUIT(determineCard) != SUIT_HEART)
+                switch (determineExtra.type)//判断是哪种延时锦囊
+                {//此处开始建议全部加上大括号，和else部分 zhanglin 2014.04.05
+                    case DETERMINE_TYPE_SLEEP://乐不思蜀
+                        if (CARD_SUIT(determineCard) != SUIT_HEART)//非红桃，则被睡掉
                             procPhaseExtra->shouldPassPlay = 1;
+                        /*
+                        else //zhanglin 2014.04.05
+                        {
+                            procPhaseExtra->shouldPassPlay = 0;
+                        }
+                        */
                         break;
                         
-                    case DETERMINE_TYPE_FAMINE:
-                        if (CARD_SUIT(determineCard) != SUIT_CLUB)
+                    case DETERMINE_TYPE_FAMINE://兵粮寸断
+                        if (CARD_SUIT(determineCard) != SUIT_CLUB)//非梅花，则被饿
                             procPhaseExtra->shouldPassDeal = 1;
                         break;
                         
-                    case DETERMINE_TYPE_LIGHTNING:
-                        if (CARD_SUIT(determineCard) == SUIT_SPADE &&
-                            CARD_RANK(determineCard) > RANK_ACE &&
-                            CARD_RANK(determineCard) < RANK_TEN)
-                        {
-                            /* booom! */
+                    case DETERMINE_TYPE_LIGHTNING://闪电
+                        if (CARD_SUIT(determineCard) == SUIT_SPADE &&   // 黑桃 (♠2 ~ ♠9)
+                            CARD_RANK(determineCard) > RANK_ACE &&      // Aから(含まない)
+                            CARD_RANK(determineCard) < RANK_TEN)        //10まで(含まない)
+                        {//判定成功，被炸了
+                            /* booom! */ /* 这里好欢乐！！！ */
                             uint32_t card;
-                            card_array_t cards;
+                            card_array_t cards;//这是用来干毛的？一会儿被清空了，然后还放入了一张闪电
                             event_context_t damageContext;
                             extra_damage_t damageExtra;
                             
                             memset(&damageContext, 0, sizeof(event_context_t));
                             memset(&damageExtra, 0, sizeof(extra_damage_t));
                             
-                            CardArray_Clear(&cards);
-                            card = seat->delaySpecialCards[delayIndex];
-                            CardArray_PushBack(&cards, card);
+                            CardArray_Clear(&cards);//清空何为？
+                            card = seat->delaySpecialCards[delayIndex];//得到这张延时锦囊（闪电）
+                            CardArray_PushBack(&cards, card);//压入一个莫名其妙的排序列？（为毛要把闪电放进去？）
                             
+                            //这里甚屌，最后研究。还要考虑伤害来源什么的的。。。
                             damageExtra.asCard = card;
                             damageExtra.damage = 3;
                             damageExtra.attribute = ATTRIBUTE_LIGHTNING;
@@ -594,10 +607,10 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
                             
                             Game_SeatPreDamage(game, &damageContext, seat);
                         }
-                        else
+                        else//判定失败，没被炸
                         {
                             /* lightning, move to next seat */
-                            Game_MoveDelayToNextSeat(game, seat, delayIndex);
+                            Game_MoveDelayToNextSeat(game, seat, delayIndex);//传给下一个人
                         }
                         break;
                         

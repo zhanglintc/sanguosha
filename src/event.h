@@ -37,11 +37,11 @@
 
 #define EVENT_COUNT             256
 
-#define DETERMINE_TYPE_NONE         0
-#define DETERMINE_TYPE_SLEEP        1
-#define DETERMINE_TYPE_LIGHTNING    2
-#define DETERMINE_TYPE_FAMINE       3
-#define DETERMINE_TYPE_TRIGRAMS     4
+#define DETERMINE_TYPE_NONE         0   //无判定牌
+#define DETERMINE_TYPE_SLEEP        1   //乐不思蜀
+#define DETERMINE_TYPE_LIGHTNING    2   //闪电
+#define DETERMINE_TYPE_FAMINE       3   //兵粮寸断
+#define DETERMINE_TYPE_TRIGRAMS     4   //八卦阵？
 
 //存入各种状态信息
 #define EventContextSet(context, e, g, s, x)    ((context)->event = e,  \
@@ -77,11 +77,11 @@ typedef struct extra_request_t
     
 } extra_request_t;
 
-typedef struct extra_determine_t
+typedef struct extra_determine_t //大概是用来处理能换牌的那帮角色的技能的
 {
-    uint32_t    origin;
-    uint32_t    change;
-    int         type;
+    uint32_t    origin; //替换前的判定牌
+    uint32_t    change; //替换后的判定牌
+    int         type;   //需要判定的锦囊的类型，取值可以为：乐不思蜀，兵粮寸断，闪电等
     
 } extra_determine_t;
 

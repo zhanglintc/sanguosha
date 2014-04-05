@@ -243,13 +243,14 @@ void Seat_HandleEvent(seat_t *seat, event_context_t *context)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 用于判断该延时锦囊是否能够作用于该角色（也许有的角色能够免疫此锦囊）
+Argument: seat_t *seat, uint32_t card
+Return  : 1 can affect
+          0 cannot affect
 *******************************************************/
 int Seat_CanAffectByCard(seat_t *seat, uint32_t card)
 {
-    return 1;
+    return 1;//目前一律返回能作用于该角色
 }
 
 /*******************************************************
@@ -282,9 +283,10 @@ void Seat_SortDelaySpecials(seat_t *seat)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 判断当前座位是否已经拥有一张相同类型的延时锦囊
+Argument: seat_t *seat, int delayType
+Return  : 1 for yes
+          0 for no
 *******************************************************/
 int Seat_HasDelaySpecial(seat_t *seat, int delayType)
 {
@@ -304,9 +306,9 @@ int Seat_HasDelaySpecial(seat_t *seat, int delayType)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 放入一张卡片（放入延时锦囊）todo：应该可以改为bool型函数
+Argument: seat_t *seat, int delayType, uint32_t card
+Return  : 1 成功   0 失败
 *******************************************************/
 int Seat_AttachDelaySpecial(seat_t *seat, int delayType, uint32_t card)
 {
@@ -315,11 +317,11 @@ int Seat_AttachDelaySpecial(seat_t *seat, int delayType, uint32_t card)
     
     for (i = SEAT_DELAY_CAPACITY - 1; i >= 0; i++)
     {
-        if (seat->delaySpecialTypes[i] == DETERMINE_TYPE_NONE)
+        if (seat->delaySpecialTypes[i] == DETERMINE_TYPE_NONE)//如果没有延时锦囊
         {
-            seat->delaySpecialTypes[i] = delayType;
+            seat->delaySpecialTypes[i] = delayType;//放入这张锦囊
             seat->delaySpecialCards[i] = card;
-            attached = 1;
+            attached = 1;//设定为放入成功
             break;
         }
     }

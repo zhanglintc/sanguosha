@@ -75,7 +75,7 @@ typedef struct seat_t
     char            *name;                              //名字
     
     uint32_t        equipments[SEAT_EQUIP_CAPACITY];    //装备 (大概是4个,编号分别为0 1 2 3)
-    uint32_t        delaySpecialCards[3];               //延时卡牌数量?
+    uint32_t        delaySpecialCards[3];               //延时卡牌序列？
     uint32_t        delaySpecialTypes[3];               //延时卡牌种类?
     card_array_t    *hands;                             //手牌
     
