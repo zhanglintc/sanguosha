@@ -74,9 +74,9 @@ int value_equip[23] = {
 
 /* internal methods */
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 返回一张卡牌的值？权重？或者什么的？
+Argument: uint32_t card
+Return  : int value
 *******************************************************/
 int StandardAI_Card_Evaluator(uint32_t card)
 {
@@ -109,8 +109,8 @@ int StandardAI_Card_Evaluator(uint32_t card)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 没看懂这个函数要干什么，洗手牌？干毛啊？是想让手牌按照事先的规定来排列吗？
+Argument: *seat
 Return  : None
 *******************************************************/
 void StandardAI_Sort_Hands(seat_t *seat)
@@ -147,8 +147,8 @@ void StandardAI_Sort_Hands(seat_t *seat)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: AI对装备牌的处理（未看完，似乎是装备上后立马弃掉）
+Argument: *context
 Return  : None
 *******************************************************/
 void StandardAI_Play_Equipment(event_context_t *context)
@@ -169,20 +169,20 @@ void StandardAI_Play_Equipment(event_context_t *context)
     hands = seat->hands;
     
     memset(&equipments, 0, sizeof(card_array_t));
-    CardArray_Copy(&tempArray, hands);
+    CardArray_Copy(&tempArray, hands);//把手牌缓存起来
     
     cnt = tempArray.length;
-    for (i = 0; i < tempArray.length; i++)
+    for (i = 0; i < tempArray.length; i++)//遍历缓存的手牌，找装备牌
     {
-        if (CARD_GET_CATEGORY(tempArray.cards[i]) == CATEGORY_EQUIPMENT)
+        if (CARD_GET_CATEGORY(tempArray.cards[i]) == CATEGORY_EQUIPMENT)//如果找到装备牌
         {
-            CardArray_PushBack(&equipments, tempArray.cards[i]);
-            CardArray_RemoveCard(hands, tempArray.cards[i]);
+            CardArray_PushBack(&equipments, tempArray.cards[i]);//就放入装备牌序列
+            CardArray_RemoveCard(hands, tempArray.cards[i]);//并从手牌中拿走这张卡
         }
     }
     
     /* put on equipments */
-    if (equipments.length > 0)
+    if (equipments.length > 0)//如果之前找到了装备牌
     {
         for (i = equipments.length - 1; i >= 0; i--)
         {
@@ -196,11 +196,11 @@ void StandardAI_Play_Equipment(event_context_t *context)
             seat->equipments[CARD_GET_ATTRIBUTE(equipCard)] = equipCard;
             Game_DropCard(context->game, seat, &dropEquips);
             
-            if (CARD_ID_CATEGORY(dropCard, CARD_ID_SILVER_LION, CATEGORY_EQUIPMENT))
+            if (CARD_ID_CATEGORY(dropCard, CARD_ID_SILVER_LION, CATEGORY_EQUIPMENT))//如果弃掉的牌是白银狮子
             {
-                seat->curHealth++;
-                if (seat->curHealth > seat->maxHealth)
-                    seat->curHealth = seat->maxHealth;
+                seat->curHealth++;//加血
+                if (seat->curHealth > seat->maxHealth)//已经满血
+                    seat->curHealth = seat->maxHealth;//就不加血了
                 
                 DEBUG_PRINT("silver lion recover 1 health\n");
             }
@@ -439,8 +439,8 @@ void StandardAI_Handler_OnDeal(event_context_t *context)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 基本AI处理
+Argument: *context
 Return  : None
 *******************************************************/
 void StandardAI_Handler_OnPlay(event_context_t *context)

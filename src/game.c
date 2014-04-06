@@ -154,8 +154,8 @@ int Game_DealCard(game_t *game, int count, card_array_t *card_array)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: AI弃牌处理（未看完）
+Argument: *game, *seat, *array
 Return  : None
 *******************************************************/
 void Game_DropCard(game_t *game, seat_t *seat, card_array_t *array)

@@ -25,7 +25,7 @@
 #define EVENT_ON_DROP           10  //StandardAI_Handler_OnDrop
 
 #define EVENT_OTHER_DROP        11  //StandardAI_Handler_OnOtherDrop
-#define EVENT_OTHER_RECYLE      12  //
+#define EVENT_OTHER_RECYLE      12  //StandardAI_Handler_OnOtherRecyle
 
 #define EVENT_QUERY_CARD        13  //StandardAI_Handler_QueryCard
 #define EVENT_PRE_DETERMINE     14  //StandardAI_Handler_PreDetermine

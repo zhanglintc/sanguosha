@@ -761,29 +761,29 @@ int32_t CardArray_Remove(card_array_t *arr, int index)
 
 /*******************************************************
 Function: None
-Argument: None
-Return  : None
+Argument: card_array_t *arr, uint32_t card
+Return  : 1 成功   0 失败
 *******************************************************/
 int CardArray_RemoveCard(card_array_t *arr, uint32_t card)
 {
     int removed = 0;
     int i = 0;
     
-    if (arr->length <= 0)
+    if (arr->length <= 0)//长度不够，返回失败
         return removed;
     
-    for (i = 0; i < arr->length; i++)
+    for (i = 0; i < arr->length; i++)//遍历
     {
-        if (arr->cards[i] == card)
+        if (arr->cards[i] == card)//找到了
         {
-            removed = 1;
+            removed = 1;//返回成功值
             break;
         }
     }
     
-    if (removed)
+    if (removed)//真正移出之
     {
-        memmove(&arr->cards[i], &arr->cards[i+1], sizeof(int32_t) * (arr->length - 1));
+        memmove(&arr->cards[i], &arr->cards[i+1], sizeof(int32_t) * (arr->length - 1));//这里计算的长度没有问题吗？
         arr->length--;
     }
     
@@ -791,14 +791,14 @@ int CardArray_RemoveCard(card_array_t *arr, uint32_t card)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 拷贝卡牌序列数据
+Argument: *dst, *src
 Return  : None
 *******************************************************/
 void CardArray_Copy(card_array_t *dst, card_array_t *src)
 {
-    memset(dst, 0, sizeof(card_array_t));
-    memcpy(dst, src, sizeof(card_array_t));
+    memset(dst, 0, sizeof(card_array_t));//清零
+    memcpy(dst, src, sizeof(card_array_t));//拷贝
 }
 
 /*******************************************************
