@@ -70,7 +70,7 @@ game_t *Game_Create(int mode, int seed)
 
         case GameMode_Military2:    //added by zhanglin 2014.04.06
             playernum = 2;
-            extension = 0;
+            extension = 1;
             identities = identity2;
             break;
             
