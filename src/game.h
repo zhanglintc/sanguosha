@@ -39,7 +39,7 @@ typedef struct game_s
     int         stage;//当前游戏阶段
     
     int         seatCapacity;//最大作为数量
-    int         seatCount;
+    int         seatCount;//目测是剩余存活角色数量
     
     mt19937_t   mtRandom;//随机数种子?
     

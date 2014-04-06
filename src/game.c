@@ -268,8 +268,8 @@ void Game_MoveDelayToNextSeat(game_t *game, seat_t *seat, int delayIndex)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 伤害计算前的一些处理，比如铁索连环的处理
+Argument: *game, *context, *seat
 Return  : None
 *******************************************************/
 void Game_SeatPreDamage(game_t *game, event_context_t *context, seat_t *seat)
@@ -291,18 +291,19 @@ void Game_SeatPreDamage(game_t *game, event_context_t *context, seat_t *seat)
         chainSeatList = SeatList_Create();
         
         seatIndex = Game_FindSeatIndex(game, seat);
-        for (i = 0; i < game->seatCount; i++)
+        for (i = 0; i < game->seatCount; i++)//在活着的角色里寻找目标
         {
             seat_t *checkSeat = NULL;
             int checkIndex = 0;
-            checkIndex = (seatIndex + i) % game->seatCount;
-            checkSeat = game->seats[checkIndex];
-            if (!checkSeat->dead && CHECK_FLAG(seat->status, PlayerStatus_Chained))
-                SeatList_PushBack(chainSeatList, checkSeat);
+            checkIndex = (seatIndex + i) % game->seatCount;//索引值
+            checkSeat = game->seats[checkIndex];//需要被检查的座位
+            if (!checkSeat->dead && CHECK_FLAG(seat->status, PlayerStatus_Chained))//没有死亡 且 处于铁索状态
+                SeatList_PushBack(chainSeatList, checkSeat);//加入铁索连环链表
         }
     }
     
     /* apply damage to seat */
+    //目测完全未完成，差老了
     if (chainSeatList != NULL)
     {
         seatListIter = chainSeatList;
@@ -397,6 +398,8 @@ void Game_PostEventToAllNextSeat(game_t *game, event_context_t *context, seat_t 
 Function: 
     PostEventToSeat，把事件扔给座位。就是传入一个事件，座位进行
     处理，然后得到一些结果（比如是否需要跳过判定，发牌出牌阶段等）
+
+    这个神秘函数干的事儿的太多了，我有点迷糊...
 Argument: 
     *game *seat *context
 Return  : 
@@ -480,7 +483,7 @@ void Game_PhaseTurnBegin(game_t *game, seat_t *seat, event_context_t *phaseConte
 }
 
 /*******************************************************
-Function: 卧槽，这个函数好长啊
+Function: 判定牌的处理（闪电，无懈可击，等等等等）
 Argument: *game *seat *phaseContext
 Return  : None
 *******************************************************/
@@ -623,8 +626,8 @@ void Game_PhaseTurnDetermine(game_t *game, seat_t *seat, event_context_t *phaseC
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 发牌
+Argument: *game, *seat, *context
 Return  : None
 *******************************************************/
 void Game_PhaseTurnDeal(game_t *game, seat_t *seat, event_context_t *context)
@@ -640,8 +643,8 @@ void Game_PhaseTurnDeal(game_t *game, seat_t *seat, event_context_t *context)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 出牌
+Argument: *game, *seat, *context
 Return  : None
 *******************************************************/
 void Game_PhaseTurnPlay(game_t *game, seat_t *seat, event_context_t *context)
@@ -657,8 +660,8 @@ void Game_PhaseTurnPlay(game_t *game, seat_t *seat, event_context_t *context)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 弃牌
+Argument: *game, *seat, *context
 Return  : None
 *******************************************************/
 void Game_PhaseTurnDrop(game_t *game, seat_t *seat, event_context_t *context)
@@ -720,32 +723,33 @@ void Game_ExecuteSeatLogic(game_t *game, seat_t *seat)
     Game_PostEventToSeat(game, seat, &phaseContext);
     
     /* turn determine */
-    if (!extra.shouldPassDetermine)//shouldPassDetermine == 0 才进行判定，说明0是不要跳过，1是要跳过
-        Game_PhaseTurnDetermine(game, seat, &phaseContext);
+    //shouldPassDetermine == 0 才进行判定，说明0是不要跳过，1是要跳过
+    if (!extra.shouldPassDetermine)//不需要跳过判定阶段的话
+        Game_PhaseTurnDetermine(game, seat, &phaseContext);//判定
     
     /* some hero can bypass deal phase */
     phaseContext.event = EVENT_TURN_DEAL;//发牌前处理
     Game_PostEventToSeat(game, seat, &phaseContext);
     
     /* turn deal */
-    if (!extra.shouldPassDeal)
-        Game_PhaseTurnDeal(game, seat, &phaseContext);
+    if (!extra.shouldPassDeal)//不需要跳过发牌阶段的话
+        Game_PhaseTurnDeal(game, seat, &phaseContext);//发牌
     
     /* some hero can bypass play phase */
     phaseContext.event = EVENT_TURN_PLAY;//出牌前处理
     Game_PostEventToSeat(game, seat, &phaseContext);
     
     /* turn play */
-    if (!extra.shouldPassPlay)
-        Game_PhaseTurnPlay(game, seat, &phaseContext);
+    if (!extra.shouldPassPlay)//不需要跳过出牌阶段的话
+        Game_PhaseTurnPlay(game, seat, &phaseContext);//出牌
     
     /* some hero can bypass drop phase */
     phaseContext.event = EVENT_TURN_DROP;//弃牌前处理
     Game_PostEventToSeat(game, seat, &phaseContext);
     
     /* turn drop */
-    if (!extra.shouldPassDrop)
-        Game_PhaseTurnDrop(game, seat, &phaseContext);
+    if (!extra.shouldPassDrop)//不需要跳过弃牌阶段的话
+        Game_PhaseTurnDrop(game, seat, &phaseContext);//弃牌
     
     /* turn end */
     phaseContext.event = EVENT_TURN_END;//回合结束前处理
