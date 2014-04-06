@@ -17,6 +17,22 @@
 #define DEF_SEED    0x012BD6AA
 
 /*******************************************************
+Function:
+    Initialize all the thing. Put everything you want to
+    initialize here.
+Argument:
+    None
+Return:
+    None
+Author:
+    ZhangLin
+*******************************************************/
+void Initialize()
+{
+    srand((unsigned)time(NULL));
+}
+
+/*******************************************************
 Function: 作用未知
 Argument: mt19937_t *context, uint32_t seed
 Return  : None

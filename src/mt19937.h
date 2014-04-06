@@ -25,5 +25,6 @@ void Random_InitWithArray(mt19937_t *context, uint32_t array[], int length);
 uint32_t Random_uint32(mt19937_t *context);
 int32_t Random_int32(mt19937_t *context);
 double Random_real_0_1(mt19937_t *context);
+void Initialize(); //added by zhanglin 2014.04.06
 
 #endif /* MT19937_H_ */

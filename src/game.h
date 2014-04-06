@@ -20,7 +20,9 @@ typedef enum
     GameMode_Normal5 = 0,   //0
     GameMode_Normal8,       //1
     GameMode_Military5,     //2
-    GameMode_Military8      //3
+    GameMode_Military8,     //3
+    GameMode_Normal2,       //4  added by zhanglin 2014.04.06
+    GameMode_Military2      //5  added by zhanglin 2014.04.06
     
 } GameMode;
 

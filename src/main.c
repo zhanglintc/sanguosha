@@ -91,8 +91,7 @@ void test_Deck()
 }
 
 /*******************************************************
-Function:
-    测试整个游戏
+Function: 测试整个游戏
 Argument: None
 Return  : None
 *******************************************************/
@@ -100,47 +99,26 @@ void test_Game()
 {
     int seed = 1;
     game_t *game = NULL;
-    game = Game_Create(GameMode_Military5, seed);//生成一个 game
+    seed = rand();
+    game = Game_Create(GameMode_Normal2, seed);//生成一个 game
     
     Game_Execute(game);//执行游戏
     Game_Destroy(game);//在销毁游戏的时候,顺便输出了所有的座位信息(大概只是debug的时候这么用的)
 }
 
 /*******************************************************
-Function:
-    游戏主入口（尽量保持简短，多余功能化为函数独立出去）
-Argument: None
-Return  : None
+Function: 游戏主入口（尽量保持简短，多余功能化为函数独立出去）
+Argument: int argc, const char * argv[]
+Return  : int
 *******************************************************/
 int main(int argc, const char * argv[])
 {
-	mt19937_t mt;
-	FILE *fp=NULL;
-	int i=0;
-
-	setlocale(LC_ALL,"CHS");
-	
-	
-	Random_Init(&mt, 1);
-	
-	if((fp=fopen("result.txt","w"))!=NULL)
-	{
-		for(i=0;i<MT_N;i++)
-		{
-			fprintf(fp,"%l\n",(uint32_t)mt.mt[i]);
-		}
-	}
-	else
-	{
-		printf("bug\n");
-	}
-	fclose(fp);
-
+	setlocale(LC_ALL,"CHS");	
+    Initialize(); //added by zhanglin
 	//test_CardArray();
 	//test_Deck();
 	test_Game();
 	//memtrack_list_allocations();
-
 	getchar();
 
     return 0;

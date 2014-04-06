@@ -23,6 +23,7 @@ game_t *Game_Create(int mode, int seed)
     int i = 0;
     int playernum = 0;
     int extension = 0;
+    int identity2[] = {IDENTITY_GUARD, IDENTITY_REBEL}; //added by zhanglin 2014.04.06
     int identity5[] = {IDENTITY_LORD, IDENTITY_GUARD, IDENTITY_REBEL, IDENTITY_REBEL, IDENTITY_SPY};
     int identity8[] = {IDENTITY_LORD, IDENTITY_GUARD, IDENTITY_GUARD, IDENTITY_REBEL, IDENTITY_REBEL, IDENTITY_REBEL, IDENTITY_REBEL, IDENTITY_SPY};
     int *identities = NULL;
@@ -60,12 +61,24 @@ game_t *Game_Create(int mode, int seed)
             extension = 1;
             identities = identity8;
             break;
+
+        case GameMode_Normal2:      //added by zhanglin 2014.04.06
+            playernum = 2;
+            extension = 0;
+            identities = identity2;
+            break;
+
+        case GameMode_Military2:    //added by zhanglin 2014.04.06
+            playernum = 2;
+            extension = 0;
+            identities = identity2;
+            break;
             
         default:
             break;
     }
     
-    game->stage = GameStage_Begin;//创建为开始阶段，值为0
+    game->stage = GameStage_Begin;//创建为开始阶段，值为 0
     
     /* init deck */
     game->deck = Deck_Create(extension);
@@ -73,9 +86,16 @@ game_t *Game_Create(int mode, int seed)
     
     /* init seats */
     game->seatCapacity = playernum;
-    game->seatCount = playernum;
+    game->seatCount = playernum;	
     
-    shuffle(&identities[1], playernum-1, &game->mtRandom);
+    if (playernum == 2) //如果是单挑，随机放置所有角色
+    {
+        shuffle(&identities[0], playernum, &game->mtRandom);
+    }
+    else //否则正常模式就随机放置除了主公以外的所有角色
+    {
+        shuffle(&identities[1], playernum-1, &game->mtRandom);
+    }
     
     for (i = 0; i < playernum; i++)
     {
@@ -761,7 +781,7 @@ Function: 游戏运行
 Argument: game_t *game
 Return  : None
 *******************************************************/
-void Game_Running(game_t *game)//目前传入的 game_stage是0
+void Game_Running(game_t *game)//目前传入的 game_stage 是0
 {
     int seatIndex = 0;
     int temp = 1;
