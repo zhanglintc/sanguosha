@@ -48,7 +48,7 @@ void test_CardArray()
     
     for (i = 0; i < Card_Array->length; i++)
     {
-        Card_Print(Card_Array->cards[i]); printf("\n");//打印卡牌组合
+        Card_Print(Card_Array->cards[i]); DEBUG_PRINT("\n");//打印卡牌组合
     }
     
     CardArray_Destroy(Card_Array);//释放内存

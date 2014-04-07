@@ -29,7 +29,7 @@
 		#ifdef CODE_KANJI
 			#define DEBUG_PRINT my_wprintf
 		#else //CODE_KANJI
-			#define DEBUG_PRINT my_printf
+			#define DEBUG_PRINT my_fprintf
 		#endif //CODE_KANJI
 #else //SGS_DEBUG
 	#define DEBUG_PRINT do {} while (0)
@@ -37,5 +37,6 @@
 
 void my_wprintf(char *fmt, ...);
 void my_printf(char *fmt, ...);
+void my_fprintf(char *fmt, ...);
 
 #endif /* COMMON_H_ */
