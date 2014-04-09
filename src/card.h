@@ -99,8 +99,8 @@
 /* attribute for equipment */
 #define ATTRIBUTE_WEAPON        0   //武器牌
 #define ATTRIBUTE_SHIELD        1   //防具牌
-#define ATTRIBUTE_DEFENSIVE     2   //防守距离
-#define ATTRIBUTE_AGGRESSIVE    3   //进攻距离
+#define ATTRIBUTE_DEFENSIVE     2   //防守马
+#define ATTRIBUTE_AGGRESSIVE    3   //进攻马
 
 /* extra attribute for special card */
 #define ATTRIBUTE_DELAY         4   //延时锦囊
