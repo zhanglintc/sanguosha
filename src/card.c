@@ -9,10 +9,10 @@
 #include "common.h"
 
 #include "card.h"
-
- char szDIAMOND[]    = {4,0};//{ 0xE2, 0x99, 0xA6, 0};//♢
- char szCLUB[]       = {5,0};//{ 0xE2, 0x99, 0xA3, 0};//♧
- char szHEART[]      = {3,0};//{ 0xE2, 0x99, 0xA5, 0};//♡
+ //♠♥♣♦
+ char szDIAMOND[]    = {4,0};//{ 0xE2, 0x99, 0xA6, 0};//♦
+ char szCLUB[]       = {5,0};//{ 0xE2, 0x99, 0xA3, 0};//♣
+ char szHEART[]      = {3,0};//{ 0xE2, 0x99, 0xA5, 0};//♥
  char szSPADE[]      = {6,0};//{ 0xE2, 0x99, 0xA0, 0};//♠
 
 /* 基本卡牌：杀闪桃 */
