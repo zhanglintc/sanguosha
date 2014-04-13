@@ -9,11 +9,11 @@
 #include "common.h"
 
 #include "card.h"
- //♠♥♣♦
- char szDIAMOND[]    = {4,0};//{ 0xE2, 0x99, 0xA6, 0};//♦
- char szCLUB[]       = {5,0};//{ 0xE2, 0x99, 0xA3, 0};//♣
- char szHEART[]      = {3,0};//{ 0xE2, 0x99, 0xA5, 0};//♥
- char szSPADE[]      = {6,0};//{ 0xE2, 0x99, 0xA0, 0};//♠
+//♠♥♣♦
+char szDIAMOND[]    = {4,0};//{ 0xE2, 0x99, 0xA6, 0};//♦
+char szCLUB[]       = {5,0};//{ 0xE2, 0x99, 0xA3, 0};//♣
+char szHEART[]      = {3,0};//{ 0xE2, 0x99, 0xA5, 0};//♥
+char szSPADE[]      = {6,0};//{ 0xE2, 0x99, 0xA0, 0};//♠
 
 /* 基本卡牌：杀闪桃 */
 #ifdef CODE_KANJI
@@ -647,9 +647,13 @@ void CardArray_Destroy(card_array_t *arr)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 
+    将一张卡牌数据压入一个序列之中(压入头部)
+Argument: 
+    card_array_t *arr: 待压入的序列
+    int32_t card     : 待压入卡牌信息
+Return: 
+    None
 *******************************************************/
 int32_t CardArray_PushFront(card_array_t *arr, int32_t card)
 {
@@ -666,7 +670,7 @@ int32_t CardArray_PushFront(card_array_t *arr, int32_t card)
 
 /*******************************************************
 Function: 
-    将一张卡牌数据压入一个序列之中
+    将一张卡牌数据压入一个序列之中(压入尾部)
 Argument: 
     card_array_t *arr: 待压入的序列
     int32_t card     : 待压入卡牌信息
@@ -685,9 +689,9 @@ int32_t CardArray_PushBack(card_array_t *arr, int32_t card)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 从给入的序列最头部取出一张卡片并返回
+Argument: card_array_t *arr
+Return  : int32_t card
 *******************************************************/
 int32_t CardArray_PopFront(card_array_t *arr)
 {
@@ -716,51 +720,51 @@ int32_t CardArray_PopBack(card_array_t *arr)
         return -1;
 	}
     
-    card = arr->cards[arr->length-1];//从 cars[] 序列最末取出卡牌
-    arr->cards[arr->length-1] = 0;//将该卡牌值置为空
-    arr->length--;//序列长度-1
+    card = arr->cards[arr->length-1]; //从 cars[] 序列最末取出卡牌
+    arr->cards[arr->length-1] = 0; //将该卡牌值置为空
+    arr->length--; //序列长度-1
     
-    return card;//返回该卡片
+    return card; //返回该卡片
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 将一张卡牌插入一个卡牌序列，成功则返回该卡牌的值
+Argument: *arr, index, card
+Return  : int32_t card
 *******************************************************/
 int32_t CardArray_Insert(card_array_t *arr, int index, int32_t card)
 {
-    if (arr->length >= CARDS_COUNT_TOTAL || index > arr->length)
+    if (arr->length >= CARDS_COUNT_TOTAL || index > arr->length) //卡排序列长度大于等于总卡牌数 或者 索引大于序列长度
         return -1;
     
-    memmove(&arr->cards[index+1], &arr->cards[index], sizeof(int32_t) * (arr->length - index));
-    arr->cards[index] = card;
-    arr->length++;
+    memmove(&arr->cards[index+1], &arr->cards[index], sizeof(int32_t) * (arr->length - index)); //将索引处开始的卡牌全部后移一位
+    arr->cards[index] = card; //插入卡牌
+    arr->length++; //序列长度加1
     
-    return card;
+    return card; //成功则返回该张卡牌
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 从一个卡牌序列的索引指定处移走一张卡牌，成功则返回卡牌的值
+Argument: *arr, index
+Return  : int32_t card
 *******************************************************/
 int32_t CardArray_Remove(card_array_t *arr, int index)
 {
     int32_t card = 0;
     
-    if (arr->length <= 0 || index >= arr->length)
+    if (arr->length <= 0 || index >= arr->length) //如果序列长度小于等于0 或者 索引大于序列长度
         return -1;
     
-    card = arr->cards[index];
-    memmove(&arr->cards[index], &arr->cards[index+1], sizeof(int32_t) * (arr->length-1));
-    arr->length--;
+    card = arr->cards[index]; //获得这张卡牌的值
+    memmove(&arr->cards[index], &arr->cards[index+1], sizeof(int32_t) * (arr->length-1)); //索引开始的卡牌全部前移一位
+    arr->length--; //序列长度
     
-    return card;
+    return card; //成功则返回该张卡牌
 }
 
 /*******************************************************
-Function: None
+Function: 从一个卡牌序列中移走一张给定的卡牌
 Argument: card_array_t *arr, uint32_t card
 Return  : 1 成功   0 失败
 *******************************************************/
@@ -797,13 +801,13 @@ Return  : None
 *******************************************************/
 void CardArray_Copy(card_array_t *dst, card_array_t *src)
 {
-    memset(dst, 0, sizeof(card_array_t));//清零
+    memset(dst, 0, sizeof(card_array_t));//初始化
     memcpy(dst, src, sizeof(card_array_t));//拷贝
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 用一个给定的卡牌数组来初始化卡排序列
+Argument: *arr, cards[], length
 Return  : None
 *******************************************************/
 void CardArray_InitFromArray(card_array_t *arr, int32_t cards[], int length)
@@ -817,9 +821,9 @@ void CardArray_InitFromArray(card_array_t *arr, int32_t cards[], int length)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 将一个卡牌序列的数据放入一个buffer中（作用不明）
+Argument: *arr, *buf
+Return  : int length
 *******************************************************/
 int CardArray_Dump(card_array_t *arr, int32_t *buf)
 {
