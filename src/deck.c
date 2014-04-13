@@ -43,14 +43,14 @@ void Deck_Destroy(deck_t *deck)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 重洗桌面上的所有牌
+Argument: deck_t *deck
 Return  : None
 *******************************************************/
 void Deck_ResetAll(deck_t *deck)
 {
-    deck->cardStack->length = Card_InitSet(deck->cardStack->cards, deck->extension);
-    CardArray_Clear(deck->usedCards);
+    deck->cardStack->length = Card_InitSet(deck->cardStack->cards, deck->extension); //初始化牌堆
+    CardArray_Clear(deck->usedCards); //清空弃牌堆
 }
 
 /*******************************************************
@@ -77,9 +77,9 @@ int32_t Deck_DealCard(deck_t *deck)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 查看牌堆顶的一张牌（依据原作者解释：peek the top of the card array） ps:好像也不靠谱，最后我自己再重新定义好了
+Argument: deck_t *deck
+Return  : int32_t
 *******************************************************/
 int32_t Deck_PeekCard(deck_t *deck)
 {

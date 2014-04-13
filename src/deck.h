@@ -27,14 +27,14 @@ typedef struct deck_t//桌面上包含牌堆和已经用到的牌
     
 } deck_t;
 
-/**
+/*********************************************************
  *	@brief	create a deck
  *
  *	@param 	extension 	0 : no extension
  *                      1 : use extension
  *
  *	@return	deck
- */
+ ********************************************************/
 deck_t* Deck_Create(int extension);
 
 
