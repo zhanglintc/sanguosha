@@ -254,8 +254,8 @@ int Seat_CanAffectByCard(seat_t *seat, uint32_t card)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 对锦囊牌排序，就是全部尽量往前放
+Argument: seat_t *seat
 Return  : None
 *******************************************************/
 void Seat_SortDelaySpecials(seat_t *seat)
@@ -265,13 +265,13 @@ void Seat_SortDelaySpecials(seat_t *seat)
     
     for (i = 0; i < SEAT_DELAY_CAPACITY; i++)
     {
-        if (seat->delaySpecialTypes[i] == 0)
+        if (seat->delaySpecialTypes[i] == 0) //如果当前位置没有牌
         {
             for (j = i; j < SEAT_DELAY_CAPACITY; j++)
             {
-                if (seat->delaySpecialTypes[j] != 0)
+                if (seat->delaySpecialTypes[j] != 0) //如果当前位置有牌
                 {
-                    seat->delaySpecialTypes[i] = seat->delaySpecialTypes[j];
+                    seat->delaySpecialTypes[i] = seat->delaySpecialTypes[j]; //全部往前挪
                     seat->delaySpecialCards[i] = seat->delaySpecialCards[j];
                     seat->delaySpecialTypes[j] = 0;
                     seat->delaySpecialCards[j] = 0;
@@ -330,18 +330,18 @@ int Seat_AttachDelaySpecial(seat_t *seat, int delayType, uint32_t card)
 }
 
 /*******************************************************
-Function: None
-Argument: None
-Return  : None
+Function: 为一个座位设置一个名字
+Argument: seat_t *seat, const char *name
+Return  : char *
 *******************************************************/
 char *Seat_SetName(seat_t *seat, const char *name)
 {
-    if (seat->name != NULL)
+    if (seat->name != NULL) //如果已经有名字了，先清除
         free(seat->name);
     
-    seat->name = NULL;
+    seat->name = NULL; //清除
     
-    seat->name = calloc(1, strlen(name) + 1);
+    seat->name = calloc(1, strlen(name) + 1); //再开辟新空间并设置名字
     memcpy(seat->name, name, strlen(name));
     
     return seat->name;
@@ -557,8 +557,8 @@ seat_list_t *SeatList_Remove(seat_list_t *list, seat_t *seat)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 打印身份信息
+Argument: int identity
 Return  : None
 *******************************************************/
 void Identity_Print(int identity)
@@ -577,8 +577,8 @@ const char* Identity_GetString(int identity)
 }
 
 /*******************************************************
-Function: None
-Argument: None
+Function: 打印势力信息
+Argument: int force
 Return  : None
 *******************************************************/
 void Force_Print(int force)
