@@ -113,13 +113,13 @@ Return  : int
 *******************************************************/
 int main(int argc, const char * argv[])
 {
-	setlocale(LC_ALL,"CHS");	
+    setlocale(LC_ALL,"CHS");    
     Initialize(); //added by zhanglin
-	//test_CardArray();
-	//test_Deck();
-	test_Game();
-	//memtrack_list_allocations();
-	getchar();
+    //test_CardArray();
+    //test_Deck();
+    test_Game();
+    //memtrack_list_allocations();
+    getchar();
 
     return 0;
 }

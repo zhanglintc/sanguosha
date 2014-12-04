@@ -22,8 +22,8 @@ deck_t* Deck_Create(int extension)
     deck = (deck_t *)calloc(1, sizeof(deck_t));
     
     deck->extension = extension;
-    deck->cardStack = CardArray_CreateSet(extension);	//新建牌堆
-    deck->usedCards = CardArray_CreateEmpty();			//建立一个空的弃牌堆（因为还没有发牌，弃牌堆的牌为空）
+    deck->cardStack = CardArray_CreateSet(extension);   //新建牌堆
+    deck->usedCards = CardArray_CreateEmpty();          //建立一个空的弃牌堆（因为还没有发牌，弃牌堆的牌为空）
     
     return deck;
 }

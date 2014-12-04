@@ -203,19 +203,19 @@ void memtrack_list_allocations(void)
     size_t total = 0;
     
     printf("*** Allocation list start ***\n");
-	if (!memblockList)
-	{
-		printf(">>> EMPTY <<<\n");
-	}
-	else
-	{
-		for(mb = memblockList; mb; mb = mb->next)
-		{
+    if (!memblockList)
+    {
+        printf(">>> EMPTY <<<\n");
+    }
+    else
+    {
+        for(mb = memblockList; mb; mb = mb->next)
+        {
             total += mb->size;
-			memblock_print_info(mb);
-		}
+            memblock_print_info(mb);
+        }
         
         printf(">>>Total %ld Bytes %ld KB %ld MB<<<\n", total, total/1024, total/1024/1024);
-	}
-	printf("*** Allocation list end ***\n");
+    }
+    printf("*** Allocation list end ***\n");
 }

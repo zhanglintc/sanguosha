@@ -86,7 +86,7 @@ game_t *Game_Create(int mode, int seed)
     
     /* init seats */
     game->seatCapacity = playernum;
-    game->seatCount = playernum;	
+    game->seatCount = playernum;    
     
     if (playernum == 2) //如果是单挑，随机放置所有角色
     {

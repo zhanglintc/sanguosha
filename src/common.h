@@ -26,13 +26,13 @@
 //#define CODE_KANJI
 
 #ifdef SGS_DEBUG
-		#ifdef CODE_KANJI
-			#define DEBUG_PRINT my_wprintf
-		#else //CODE_KANJI
-			#define DEBUG_PRINT my_fprintf
-		#endif //CODE_KANJI
+        #ifdef CODE_KANJI
+            #define DEBUG_PRINT my_wprintf
+        #else //CODE_KANJI
+            #define DEBUG_PRINT my_fprintf
+        #endif //CODE_KANJI
 #else //SGS_DEBUG
-	#define DEBUG_PRINT do {} while (0)
+    #define DEBUG_PRINT do {} while (0)
 #endif //SGS_DEBUG
 
 void my_wprintf(char *fmt, ...);

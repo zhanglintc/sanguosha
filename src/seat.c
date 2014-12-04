@@ -24,19 +24,19 @@ unsigned char szIdentities[][70] =
 #endif //CODE_UTF8
 
 #ifdef CODE_GBK
-	{0xd3,0xc4,0xc1,0xe9,0},//幽灵
-	{0xd6,0xf7,0xb9,0xab,0},//主公
-	{0xd6,0xd2,0xb3,0xbc,0},//忠臣
-	{0xb7,0xb4,0xd4,0xf4,0},//反贼
-	{0xc4,0xda,0xbc,0xe9,0},//内奸
+    {0xd3,0xc4,0xc1,0xe9,0},//幽灵
+    {0xd6,0xf7,0xb9,0xab,0},//主公
+    {0xd6,0xd2,0xb3,0xbc,0},//忠臣
+    {0xb7,0xb4,0xd4,0xf4,0},//反贼
+    {0xc4,0xda,0xbc,0xe9,0},//内奸
 #endif //CODE_GBK
-	
+    
 #ifdef CODE_KANJI
-	{L"幽灵"},
-	{L"主公"},
-	{L"忠臣"},
-	{L"反贼"},
-	{L"内奸"}
+    {L"幽灵"},
+    {L"主公"},
+    {L"忠臣"},
+    {L"反贼"},
+    {L"内奸"}
 #endif //CODE_KANJI
 };//identity
 
@@ -55,19 +55,19 @@ unsigned char szForces[][70] =
 #endif //CODE_UTF8
 
 #ifdef CODE_GBK
-	{0xd9,0xc1,0xbf,0xdc,0},//倭寇
-	{0xc8,0xba,0xd0,0xdb,0},//群雄
-	{0xce,0xba,0},//魏
-	{0xca,0xf1,0},//蜀
-	{0xce,0xe2,0},//吴
+    {0xd9,0xc1,0xbf,0xdc,0},//倭寇
+    {0xc8,0xba,0xd0,0xdb,0},//群雄
+    {0xce,0xba,0},//魏
+    {0xca,0xf1,0},//蜀
+    {0xce,0xe2,0},//吴
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	{L"倭寇"},
-	{L"群雄"},
-	{L"魏"},
-	{L"蜀"},
-	{L"吴"}
+    {L"倭寇"},
+    {L"群雄"},
+    {L"魏"},
+    {L"蜀"},
+    {L"吴"}
 #endif //CODE_KANJI
 };//force
 
@@ -85,17 +85,17 @@ unsigned char szDelaySP[][40] =
 #endif //CODE_UTF8
 
 #ifdef CODE_GBK
-	{0xb4,0xed,0},//错
-	{0xc0,0xd6,0},//乐
-	{0xb5,0xe7,0},//电
-	{0xb1,0xf8,0}//兵
+    {0xb4,0xed,0},//错
+    {0xc0,0xd6,0},//乐
+    {0xb5,0xe7,0},//电
+    {0xb1,0xf8,0}//兵
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	{L"错"},
-	{L"乐"},
-	{L"电"},
-	{L"兵"},
+    {L"错"},
+    {L"乐"},
+    {L"电"},
+    {L"兵"},
 #endif //CODE_KANJI
 };//delay
 
@@ -110,11 +110,11 @@ unsigned char szFlipped[] =
 #endif //CODE_UTF8
 
 #ifdef CODE_GBK
-	0xb7,0xad,0xc3,0xe6,0//翻面
+    0xb7,0xad,0xc3,0xe6,0//翻面
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	L"翻面"
+    L"翻面"
 #endif //CODE_KANJI
 };//flip
 
@@ -129,11 +129,11 @@ unsigned char szDrunk[] =
 #endif //CODE_UTF8
 
 #ifdef CODE_GBK
-	0xd2,0xfb,0xbe,0xc6,0//饮酒
+    0xd2,0xfb,0xbe,0xc6,0//饮酒
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	L"饮酒"
+    L"饮酒"
 #endif //CODE_KANJI
 };//drunk
 
@@ -148,11 +148,11 @@ unsigned char szChained[] =
 #endif //CODE_UTF8
 
 #ifdef CODE_GBK
-	0xcc,0xfa,0xcb,0xf7,0//铁索
+    0xcc,0xfa,0xcb,0xf7,0//铁索
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	L"铁索"
+    L"铁索"
 #endif //CODE_KANJI
 };//chain
 
@@ -168,13 +168,13 @@ unsigned char szSex[][40] =
 #endif //CODE_UTF8
 
 #ifdef CODE_GBK
-	{0xa1,0xe1,0},//♂
-	{0xa1,0xe2,0}//♀
+    {0xa1,0xe1,0},//♂
+    {0xa1,0xe2,0}//♀
 #endif //CODE_GBK
 
 #ifdef CODE_KANJI
-	{L"♂"},
-	{L"♀"}
+    {L"♂"},
+    {L"♀"}
 #endif //CODE_KANJI
 };//sex
 
